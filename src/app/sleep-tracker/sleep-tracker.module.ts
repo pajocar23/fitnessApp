@@ -4,18 +4,17 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { LandingPageRoutingModule } from './landing-routing.module';
+import { SleepTrackerPageRoutingModule } from './sleep-tracker-routing.module';
 
-import { LandingPage } from './landing.page';
+import { SleepTrackerPage } from './sleep-tracker.page';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    LandingPageRoutingModule,
+    SleepTrackerPageRoutingModule
   ],
-  declarations: [LandingPage],
-  entryComponents:[]
+  declarations: [SleepTrackerPage]
 })
-export class LandingPageModule {}
+export class SleepTrackerPageModule {}

@@ -4,18 +4,17 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { LandingPageRoutingModule } from './landing-routing.module';
+import { ActivityPageRoutingModule } from './activity-routing.module';
 
-import { LandingPage } from './landing.page';
+import { ActivityPage } from './activity.page';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    LandingPageRoutingModule,
+    ActivityPageRoutingModule
   ],
-  declarations: [LandingPage],
-  entryComponents:[]
+  declarations: [ActivityPage]
 })
-export class LandingPageModule {}
+export class ActivityPageModule {}

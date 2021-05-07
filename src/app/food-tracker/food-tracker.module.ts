@@ -4,18 +4,17 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { LandingPageRoutingModule } from './landing-routing.module';
+import { FoodTrackerPageRoutingModule } from './food-tracker-routing.module';
 
-import { LandingPage } from './landing.page';
+import { FoodTrackerPage } from './food-tracker.page';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    LandingPageRoutingModule,
+    FoodTrackerPageRoutingModule
   ],
-  declarations: [LandingPage],
-  entryComponents:[]
+  declarations: [FoodTrackerPage]
 })
-export class LandingPageModule {}
+export class FoodTrackerPageModule {}

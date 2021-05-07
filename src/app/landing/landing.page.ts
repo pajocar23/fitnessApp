@@ -1,4 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { ModalController } from '@ionic/angular';
+import { ActivityTrackerPage } from '../activity-tracker/activity-tracker.page';
+import { FoodTrackerPage } from '../food-tracker/food-tracker.page';
+import { MoodTrackerPage } from '../mood-tracker/mood-tracker.page';
+import { SleepTrackerPage } from '../sleep-tracker/sleep-tracker.page';
+import { WaterTrackerPage } from '../water-tracker/water-tracker.page';
+
 
 @Component({
   selector: 'app-landing',
@@ -95,9 +102,46 @@ export class LandingPage implements OnInit {
     }
   };
 
-  constructor() { }
+  constructor(public modalController: ModalController) { }
 
   ngOnInit() {
   }
+  
+  async presentWaterModal() {
+    const modal = await this.modalController.create({
+      component: WaterTrackerPage
+    });
+    return await modal.present();
+  }
+
+  async presentFoodModal() {
+    const modal = await this.modalController.create({
+      component: FoodTrackerPage
+    });
+    return await modal.present();
+  }
+
+  async presentSleepModal() {
+    const modal = await this.modalController.create({
+      component: SleepTrackerPage
+    });
+    return await modal.present();
+  }
+
+  async presentMoodModal() {
+    const modal = await this.modalController.create({
+      component: MoodTrackerPage
+    });
+    return await modal.present();
+  }
+
+  async presentActivityModal() {
+    const modal = await this.modalController.create({
+      component: ActivityTrackerPage
+    });
+    return await modal.present();
+  }
+
+  
 
 }

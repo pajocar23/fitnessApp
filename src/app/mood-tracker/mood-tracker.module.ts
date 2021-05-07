@@ -4,18 +4,17 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { LandingPageRoutingModule } from './landing-routing.module';
+import { MoodTrackerPageRoutingModule } from './mood-tracker-routing.module';
 
-import { LandingPage } from './landing.page';
+import { MoodTrackerPage } from './mood-tracker.page';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    LandingPageRoutingModule,
+    MoodTrackerPageRoutingModule
   ],
-  declarations: [LandingPage],
-  entryComponents:[]
+  declarations: [MoodTrackerPage]
 })
-export class LandingPageModule {}
+export class MoodTrackerPageModule {}

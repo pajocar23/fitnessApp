@@ -4,18 +4,17 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { LandingPageRoutingModule } from './landing-routing.module';
+import { WaterTrackerPageRoutingModule } from './water-tracker-routing.module';
 
-import { LandingPage } from './landing.page';
+import { WaterTrackerPage } from './water-tracker.page';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    LandingPageRoutingModule,
+    WaterTrackerPageRoutingModule
   ],
-  declarations: [LandingPage],
-  entryComponents:[]
+  declarations: [WaterTrackerPage]
 })
-export class LandingPageModule {}
+export class WaterTrackerPageModule {}

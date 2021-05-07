@@ -42,6 +42,30 @@ const routes: Routes = [
   {
     path: 'users-management-admin',
     loadChildren: () => import('./users-management-admin/users-management-admin.module').then( m => m.UsersManagementAdminPageModule)
+  },
+  {
+    path: 'activity',
+    loadChildren: () => import('./activity/activity.module').then( m => m.ActivityPageModule)
+  },
+  {
+    path: 'water-tracker',
+    loadChildren: () => import('./water-tracker/water-tracker.module').then( m => m.WaterTrackerPageModule)
+  },
+  {
+    path: 'food-tracker',
+    loadChildren: () => import('./food-tracker/food-tracker.module').then( m => m.FoodTrackerPageModule)
+  },
+  {
+    path: 'sleep-tracker',
+    loadChildren: () => import('./sleep-tracker/sleep-tracker.module').then( m => m.SleepTrackerPageModule)
+  },
+  {
+    path: 'mood-tracker',
+    loadChildren: () => import('./mood-tracker/mood-tracker.module').then( m => m.MoodTrackerPageModule)
+  },
+  {
+    path: 'activity-tracker',
+    loadChildren: () => import('./activity-tracker/activity-tracker.module').then( m => m.ActivityTrackerPageModule)
   }
 ];
 

@@ -1,15 +1,14 @@
 <ion-header>
   <ion-toolbar>
-
     <!--  -->
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <!--  -->
-
     <ion-title></ion-title>
   </ion-toolbar>
 </ion-header>
+
 
 <ion-content>
   <ion-slides pager="true" [options]="slideOpts">
@@ -55,88 +54,86 @@
   </ion-slides>
 
   <br>
-  
-  <ion-grid>
-    <ion-row>
-      <ion-col>
-        <ion-button class="button button-block" size="large">Watter</ion-button> 
-      </ion-col>
-      <ion-col>
-        <ion-row>
-        <ion-title>30%</ion-title>
-        </ion-row>
-        <ion-row>
-          <ion-progress-bar value="0.3"></ion-progress-bar>
-        </ion-row>
-      </ion-col>
-    </ion-row>
-
-    <ion-row>
-      <ion-col>
-        <ion-button class="button button-block" size="large">Food</ion-button> 
-      </ion-col>
-      <ion-col>
-        <ion-row>
-          <ion-title>60%</ion-title>
-        </ion-row>
-        <ion-row>
-          <ion-progress-bar value="0.6"></ion-progress-bar>
-        </ion-row>
-      </ion-col>
-    </ion-row>
-
-    <ion-row>
-      <ion-col>
-        <ion-button class="button button-block" size="large">Sleep</ion-button> 
-      </ion-col>
-      <ion-col>
-        <ion-row>
-          <ion-title>80%</ion-title>
-        </ion-row>
-        <ion-row>
-          <ion-progress-bar value="0.8"></ion-progress-bar>
-        </ion-row>
-      </ion-col>
-    </ion-row>
-
-    <ion-row>
-      <ion-col>
-        <ion-button class="button button-block" size="large">Mood</ion-button> 
-      </ion-col>
-      <ion-col>
-        <ion-row>
-          <ion-title>0%</ion-title>
-        </ion-row>
-        <ion-row>
-          <ion-progress-bar value="0.0"></ion-progress-bar>
-        </ion-row>
-      </ion-col>
-    </ion-row>
-
-    <ion-row>
-      <ion-col>
-        <ion-button class="button button-block" size="large">Activity</ion-button> 
-      </ion-col>
-      <ion-col>
-        <ion-row>
-          <ion-title>80%</ion-title>
-        </ion-row>
-        <ion-row>
-          <ion-progress-bar value="0.8"></ion-progress-bar>
-        </ion-row>
-      </ion-col>
-    </ion-row>
 
 
+  <ion-list>
+    <ion-list-header>
+      <h1>
+        Daily Trackers
+      </h1>
+    </ion-list-header>
 
-    </ion-grid>
+    <ion-item button (click)="presentWaterModal()"> 
+      <ion-avatar slot="start">
+        <img src="assets/img/watterGlass.png">
+      </ion-avatar>
+      <ion-label>
+        <h2>Water</h2>
+        <ion-progress-bar value="0.3"></ion-progress-bar>
+      </ion-label>
+      <ion-label class="watterPercent">
+        30%
+      </ion-label>
+      <ion-icon name="chevron-forward"></ion-icon>
+    </ion-item>
+
+    <ion-item button (click)="presentFoodModal()" >
+      <ion-avatar slot="start">
+        <img src="assets/img/Apple.png">
+      </ion-avatar>
+      <ion-label>
+        <h2>Food</h2>
+        <ion-progress-bar value="0.5"></ion-progress-bar>
+      </ion-label>
+      <ion-label class="foodPercent">
+        50%
+      </ion-label>
+      <ion-icon name="chevron-forward"></ion-icon>
+    </ion-item>
+
+    <ion-item button (click)="presentSleepModal()"> 
+      <ion-avatar slot="start">
+        <img src="assets/img/Bed.png">
+      </ion-avatar>
+      <ion-label>
+        <h2>Sleep</h2>
+        <ion-progress-bar value="0.7"></ion-progress-bar>
+      </ion-label>
+      <ion-label class="sleepPercent">
+        70%
+      </ion-label>
+      <ion-icon name="chevron-forward"></ion-icon>
+    </ion-item>
+
+    <ion-item button (click)="presentMoodModal()">
+      <ion-avatar slot="start">
+        <img src="assets/img/Mood.png">
+      </ion-avatar>
+      <ion-label>
+        <h2>Mood</h2>
+        <ion-progress-bar value="0.0"></ion-progress-bar>
+      </ion-label>
+      <ion-label class="moodPercent">
+        0%
+      </ion-label>
+      <ion-icon name="chevron-forward"></ion-icon>
+    </ion-item>
+
+    <ion-item button (click)="presentActivityModal()">
+      <ion-avatar slot="start">
+        <img src="assets/img/running.png">
+      </ion-avatar>
+      <ion-label>
+        <h2>Activity</h2>
+        <ion-progress-bar value="0.2"></ion-progress-bar>
+      </ion-label>
+      <ion-label class="activityPercent">
+        20%
+      </ion-label>
+      <ion-icon name="chevron-forward"></ion-icon>
+    </ion-item>
+
+  </ion-list>
 
 
-
-  <!-- <ion-button class="button button-block" size="large">Voda</ion-button> 
-  <ion-button class="button button-block" size="large">Hrana</ion-button>   
-  <ion-button class="button button-block" size="large">San</ion-button>
-  <ion-button class="button button-block" size="large">Raspolozenje</ion-button>   
-  <ion-button class="button button-block" size="large">Aktivnost</ion-button> -->
-  
 </ion-content>
