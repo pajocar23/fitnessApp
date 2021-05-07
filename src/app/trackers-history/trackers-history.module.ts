@@ -4,17 +4,17 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { LandingPageRoutingModule } from './landing-routing.module';
+import { TrackersHistoryPageRoutingModule } from './trackers-history-routing.module';
 
-import { LandingPage } from './landing.page';
+import { TrackersHistoryPage } from './trackers-history.page';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    LandingPageRoutingModule,
+    TrackersHistoryPageRoutingModule
   ],
-  declarations: [LandingPage]
+  declarations: [TrackersHistoryPage]
 })
-export class LandingPageModule {}
+export class TrackersHistoryPageModule {}
