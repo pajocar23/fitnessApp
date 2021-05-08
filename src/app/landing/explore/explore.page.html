@@ -1,0 +1,139 @@
+<ion-header>
+  <ion-toolbar>
+    <!--  -->
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <!--  -->
+    <ion-title></ion-title>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content>
+  <ion-slides pager="true" [options]="slideOpts">
+    <ion-slide>
+      <!-- <h1>Slide 1</h1> -->
+      <ion-card>
+        <ion-card-header>
+          <ion-card-subtitle>Card Subtitle</ion-card-subtitle>
+          <ion-card-title>1</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          Keep close to Nature's heart... and break clear away, once in awhile,
+          and climb a mountain or spend a week in the woods. Wash your spirit clean.
+        </ion-card-content>
+      </ion-card>
+    </ion-slide>
+    <ion-slide>
+      <!-- <h1>Slide 2</h1> -->
+      <ion-card>
+        <ion-card-header>
+          <ion-card-subtitle>Card Subtitle</ion-card-subtitle>
+          <ion-card-title>2</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          Keep close to Nature's heart... and break clear away, once in awhile,
+          and climb a mountain or spend a week in the woods. Wash your spirit clean.
+        </ion-card-content>
+      </ion-card>
+    </ion-slide>
+    <ion-slide>
+      <!-- <h1>Slide 3</h1> -->
+      <ion-card>
+        <ion-card-header>
+          <ion-card-subtitle>Card Subtitle</ion-card-subtitle>
+          <ion-card-title>3</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          Keep close to Nature's heart... and break clear away, once in awhile,
+          and climb a mountain or spend a week in the woods. Wash your spirit clean.
+        </ion-card-content>
+      </ion-card>
+    </ion-slide>
+  </ion-slides>
+
+  <br>
+
+
+  <ion-list>
+    <ion-list-header>
+      <h1>
+        Daily Trackers
+      </h1>
+    </ion-list-header>
+
+    <ion-item button (click)="presentWaterModal()"> 
+      <ion-avatar slot="start">
+        <img src="assets/img/watterGlass.png">
+      </ion-avatar>
+      <ion-label>
+        <h2>Water</h2>
+        <ion-progress-bar value="0.3"></ion-progress-bar>
+      </ion-label>
+      <ion-label class="watterPercent">
+        30%
+      </ion-label>
+      <ion-icon name="chevron-forward"></ion-icon>
+    </ion-item>
+
+    <ion-item button (click)="presentFoodModal()" >
+      <ion-avatar slot="start">
+        <img src="assets/img/Apple.png">
+      </ion-avatar>
+      <ion-label>
+        <h2>Food</h2>
+        <ion-progress-bar value="0.5"></ion-progress-bar>
+      </ion-label>
+      <ion-label class="foodPercent">
+        50%
+      </ion-label>
+      <ion-icon name="chevron-forward"></ion-icon>
+    </ion-item>
+
+    <ion-item button (click)="presentSleepModal()"> 
+      <ion-avatar slot="start">
+        <img src="assets/img/Bed.png">
+      </ion-avatar>
+      <ion-label>
+        <h2>Sleep</h2>
+        <ion-progress-bar value="0.7"></ion-progress-bar>
+      </ion-label>
+      <ion-label class="sleepPercent">
+        70%
+      </ion-label>
+      <ion-icon name="chevron-forward"></ion-icon>
+    </ion-item>
+
+    <ion-item button (click)="presentMoodModal()">
+      <ion-avatar slot="start">
+        <img src="assets/img/Mood.png">
+      </ion-avatar>
+      <ion-label>
+        <h2>Mood</h2>
+        <ion-progress-bar value="0.0"></ion-progress-bar>
+      </ion-label>
+      <ion-label class="moodPercent">
+        0%
+      </ion-label>
+      <ion-icon name="chevron-forward"></ion-icon>
+    </ion-item>
+
+    <ion-item button (click)="presentActivityModal()">
+      <ion-avatar slot="start">
+        <img src="assets/img/running.png">
+      </ion-avatar>
+      <ion-label>
+        <h2>Activity</h2>
+        <ion-progress-bar value="0.2"></ion-progress-bar>
+      </ion-label>
+      <ion-label class="activityPercent">
+        20%
+      </ion-label>
+      <ion-icon name="chevron-forward"></ion-icon>
+    </ion-item>
+
+  </ion-list>
+
+
+</ion-content>
