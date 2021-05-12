@@ -20,10 +20,6 @@ const routes: Routes = [
     loadChildren: () => import('./auth/register/register.module').then( m => m.RegisterPageModule)
   },
   {
-    path: 'user-data',
-    loadChildren: () => import('./user-data/user-data.module').then( m => m.UserDataPageModule)
-  },
-  {
     path: 'user-settings',
     loadChildren: () => import('./user-settings/user-settings.module').then( m => m.UserSettingsPageModule)
   },
@@ -38,6 +34,10 @@ const routes: Routes = [
   {
     path: 'users-management-admin',
     loadChildren: () => import('./users-management-admin/users-management-admin.module').then( m => m.UsersManagementAdminPageModule)
+  },
+  {
+    path: 'user-data',
+    loadChildren: () => import('./auth/user-data/user-data.module').then( m => m.UserDataPageModule)
   },
 ];
 
