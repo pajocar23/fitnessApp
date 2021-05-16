@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { WaterTrackerComponent } from './water-tracker.component';
+import { MoodTrackerPage } from './mood-tracker.page';
 
-describe('WaterTrackerComponent', () => {
-  let component: WaterTrackerComponent;
-  let fixture: ComponentFixture<WaterTrackerComponent>;
+describe('MoodTrackerPage', () => {
+  let component: MoodTrackerPage;
+  let fixture: ComponentFixture<MoodTrackerPage>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ WaterTrackerComponent ],
+      declarations: [ MoodTrackerPage ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(WaterTrackerComponent);
+    fixture = TestBed.createComponent(MoodTrackerPage);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

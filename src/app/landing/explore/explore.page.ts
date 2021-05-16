@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
-import { ActivityTrackerComponent } from 'src/app/activity-tracker/activity-tracker.component';
-import { FoodTrackerComponent } from 'src/app/food-tracker/food-tracker.component';
-import { MoodTrackerComponent } from 'src/app/mood-tracker/mood-tracker.component';
-import { SleepTrackerComponent } from 'src/app/sleep-tracker/sleep-tracker.component';
-import { WaterTrackerComponent } from 'src/app/water-tracker/water-tracker.component';
+import { ActivityTrackerPage } from 'src/app/trackers/activity-tracker/activity-tracker.page';
+import { FoodTrackerPage } from 'src/app/trackers/food-tracker/food-tracker.page';
+import { MoodTrackerPage } from 'src/app/trackers/mood-tracker/mood-tracker.page';
+import { SleepTrackerPage } from 'src/app/trackers/sleep-tracker/sleep-tracker.page';
+import { WaterTrackerPage } from 'src/app/trackers/water-tracker/water-tracker.page';
+
 import { BlogPost } from './blog-post.model';
 
 @Component({
@@ -14,6 +15,12 @@ import { BlogPost } from './blog-post.model';
 })
 export class ExplorePage implements OnInit {
 
+  recommandedAmountOfWater:number=10;
+  drankAmountTotal:number=0;
+
+  waterUdeo:number=0;
+  waterPercentage:number=0;
+  
   blogPosts:BlogPost[]=[{id:'1',heading:'water fact',description:'water makes 69% of human body',imageUrl:'https://media3.s-nbcnews.com/i/newscms/2017_15/1206634/woman-drinking-water-tease-today-170410_bb7df024651d415ac135bfaf31c4f819.jpg'},
   {id:'2',heading:'food fact',description:'without food you dead BOi',imageUrl:'https://i.pinimg.com/originals/a8/cd/aa/a8cdaa791eef42e15067426d08a566b0.jpg'},
   {id:'3',heading:'sleep fact',description:'If you watch monitor that emmits blue light before going to sleep, your endorphine poroduction is decreased and therefore you cant sleep well',imageUrl:'https://media.gq.com/photos/5e617d866ad6c200080c3f7d/16:9/w_1839,h_1034,c_limit/gq%20march%202020%20Is%20my%20screen-based%20lifestyle%20ruining%20my%20vision?%20.jpg'}]
@@ -105,44 +112,65 @@ export class ExplorePage implements OnInit {
        }
      }
    }
- };
+  };
 
  constructor(public modalController: ModalController) { }
 
  ngOnInit() {
+
+ }
+
+ getTotalAmountDrankFromChild(amountFromChild:number){
+   if(amountFromChild){
+    this.drankAmountTotal=amountFromChild;
+    console.log(this.drankAmountTotal);
+   }
  }
  
  async presentWaterModal() {
    const modal = await this.modalController.create({
-     component: WaterTrackerComponent
+     component: WaterTrackerPage,
+     componentProps:{
+      'recommanded_amount_of_water': this.recommandedAmountOfWater,
+      'drank_amount_total': this.drankAmountTotal
+     }
    });
-   return await modal.present();
+    modal.present();
+
+    return modal.onDidDismiss().then(
+      (data: any) => {
+        if (data.data.water_udeo!=undefined) {
+          this.drankAmountTotal=data.data.total_drank_amount;
+          this.waterUdeo=data.data.water_udeo;
+          this.waterPercentage=data.data.water_percentage;
+        }
+      })
  }
 
  async presentFoodModal() {
    const modal = await this.modalController.create({
-     component: FoodTrackerComponent
+     component: FoodTrackerPage
    });
    return await modal.present();
  }
 
  async presentSleepModal() {
    const modal = await this.modalController.create({
-     component: SleepTrackerComponent
+     component: SleepTrackerPage
    });
    return await modal.present();
  }
 
  async presentMoodModal() {
    const modal = await this.modalController.create({
-     component: MoodTrackerComponent
+     component: MoodTrackerPage
    });
    return await modal.present();
  }
 
  async presentActivityModal() {
    const modal = await this.modalController.create({
-     component: ActivityTrackerComponent
+     component: ActivityTrackerPage
    });
    return await modal.present();
  }

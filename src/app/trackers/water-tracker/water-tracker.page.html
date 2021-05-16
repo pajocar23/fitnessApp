@@ -1,0 +1,61 @@
+<ion-header >
+  <ion-toolbar class="headerClass">
+    <!-- <ion-buttons slot="end">
+      <ion-icon button name="close" (click)="dismiss()" size="large"></ion-icon>
+    </ion-buttons> -->
+
+    <ion-button (click)="dismiss()" slot="end" shape="round" size="small" position="floating" fill="clear" color="light">X
+    </ion-button>
+
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <!-- <p style="margin-left:10px">Water</p> -->
+  <ion-grid>
+    <ion-row>
+      <ion-col size-sm=6>
+        <ion-item>
+          <ion-label class="txtLbl">Recommanded amount of water (liters)</ion-label>
+        </ion-item>
+      </ion-col>
+      <ion-col size-sm=3>
+        <ion-item>
+          <ion-label class="valueLbl">{{recommanded_amount_of_water}}</ion-label>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col size-sm=6>
+        <ion-item>
+          <ion-label class="txtLbl">Total amount you drank (liters)</ion-label>
+        </ion-item>
+      </ion-col>
+      <ion-col size-sm=3>
+        <ion-item>
+          <ion-label class="valueLbl">{{drank_amount_total}}</ion-label>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+        <ion-range min="0" max="10" step="1" snaps="true" color="primary" name="waterKnobs" pin="true"
+          [(ngModel)]="sliderValue"></ion-range>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-button (click)="addWaterAmount(sliderValue)">ADD AMOUNT</ion-button>
+          <ion-button (click)="resetWater()">RESET WATER AMOUNT</ion-button>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+
+  <img src="assets/img/waterTracker.png">
+
+</ion-content>

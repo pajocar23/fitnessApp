@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 
 @Component({
-  selector: 'app-sleep-tracker',
-  templateUrl: './sleep-tracker.component.html',
-  styleUrls: ['./sleep-tracker.component.scss'],
+  selector: 'app-mood-tracker',
+  templateUrl: './mood-tracker.page.html',
+  styleUrls: ['./mood-tracker.page.scss'],
 })
-export class SleepTrackerComponent implements OnInit {
+export class MoodTrackerPage implements OnInit {
 
   constructor(public modalController: ModalController) { }
 
@@ -20,4 +20,5 @@ export class SleepTrackerComponent implements OnInit {
       'dismissed': true
     });
   }
+
 }

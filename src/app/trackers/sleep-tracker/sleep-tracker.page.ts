@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 
 @Component({
-  selector: 'app-food-tracker',
-  templateUrl: './food-tracker.component.html',
-  styleUrls: ['./food-tracker.component.scss'],
+  selector: 'app-sleep-tracker',
+  templateUrl: './sleep-tracker.page.html',
+  styleUrls: ['./sleep-tracker.page.scss'],
 })
-export class FoodTrackerComponent implements OnInit {
+export class SleepTrackerPage implements OnInit {
 
   constructor(public modalController: ModalController) { }
 

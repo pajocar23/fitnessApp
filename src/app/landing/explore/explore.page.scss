@@ -11,6 +11,7 @@ ion-progress-bar{
     width:90%;
 }
 
+
 .watter-modal-class {
     background: #222;
     --background: #222;
@@ -25,4 +26,22 @@ ion-card{
     height:80%;
 }
 
+.headerClass{
+    --background: #2dd36f;
+}
+
+.customImgClass{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 30%;
+    padding-top: 10%;
+}
+
+.customClass{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+}
 

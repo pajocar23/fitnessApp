@@ -39,6 +39,26 @@ const routes: Routes = [
     path: 'user-data',
     loadChildren: () => import('./auth/user-data/user-data.module').then( m => m.UserDataPageModule)
   },
+  {
+    path: 'water-tracker',
+    loadChildren: () => import('./trackers/water-tracker/water-tracker.module').then( m => m.WaterTrackerPageModule)
+  },
+  {
+    path: 'food-tracker',
+    loadChildren: () => import('./trackers/food-tracker/food-tracker.module').then( m => m.FoodTrackerPageModule)
+  },
+  {
+    path: 'sleep-tracker',
+    loadChildren: () => import('./trackers/sleep-tracker/sleep-tracker.module').then( m => m.SleepTrackerPageModule)
+  },
+  {
+    path: 'mood-tracker',
+    loadChildren: () => import('./trackers/mood-tracker/mood-tracker.module').then( m => m.MoodTrackerPageModule)
+  },
+  {
+    path: 'activity-tracker',
+    loadChildren: () => import('./trackers/activity-tracker/activity-tracker.module').then( m => m.ActivityTrackerPageModule)
+  },
 ];
 
 @NgModule({

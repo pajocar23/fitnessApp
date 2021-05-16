@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { MoodTrackerComponent } from './mood-tracker.component';
+import { ActivityTrackerPage } from './activity-tracker.page';
 
-describe('MoodTrackerComponent', () => {
-  let component: MoodTrackerComponent;
-  let fixture: ComponentFixture<MoodTrackerComponent>;
+describe('ActivityTrackerPage', () => {
+  let component: ActivityTrackerPage;
+  let fixture: ComponentFixture<ActivityTrackerPage>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ MoodTrackerComponent ],
+      declarations: [ ActivityTrackerPage ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(MoodTrackerComponent);
+    fixture = TestBed.createComponent(ActivityTrackerPage);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));
