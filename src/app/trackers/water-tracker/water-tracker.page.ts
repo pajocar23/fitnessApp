@@ -19,12 +19,9 @@ export class WaterTrackerPage implements OnInit {
 
 
   addWaterAmount(amount: number) {
-
     this.drank_amount_total = this.drank_amount_total + amount;
-    this.waterUdeo = ((this.drank_amount_total * 100) / this.recommanded_amount_of_water);
-    this.waterPercentage = this.waterUdeo / 100;
-
-
+    this.waterPercentage = ((this.drank_amount_total * 100) / this.recommanded_amount_of_water);
+    this.waterUdeo = this.waterPercentage / 100;
   }
 
   resetWater() {

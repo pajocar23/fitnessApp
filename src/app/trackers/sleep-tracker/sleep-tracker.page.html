@@ -1,14 +1,74 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar class="headerClass">
     <!-- <ion-buttons slot="end">
       <ion-icon button name="close" (click)="dismiss()" size="large"></ion-icon>
     </ion-buttons> -->
 
-    <ion-button (click)="dismiss()" slot="end" shape="round" size="small" position="floating" fill="clear" >X</ion-button>
+    <ion-button (click)="dismiss()" slot="end" shape="round" size="small" position="floating" fill="clear"
+      color="light">X</ion-button>
 
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <p style="margin-left:10px">Sleep</p>
+  <!-- <p style="margin-left:10px">Water</p> -->
+  <ion-grid>
+    <ion-row>
+      <ion-col size-sm=6>
+        <ion-item>
+          <ion-label class="txtLbl">Recommanded hours of sleep</ion-label>
+        </ion-item>
+      </ion-col>
+      <ion-col size-sm=3>
+        <ion-item>
+          <ion-label class="valueLbl">{{recommanded_hours_of_sleep}}</ion-label>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col size-sm=6>
+        <ion-list lines="none">
+          <ion-item>
+            <ion-label class="txtLbl">Total amount you slept:</ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size-sm=3>
+        <ion-item>
+          <ion-label class="txtLbl">Hours</ion-label>
+          <ion-label class="valueLbl">{{total_hours_slept}}</ion-label>
+        </ion-item>
+      </ion-col>
+      <ion-col size-sm=3>
+        <ion-item>
+          <ion-label class="txtLbl">Minutes</ion-label>
+          <ion-label class="valueLbl">{{total_minutes_slept}}</ion-label>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+        <ion-item color="success">
+          <ion-label>How much did you sleep</ion-label>
+          <ion-datetime [(ngModel)]="addedSleepValue" display-format="HH:mm" value="12:00"
+            placeholder="amount of sleep"></ion-datetime>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-button (click)="addSleepAmount(addedSleepValue)">ADD AMOUNT</ion-button>
+          <ion-button (click)="resetSleep()">RESET SLEEP HOURS</ion-button>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+
+
 </ion-content>
