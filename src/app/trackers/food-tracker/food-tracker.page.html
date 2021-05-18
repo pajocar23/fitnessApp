@@ -21,7 +21,7 @@
       </ion-col>
       <ion-col size-sm=3>
         <ion-item>
-          <ion-label class="valueLbl">{{recommandedAmountOfProtein*4+recommandedAmountOfCarbs*4+recommandedAmountOfFats*8}}</ion-label>
+          <ion-badge color="primary">{{recommandedAmountOfProtein*4+recommandedAmountOfCarbs*4+recommandedAmountOfFats*8}}</ion-badge>
         </ion-item>
       </ion-col>
     </ion-row>
@@ -33,7 +33,7 @@
       </ion-col>
       <ion-col size-sm=3>
         <ion-item>
-          <ion-label class="valueLbl">{{totalCaloriesConsumed}}</ion-label>
+          <ion-badge color="light">{{totalCaloriesConsumed}}</ion-badge>
         </ion-item>
       </ion-col>
     </ion-row>
@@ -51,7 +51,11 @@
       </ion-list-header>
     </ion-row>
 
-
+    <ion-list lines="none">
+      <ion-item>
+        <h2>Carbohydrates</h2>
+      </ion-item>
+    </ion-list>
     <ion-row>
       <ion-grid>
         <ion-row>
@@ -86,7 +90,11 @@
       </ion-grid>
     </ion-row>
 
-
+    <ion-list lines="none">
+      <ion-item>
+        <h2>Fats</h2>
+      </ion-item>
+    </ion-list>
     <ion-row>
       <ion-grid>
         <ion-row>
@@ -121,6 +129,12 @@
       </ion-grid>
     </ion-row>
 
+
+    <ion-list lines="none">
+      <ion-item>
+        <h2>Protein</h2>
+      </ion-item>
+    </ion-list>
     <ion-row>
       <ion-grid>
         <ion-row>
@@ -145,7 +159,8 @@
         <ion-item>
           <ion-row>
             <ion-col size=6>
-              <ion-button (click)="addProteinAmount(proteinAddedValue)" size="small" color="tertiary">ADD AMOUNT</ion-button>
+              <ion-button (click)="addProteinAmount(proteinAddedValue)" size="small" color="tertiary">ADD AMOUNT
+              </ion-button>
             </ion-col>
             <ion-col size=6>
               <ion-button (click)="resetProtein()" size="small" color="tertiary">RESET AMOUNT</ion-button>

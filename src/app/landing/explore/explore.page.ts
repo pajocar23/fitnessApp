@@ -47,6 +47,19 @@ export class ExplorePage implements OnInit {
   sleepUdeo:number=0;
   condition:boolean=true;
 
+  //mood tracker data
+  recommandedhappy: number = 100;
+  recommandedrested: number = 100;
+  recommandedhurt: number = 0;
+
+  recommandedMindState:number=100
+  mindState:number=0;
+  mindStatePercentage:number=0;
+  mindStateUdeo:number=0;
+
+  happy:number=0;
+  rested:number=0;
+  hurt:number=0;
 
   blogPosts: BlogPost[] = [{ id: '1', heading: 'water fact', description: 'water makes 69% of human body', imageUrl: 'https://media3.s-nbcnews.com/i/newscms/2017_15/1206634/woman-drinking-water-tease-today-170410_bb7df024651d415ac135bfaf31c4f819.jpg' },
   { id: '2', heading: 'food fact', description: 'without food you dead BOi', imageUrl: 'https://i.pinimg.com/originals/a8/cd/aa/a8cdaa791eef42e15067426d08a566b0.jpg' },
@@ -147,12 +160,6 @@ export class ExplorePage implements OnInit {
 
   }
 
-  //  getTotalAmountDrankFromChild(amountFromChild:number){
-  //    if(amountFromChild){
-  //     this.drankAmountTotal=amountFromChild;
-  //    }
-  //  }
-
   async presentWaterModal() {
     const modal = await this.modalController.create({
       component: WaterTrackerPage,
@@ -233,22 +240,36 @@ export class ExplorePage implements OnInit {
           this.sleepUdeo=data.data.sleep_udeo;
           this.sleepPercentage=data.data.sleep_percentage;
           this.condition=data.data.condition;
-
-          // console.log( this.totalTimeSlept);
-          // console.log( this.totalHoursSlept);
-          // console.log( this.totalMinutesSlept);
-          // console.log( this.sleepUdeo);
-          // console.log( this.sleepPercentage);
-          
         }
       })
   }
 
   async presentMoodModal() {
     const modal = await this.modalController.create({
-      component: MoodTrackerPage
+      component: MoodTrackerPage,
+      componentProps: {
+        'recommandedhappy':this.recommandedhappy,
+        'recommandedrested':this.recommandedrested,
+        'recommandedhurt':this.recommandedhurt,
+        'recommandedMindState':this.recommandedMindState,
+        'happy':this.happy,
+        'rested':this.rested,
+        'hurt':this.hurt
+      }
     });
-    return await modal.present();
+    modal.present();
+
+    return modal.onDidDismiss().then(
+      (data: any) => {
+        if (data.data.mindStatePercentage!=undefined) {
+          this.mindState=data.data.mindState;
+          this.mindStatePercentage=data.data.mindStatePercentage;
+          this.mindStateUdeo=data.data.mindStateUdeo;
+          this.happy=data.data.happy;
+          this.rested=data.data.rested;
+          this.hurt=data.data.hurt;
+        }
+      })
   }
 
   async presentActivityModal() {

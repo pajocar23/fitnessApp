@@ -53,7 +53,7 @@ export class FoodTrackerPage implements OnInit {
       this.totalCarbsConsumed = this.totalCarbsConsumed + amount;
       this.totalCaloriesConsumed = this.totalCaloriesConsumed + this.carbsAddedValue * 4;
 
-      this.carbsPercentage=((this.totalCarbsConsumed*100)/this.recommandedAmountOfCarbs);
+      this.carbsPercentage=Math.ceil(((this.totalCarbsConsumed*100)/this.recommandedAmountOfCarbs));
       this.carbsUdeo=this.carbsPercentage/100;
     }
   }
@@ -74,7 +74,7 @@ export class FoodTrackerPage implements OnInit {
       this.totalFatsConsumed = this.totalFatsConsumed + amount;
       this.totalCaloriesConsumed = this.totalCaloriesConsumed + this.fatsAddedValue * 8;
 
-      this.fatsPercentage=((this.totalFatsConsumed*100)/this.recommandedAmountOfFats);
+      this.fatsPercentage=Math.ceil(((this.totalFatsConsumed*100)/this.recommandedAmountOfFats));
       this.fatsUdeo=this.fatsPercentage/100;
     }
   }
@@ -94,7 +94,7 @@ export class FoodTrackerPage implements OnInit {
       this.totalProteinConsumed = this.totalProteinConsumed + amount;
       this.totalCaloriesConsumed = this.totalCaloriesConsumed + this.proteinAddedValue * 4;
 
-      this.proteinPercentage=((this.totalProteinConsumed*100)/this.recommandedAmountOfProtein);
+      this.proteinPercentage=Math.ceil(((this.totalProteinConsumed*100)/this.recommandedAmountOfProtein));
       this.proteinUdeo=this.proteinPercentage/100;
     }
   }

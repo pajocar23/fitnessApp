@@ -43,7 +43,7 @@ export class SleepTrackerPage implements OnInit {
       this.total_time_slept = this.total_hours_slept * 60 + this.total_minutes_slept;
 
 
-      this.sleepPercentage = ((this.total_time_slept * 100) / (this.recommanded_hours_of_sleep * 60));
+      this.sleepPercentage = Math.ceil(((this.total_time_slept * 100) / (this.recommanded_hours_of_sleep * 60)));
       this.sleepUdeo = this.sleepPercentage / 100;
       this.condition = false;
     }

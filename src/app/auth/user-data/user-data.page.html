@@ -1,6 +1,5 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>user-data</ion-title>
+  <ion-toolbar class="headerClass">
   </ion-toolbar>
 </ion-header>
 
@@ -95,13 +94,13 @@
         <ion-list-header>Goal</ion-list-header>
         <ion-item>
           <ion-segment (ionChange)="segmentChanged($event)">
-            <ion-segment-button value="leanBulk" class="goalLbl" button (click)="presentPopoverLeanBulk()">
+            <ion-segment-button value="leanBulk" class="goalLbl" button (click)="presentPopoverLeanBulk(null)">
               <ion-label>Lean bulk</ion-label>
             </ion-segment-button>
-            <ion-segment-button value="dirtyBulk" class="goalLbl" button (click)="presentPopoverBulk()">
+            <ion-segment-button value="dirtyBulk" class="goalLbl" button (click)="presentPopoverBulk(null)">
               <ion-label>Bulk</ion-label>
             </ion-segment-button>
-            <ion-segment-button value="loseWeight" class="goalLbl" button (click)="presentPopoverWeightLoss()">
+            <ion-segment-button value="loseWeight" class="goalLbl" button (click)="presentPopoverWeightLoss(null)">
               <ion-label>Weight loss</ion-label>
             </ion-segment-button>
           </ion-segment>
@@ -111,12 +110,48 @@
 
     <ion-row>
       <ion-col size-sm=3 offset-sm=3>
-        <ion-list-header>Choose your avatar</ion-list-header>
+        <ion-list-header>
+          <p>Choose your avatar</p>
+        </ion-list-header>
       </ion-col>
     </ion-row>
     <ion-row>
       <ion-col size-sm=3 offset-sm=3>
-        <ion-list>
+
+        <ion-radio-group value="grape">
+          <ion-item>
+            <ion-avatar slot="start">
+              <img src="assets/img/Avatar1.png">
+            </ion-avatar>
+            <ion-label>
+              <p>Avatar1</p>
+            </ion-label>
+            <ion-radio slot="end" color="primary" value="apple"></ion-radio>
+          </ion-item>
+
+          <ion-item>
+            <ion-avatar slot="start">
+              <img src="assets/img/Avatar2.png">
+            </ion-avatar>
+            <ion-label>
+              <p>Avatar2</p>
+            </ion-label>
+            <ion-radio slot="end" color="primary" value="grape"></ion-radio>
+          </ion-item>
+
+          <ion-item>
+            <ion-avatar slot="start">
+              <img src="assets/img/running.png">
+            </ion-avatar>
+            <ion-label>
+              <p>Avatar3</p>
+            </ion-label>
+            <ion-radio slot="end" color="primary" value="cherry"></ion-radio>
+          </ion-item>
+        </ion-radio-group>
+
+
+        <!-- <ion-list>
           <ion-item class="avatarBtn" button>
             <ion-avatar slot="start">
               <img src="assets/img/Avatar1.png">
@@ -141,7 +176,7 @@
               Avatar 3
             </ion-label>
           </ion-item>      
-        </ion-list>
+        </ion-list> -->
       </ion-col>
     </ion-row>
 

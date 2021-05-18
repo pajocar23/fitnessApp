@@ -66,123 +66,147 @@
       </h1>
     </ion-list-header>
 
-    <ion-item button (click)="presentWaterModal()">
-      <ion-grid>
-        <ion-row>
-          <ion-col size=5 >
-              <img class="customImgClass1" src="assets/img/water.png">
-          </ion-col>
-          <ion-col size=6>
-            <h2>water</h2>
-            <ion-label class="customClass" >
-              <ion-progress-bar value="{{waterPercentage}}"></ion-progress-bar>
-            </ion-label>
-            <ion-label >
-              {{waterUdeo}}%
-            </ion-label>           
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-      <ion-icon name="chevron-forward"></ion-icon>
-    </ion-item>
-
-    <ion-item button (click)="presentFoodModal()">
+    <ion-item>
       <ion-grid>
         <ion-row>
           <ion-col size=5>
-              <img class="customImgClass2" src="assets/img/food.png">
+            <img class="customImgClass1" src="assets/img/water.png">
+          </ion-col>
+          <ion-col size=6>
+            <h2>water</h2>
+            <ion-label class="customClass">
+              <ion-progress-bar value="{{waterPercentage}}"></ion-progress-bar>
+              <ion-progress-bar value="{{waterPercentage}}"></ion-progress-bar>
+              <ion-progress-bar value="{{waterPercentage}}"></ion-progress-bar>
+            </ion-label>
+            <ion-label>
+              <p>{{waterUdeo}}%</p>
+            </ion-label>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+      <ion-button fill="none" (click)="presentWaterModal()">
+        <ion-icon name="chevron-forward"></ion-icon>
+      </ion-button>
+    </ion-item>
+
+    <ion-item>
+      <ion-grid>
+        <ion-row>
+          <ion-col size=5>
+            <img class="customImgClass2" src="assets/img/food.png">
           </ion-col>
           <ion-col size=6>
             <h2>food</h2>
 
-            <ion-label class="customClass" >
+            <ion-label class="customClass">
               <h2>carbohydrates</h2>
               <ion-progress-bar value="{{carbsUdeo}}"></ion-progress-bar>
+              <ion-progress-bar value="{{carbsUdeo}}"></ion-progress-bar>
+              <ion-progress-bar value="{{carbsUdeo}}"></ion-progress-bar>
             </ion-label>
-            <ion-label >
-              {{carbsPercentage}}%
-            </ion-label> 
-            
-            <ion-label class="customClass" >
+            <ion-label>
+              <p>{{carbsPercentage}}%</p>
+            </ion-label>
+
+            <ion-label class="customClass">
               <h2>protein</h2>
               <ion-progress-bar value="{{proteinUdeo}}"></ion-progress-bar>
+              <ion-progress-bar value="{{proteinUdeo}}"></ion-progress-bar>
+              <ion-progress-bar value="{{proteinUdeo}}"></ion-progress-bar>
             </ion-label>
-            <ion-label >
-              {{proteinPercentage}}%
-            </ion-label>   
+            <ion-label>
+              <p>{{proteinPercentage}}%</p>
+            </ion-label>
 
-            <ion-label class="customClass" >
+            <ion-label class="customClass">
               <h2>fats</h2>
               <ion-progress-bar value="{{fatsUdeo}}"></ion-progress-bar>
+              <ion-progress-bar value="{{fatsUdeo}}"></ion-progress-bar>
+              <ion-progress-bar value="{{fatsUdeo}}"></ion-progress-bar>
             </ion-label>
-            <ion-label >
-              {{fatsPercentage}}%
-            </ion-label>   
+            <ion-label>
+              <p>{{fatsPercentage}}%</p>
+            </ion-label>
 
           </ion-col>
         </ion-row>
       </ion-grid>
-      <ion-icon name="chevron-forward"></ion-icon>
+      <ion-button fill="none" (click)="presentFoodModal()">
+        <ion-icon name="chevron-forward"></ion-icon>
+      </ion-button>
     </ion-item>
 
-    <ion-item button (click)="presentSleepModal()">
+    <ion-item>
       <ion-grid>
         <ion-row>
-          <ion-col size=5 >
-              <img class="customImgClass3" src="assets/img/sleep.png">
+          <ion-col size=5>
+            <img class="customImgClass3" src="assets/img/sleep.png">
           </ion-col>
           <ion-col size=6>
             <h2>sleep</h2>
-            <ion-label class="customClass" >
+            <ion-label class="customClass">
+              <ion-progress-bar value="{{sleepUdeo}}"></ion-progress-bar>
+              <ion-progress-bar value="{{sleepUdeo}}"></ion-progress-bar>
               <ion-progress-bar value="{{sleepUdeo}}"></ion-progress-bar>
             </ion-label>
-            <ion-label >
-              {{sleepPercentage}}%
-            </ion-label>           
+            <ion-label>
+              <p>{{sleepPercentage}}%</p>
+            </ion-label>
           </ion-col>
         </ion-row>
       </ion-grid>
-      <ion-icon name="chevron-forward"></ion-icon>
+      <ion-button fill="none" (click)="presentSleepModal()">
+        <ion-icon name="chevron-forward"></ion-icon>
+      </ion-button>
     </ion-item>
 
-    <ion-item button (click)="presentMoodModal()">
+    <ion-item>
       <ion-grid>
         <ion-row>
-          <ion-col size=5 >
-              <img class="customImgClass4" src="assets/img/mind.png">
+          <ion-col size=5>
+            <img class="customImgClass4" src="assets/img/mind.png">
           </ion-col>
           <ion-col size=6>
             <h2>mind</h2>
-            <ion-label class="customClass" >
-              <ion-progress-bar value="{{waterUdeo}}"></ion-progress-bar>
+            <ion-label class="customClass">
+              <ion-progress-bar value="{{mindStateUdeo}}"></ion-progress-bar>
+              <ion-progress-bar value="{{mindStateUdeo}}"></ion-progress-bar>
+              <ion-progress-bar value="{{mindStateUdeo}}"></ion-progress-bar>
             </ion-label>
-            <ion-label >
-              {{waterPercentage}}%
-            </ion-label>           
+            <ion-label>
+              <p>{{mindStatePercentage}}%</p>
+            </ion-label>
           </ion-col>
         </ion-row>
       </ion-grid>
-      <ion-icon name="chevron-forward"></ion-icon>
+      <ion-button fill="none" (click)="presentMoodModal()">
+        <ion-icon name="chevron-forward"></ion-icon>
+      </ion-button>
     </ion-item>
 
-    <ion-item button (click)="presentActivityModal()">
+    <ion-item>
       <ion-grid>
         <ion-row>
-          <ion-col size=5 >
-              <img class="customImgClass5" src="assets/img/activity.png">
+          <ion-col size=5>
+            <img class="customImgClass5" src="assets/img/activity.png">
           </ion-col>
           <ion-col size=6>
             <h2>activity</h2>
-            <ion-label class="customClass" >
-              <ion-progress-bar value="{{waterUdeo}}"></ion-progress-bar>
+            <ion-label class="customClass">
+              <ion-progress-bar value="0"></ion-progress-bar>
+              <ion-progress-bar value="0"></ion-progress-bar>
+              <ion-progress-bar value="0"></ion-progress-bar>
             </ion-label>
-            <ion-label >
-              {{waterPercentage}}%
-            </ion-label>           
+            <ion-label>
+              <p>0%</p>
+            </ion-label>
           </ion-col>
         </ion-row>
       </ion-grid>
-      <ion-icon name="chevron-forward"></ion-icon>
+      <ion-button fill="none" (click)="presentActivityModal()">
+        <ion-icon name="chevron-forward"></ion-icon>
+      </ion-button>
     </ion-item>
 
   </ion-list>
