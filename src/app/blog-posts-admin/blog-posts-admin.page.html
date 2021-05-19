@@ -1,12 +1,33 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>BlogPostsAdmin</ion-title>
+  <ion-toolbar class="headerClass">
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="landing"></ion-back-button>
+      <ion-back-button defaultHref="landing" color="light"></ion-back-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+  <ion-list lines="none">
+    <ion-list-header>
+      <h1>Blog posts</h1>
+    </ion-list-header>
 
+    <ion-item *ngFor="let blogPost of blogPosts">
+      <ion-card>
+        <ion-card-header>
+          <ion-img class="sliderImg" src="{{blogPost.imageUrl}}"></ion-img>
+          <ion-card-title>{{blogPost.heading}}</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          {{blogPost.description}}
+        </ion-card-content>
+        <ion-button (click)="EditForm()" (click)="presentAddingModal()" color="secondary">Edit<ion-icon name="create"></ion-icon></ion-button>
+        <ion-button color="tertiary">Delete<ion-icon name="trash"></ion-icon></ion-button>
+      </ion-card>
+    </ion-item>
+
+    <ion-item><ion-button (click)="AddForm()" (click)="presentAddingModal()" color="primary" size="medium">New blog-post<ion-icon name="add"></ion-icon>
+    </ion-button></ion-item>
+
+  </ion-list>
 </ion-content>

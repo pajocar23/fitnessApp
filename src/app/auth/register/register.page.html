@@ -13,11 +13,17 @@
             <ion-label position="floating">Name</ion-label>
             <ion-input type="text" formControlName="name"></ion-input>
           </ion-item>
+          <ion-item lines="none" *ngIf="registrationForm.get('name').invalid && registrationForm.get('name').touched">
+            <ion-label><p class="error">Name is required</p></ion-label>
+          </ion-item>
         </ion-col>
         <ion-col size-sm=3>
           <ion-item>
             <ion-label position="floating">Surname</ion-label>
             <ion-input type="text" formControlName="surname"></ion-input>
+          </ion-item>
+          <ion-item lines="none" *ngIf="registrationForm.get('surname').invalid && registrationForm.get('surname').touched">
+            <ion-label><p class="error">Surname is required</p></ion-label>
           </ion-item>
         </ion-col>
       </ion-row>
@@ -25,7 +31,10 @@
         <ion-col size-sm=6 offset-sm=3>
           <ion-item>
             <ion-label position="floating">Email</ion-label>
-            <ion-input type="email" formControlName="email"></ion-input>
+            <ion-input type="email" formControlName="email" ></ion-input>
+          </ion-item>
+          <ion-item lines="none" *ngIf="registrationForm.get('email').invalid && registrationForm.get('email').touched">
+            <ion-label><p class="error">Enter a valid email adress</p></ion-label>
           </ion-item>
         </ion-col>
       </ion-row>
@@ -35,18 +44,24 @@
             <ion-label position="floating">Password</ion-label>
             <ion-input type="password" formControlName="password"></ion-input>
           </ion-item>
+          <ion-item lines="none" *ngIf="registrationForm.get('password').invalid && registrationForm.get('password').touched">
+            <ion-label><p class="error">Password must contain at least one capital letter,number <br> and a special character($@$!%*?&)</p></ion-label>
+          </ion-item>
         </ion-col>
         <ion-col size-sm=3>
           <ion-item>
             <ion-label position="floating">Confirm password</ion-label>
-            <ion-input type="password" formControlName="password2"></ion-input>
+            <ion-input type="password" formControlName="confirmPassword"></ion-input>
+          </ion-item>
+          <ion-item lines="none" *ngIf="registrationForm.get('confirmPassword').invalid && registrationForm.get('confirmPassword').touched">
+            <ion-label><p class="error">Passwords do not match</p></ion-label>
           </ion-item>
         </ion-col>
       </ion-row>
 
       <ion-row>
         <ion-col size-sm=6 offset-sm=3>
-          <ion-button class="regBtn" shape="round" type="submit" expand="block" size="large" routerLink="/user-data">
+          <ion-button class="regBtn" shape="round" type="submit" expand="block" size="large" routerLink="/user-data" [disabled]="registrationForm.invalid">
             Register</ion-button>
         </ion-col>
       </ion-row>

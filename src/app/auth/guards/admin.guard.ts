@@ -3,11 +3,10 @@ import { CanLoad, Route, Router, UrlSegment, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AuthService } from '../auth.service';
 
-
 @Injectable({
   providedIn: 'root'
 })
-export class AuthGuard implements CanLoad {
+export class AdminGuard implements CanLoad {
 
   constructor(private authService:AuthService,private router:Router){
 
@@ -16,12 +15,11 @@ export class AuthGuard implements CanLoad {
   canLoad(
     route: Route,
     segments: UrlSegment[]): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-
-      if(!this.authService.isUserAuthenticated){
-        this.router.navigateByUrl("/login");
+      if(!this.authService.isUserAdmin){
+        this.router.navigateByUrl("/landing");
       }
 
 
-    return this.authService.isUserAuthenticated;
+    return this.authService.isUserAdmin;
   }
 }

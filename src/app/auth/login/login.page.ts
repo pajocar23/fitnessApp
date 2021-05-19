@@ -24,9 +24,15 @@ export class LoginPage implements OnInit {
 
 
   onLogIn(){
+    if(!this.authService.isUserAdmin){
+      this.authService.userIsAdmin;
+    }else{
+      this.authService.userIsNotAdmin;
+    }
+
     this.authService.login();
     this.router.navigateByUrl("/landing/tabs/explore");
-    console.log(this.loginForm);
+    //console.log(this.loginForm);
   }
 
 

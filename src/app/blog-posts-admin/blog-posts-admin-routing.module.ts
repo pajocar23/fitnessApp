@@ -7,6 +7,10 @@ const routes: Routes = [
   {
     path: '',
     component: BlogPostsAdminPage
+  },
+  {
+    path: 'add-blog-post',
+    loadChildren: () => import('./add-blog-post/add-blog-post.module').then( m => m.AddBlogPostPageModule)
   }
 ];
 

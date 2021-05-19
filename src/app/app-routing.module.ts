@@ -1,7 +1,9 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { AdminGuard } from './auth/guards/admin.guard';
 import { AuthGuard } from './auth/guards/auth.guard';
 import { TrackerGuard } from './auth/guards/tracker.guard';
+import { UserDataGuard } from './auth/guards/user-data.guard';
 
 const routes: Routes = [
   {
@@ -16,11 +18,11 @@ const routes: Routes = [
   },
   {
     path: 'login',
-    loadChildren: () => import('./auth/login/login.module').then( m => m.LoginPageModule)
+    loadChildren: () => import('./auth/login/login.module').then( m => m.LoginPageModule),
   },
   {
     path: 'register',
-    loadChildren: () => import('./auth/register/register.module').then( m => m.RegisterPageModule)
+    loadChildren: () => import('./auth/register/register.module').then( m => m.RegisterPageModule),
   },
   {
     path: 'user-settings',
@@ -35,16 +37,17 @@ const routes: Routes = [
   {
     path: 'blog-posts-admin',
     loadChildren: () => import('./blog-posts-admin/blog-posts-admin.module').then( m => m.BlogPostsAdminPageModule),
-    canLoad:[AuthGuard]
+    //canLoad:[AdminGuard]
   },
   {
     path: 'users-management-admin',
     loadChildren: () => import('./users-management-admin/users-management-admin.module').then( m => m.UsersManagementAdminPageModule),
-    canLoad:[AuthGuard]
+    //canLoad:[AdminGuard]
   },
   {
     path: 'user-data',
     loadChildren: () => import('./auth/user-data/user-data.module').then( m => m.UserDataPageModule), 
+    canLoad:[UserDataGuard]
   },
   {
     path: 'water-tracker',

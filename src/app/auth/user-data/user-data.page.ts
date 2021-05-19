@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { PopoverController } from '@ionic/angular';
+import { AuthService } from '../auth.service';
 import { BulkComponent } from './bulk/bulk.component';
 import { LeanBulkComponent } from './lean-bulk/lean-bulk.component';
 import { LoseWeightComponent } from './lose-weight/lose-weight.component';
@@ -11,10 +14,12 @@ import { LoseWeightComponent } from './lose-weight/lose-weight.component';
 })
 export class UserDataPage implements OnInit {
 
+  userDataForm:FormGroup;
+
   segmentChanged(ev: any) {
     console.log('Segment changed', ev);
   }
-  constructor(public popoverController: PopoverController) { }
+  constructor(public popoverController: PopoverController,private authService:AuthService,private router:Router) { }
 
   async presentPopoverLeanBulk(ev: any) {
     const popover = await this.popoverController.create({
@@ -57,6 +62,20 @@ export class UserDataPage implements OnInit {
 
 
   ngOnInit() {
+     this.userDataForm=new FormGroup({
+     age:new FormControl(null,[Validators.required,Validators.min(18)]),
+     gender:new FormControl(null,Validators.required),
+     height:new FormControl(null,Validators.required),
+     weight:new FormControl(null,Validators.required),
+     bodyType:new FormControl(null,Validators.required),
+     activityLevel:new FormControl(null,Validators.required),
+     goal:new FormControl(null,Validators.required),
+     avatar:new FormControl(null,Validators.required),
+    });
+  }
+
+  onDataEntered(){
+    console.log(this.userDataForm);
   }
 
 }

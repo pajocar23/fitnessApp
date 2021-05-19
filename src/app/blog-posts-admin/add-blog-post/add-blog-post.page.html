@@ -1,0 +1,83 @@
+<ion-header>
+  <ion-toolbar class="headerClass">
+    <!-- <ion-buttons slot="end">
+      <ion-icon button name="close" (click)="dismiss()" size="large"></ion-icon>
+    </ion-buttons> -->
+
+    <ion-button (click)="dismiss()" slot="end" shape="round" size="small" position="floating" fill="clear"
+      color="light">X
+    </ion-button>
+
+  </ion-toolbar>
+</ion-header>
+
+<ion-content >
+
+  <ion-grid *ngIf="!editingForm">
+    <ion-row>
+      <ion-col size-sm=12>
+        <ion-item>
+          <ion-label position="floating"  class="txtLbl">Add heading</ion-label>
+          <ion-input type="text"></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size-sm=12>
+        <ion-item>
+          <ion-label position="floating"  class="txtLbl">Add description</ion-label>
+          <ion-input type="text"></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size-sm=12>
+        <ion-item>
+          <ion-label position="floating"  class="txtLbl">Add link to an image</ion-label>
+          <ion-input type="text"></ion-input>
+          <!-- EXAMPLE:  https://media3.s-nbcnews.com/i/newscms/2017_15/1206634/woman-drinking-water-tease-today-170410_bb7df024651d415ac135bfaf31c4f819.jpg -->
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-item lines="none"><ion-button color="primary" size="large">Add blog-post</ion-button></ion-item>
+    </ion-row>
+  </ion-grid>
+
+  <ion-grid *ngIf="editingForm">
+    <ion-row>
+      <p>FORMA ZA EDITING</p>
+    </ion-row>
+    <ion-row>
+      <ion-col size-sm=12>
+        <ion-item>
+          <ion-label position="floating"  class="txtLbl">Heading</ion-label>
+          <ion-input type="text"></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size-sm=12>
+        <ion-item>
+          <ion-label position="floating"  class="txtLbl">Description</ion-label>
+          <ion-input type="text"></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size-sm=12>
+        <ion-item>
+          <ion-label position="floating"  class="txtLbl">Image link</ion-label>
+          <ion-input type="text"></ion-input>
+          <!-- EXAMPLE:  https://media3.s-nbcnews.com/i/newscms/2017_15/1206634/woman-drinking-water-tease-today-170410_bb7df024651d415ac135bfaf31c4f819.jpg -->
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-item lines="none"><ion-button color="secondary" size="large">Update blog post</ion-button></ion-item>
+    </ion-row>
+  </ion-grid>
+
+</ion-content>

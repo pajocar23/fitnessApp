@@ -24,7 +24,7 @@
         </ion-item>
 
         <!-- Napraviti da je ova opcija vidljiva samo adminima -->
-        <ion-item button routerLink="/blog-posts-admin">
+        <ion-item button routerLink="/blog-posts-admin" *ngIf="showAdminButtons()">
           <ion-icon name="settings" slot="start"></ion-icon>
             <ion-label>
               Blog post management
@@ -32,7 +32,7 @@
         </ion-item>
         <!--  -->
 
-        <ion-item button routerLink="/users-management-admin">
+        <ion-item button routerLink="/users-management-admin" *ngIf="showAdminButtons()">
           <ion-icon name="people-circle" slot="start"></ion-icon>
             <ion-label>
               Users management
