@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { AlertController, ModalController } from '@ionic/angular';
 import { BlogPost } from '../landing/explore/blog-post.model';
 import { AddBlogPostPage } from './add-blog-post/add-blog-post.page';
 
@@ -16,7 +16,7 @@ export class BlogPostsAdminPage implements OnInit {
 
   editingForm=false;
 
-  constructor(public modalController: ModalController) { }
+  constructor(public modalController: ModalController,public alertController: AlertController) { }
 
   ngOnInit() {
   }
@@ -45,6 +45,30 @@ export class BlogPostsAdminPage implements OnInit {
   AddForm(){
     this.editingForm=false;
   }
+
+  async presentAlertDelete() {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'Warning',
+      message: 'Are you sure you want to delete this blog-post ?',
+      buttons: [{
+        text:"Yes",
+        handler: ()=>{
+          console.log("deleted")
+        }
+      },
+      {
+        text:"No",
+        handler: ()=>{
+          console.log("not deleted")
+      }
+    }
+    ]
+    });
+
+    await alert.present();
+  }
+
 
 
 }

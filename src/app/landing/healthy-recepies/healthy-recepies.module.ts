@@ -4,17 +4,17 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { ActivityPageRoutingModule } from './activity-routing.module';
+import { HealthyRecepiesPageRoutingModule } from './healthy-recepies-routing.module';
 
-import { ActivityPage } from './activity.page';
+import { HealthyRecepiesPage } from './healthy-recepies.page';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    ActivityPageRoutingModule
+    HealthyRecepiesPageRoutingModule
   ],
-  declarations: [ActivityPage]
+  declarations: [HealthyRecepiesPage]
 })
-export class ActivityPageModule {}
+export class HealthyRecepiesPageModule {}

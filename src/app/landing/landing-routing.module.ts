@@ -18,8 +18,8 @@ const routes: Routes = [
         loadChildren: () => import('./closest-gyms/closest-gyms.module').then( m => m.ClosestGymsPageModule)
       },
       {
-        path: 'activity',
-        loadChildren: () => import('./activity/activity.module').then( m => m.ActivityPageModule)
+        path: 'healthy-recepies',
+        loadChildren: () => import('./healthy-recepies/healthy-recepies.module').then( m => m.HealthyRecepiesPageModule)
       },
       {
         path:'',
@@ -33,6 +33,7 @@ const routes: Routes = [
     redirectTo:'/landing/tabs/explore',
     pathMatch: 'full'
   },
+
 
 ];
 

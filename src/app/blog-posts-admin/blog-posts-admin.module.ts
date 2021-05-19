@@ -13,7 +13,7 @@ import { BlogPostsAdminPage } from './blog-posts-admin.page';
     CommonModule,
     FormsModule,
     IonicModule,
-    BlogPostsAdminPageRoutingModule
+    BlogPostsAdminPageRoutingModule,
   ],
   declarations: [BlogPostsAdminPage]
 })

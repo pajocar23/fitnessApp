@@ -41,7 +41,7 @@
     </ion-row>
 
     <ion-row>
-      <ion-item lines="none"><ion-button color="primary" size="large">Add blog-post</ion-button></ion-item>
+      <ion-item lines="none"><ion-button (click)="presentAlertAdd()" color="primary" size="large">Add blog-post</ion-button></ion-item>
     </ion-row>
   </ion-grid>
 
@@ -76,7 +76,7 @@
     </ion-row>
 
     <ion-row>
-      <ion-item lines="none"><ion-button color="secondary" size="large">Update blog post</ion-button></ion-item>
+      <ion-item lines="none"><ion-button (click)="presentAlertEdit()" color="secondary" size="large">Update blog post</ion-button></ion-item>
     </ion-row>
   </ion-grid>
 
