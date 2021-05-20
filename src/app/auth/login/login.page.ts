@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { LoadingController } from '@ionic/angular';
 import { AuthService } from '../auth.service';
 
 @Component({
@@ -12,7 +13,7 @@ export class LoginPage implements OnInit {
 
   loginForm:FormGroup;
 
-  constructor(private authService:AuthService,private router:Router) { }
+  constructor(private authService:AuthService,private router:Router,private loadingController:LoadingController) { }
 
 
   ngOnInit() {
@@ -30,11 +31,22 @@ export class LoginPage implements OnInit {
       this.authService.userIsNotAdmin;
     }
 
-    this.authService.login(this.loginForm.value).subscribe(resData=>{
-      console.log("Sign in successfull");
-      console.log(resData);
-      this.router.navigateByUrl("/landing/tabs/explore");
-    });
+    this.loadingController.create({message:"Logging in..."}).then((loadingEl:HTMLIonLoadingElement)=>{
+      loadingEl.present();
+
+      this.authService.login(this.loginForm.value).subscribe(resData=>{
+        console.log("Logging in successful");
+        console.log(resData);
+        loadingEl.dismiss();
+        this.router.navigateByUrl("/landing/tabs/explore");
+      });
+
+    })
+
+    // this.authService.login(this.loginForm.value).subscribe(resData=>{
+    //   console.log(resData);
+    //   this.router.navigateByUrl("/landing/tabs/explore");
+    // });
     //console.log(this.loginForm);
   }
 
