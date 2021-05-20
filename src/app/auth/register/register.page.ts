@@ -17,13 +17,13 @@ export class RegisterPage implements OnInit {
     this.registrationForm = new FormGroup({
       email: new FormControl(null, [Validators.required, Validators.email]),
       password: new FormControl(null, [Validators.required, Validators.pattern("(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{8,}")]),
-      confirmPassword: new FormControl(null, [Validators.required,this.matchValues('password')])
+      confirmPassword: new FormControl(null, [Validators.required, this.matchValues('password')])
     }); //at least one lowercase char,at least one uppercase char,at least one number,(no matter the order)
   }
 
   onRegister() {
     this.authService.userIsNotAdmin();
-    this.authService.register(this.registrationForm.value).subscribe(resData =>{  //dobija se observable i zato moramo da se subscibujemo na taj observable
+    this.authService.register(this.registrationForm.value).subscribe(resData => {  //dobija se observable i zato moramo da se subscibujemo na taj observable
       console.log("Registracija uspela");
       console.log(resData);
     });
@@ -40,7 +40,15 @@ export class RegisterPage implements OnInit {
         ? null
         : { isMatching: false };
     };
-}
+  }
+
+  passwordType: string = 'password';
+  passwordIcon: string = 'eye-off';
+
+  hideShowPassword() {
+    this.passwordType = this.passwordType === 'text' ? 'password' : 'text';
+    this.passwordIcon = this.passwordIcon === 'eye-off' ? 'eye' : 'eye-off';
+  }
 
 
 }

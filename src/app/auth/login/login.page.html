@@ -19,11 +19,15 @@
             </ion-item>
             <ion-item>
               <ion-label position="floating">Password</ion-label>
-              <ion-input type="password" formControlName="password"></ion-input>
+              <ion-input type="password" formControlName="password" [type]="passwordType" clearOnEdit="false"></ion-input>
+              <!-- <ion-item lines="none"> -->
+                <ion-icon slot="end" [name]="passwordIcon" class="passwordIcon" size="small" (click)='hideShowPassword()'></ion-icon>
+              <!-- </ion-item> -->
             </ion-item>
             <ion-item lines="none" *ngIf="loginForm.get('password').invalid && loginForm.get('password').touched">
-              <ion-label><p class="error"><p>Password error</p></ion-label>
+              <ion-label><p class="error">Password error</p></ion-label>
             </ion-item>
+          
           </ion-list>
         </ion-col>
       </ion-row>
