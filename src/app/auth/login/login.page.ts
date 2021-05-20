@@ -30,8 +30,11 @@ export class LoginPage implements OnInit {
       this.authService.userIsNotAdmin;
     }
 
-    this.authService.login();
-    this.router.navigateByUrl("/landing/tabs/explore");
+    this.authService.login(this.loginForm.value).subscribe(resData=>{
+      console.log("Sign in successfull");
+      console.log(resData);
+      this.router.navigateByUrl("/landing/tabs/explore");
+    });
     //console.log(this.loginForm);
   }
 

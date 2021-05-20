@@ -63,6 +63,8 @@ export class UserDataPage implements OnInit {
 
   ngOnInit() {
      this.userDataForm=new FormGroup({
+     name: new FormControl(null, [Validators.required]),
+     surname: new FormControl(null, [Validators.required]),
      age:new FormControl(null,[Validators.required,Validators.min(18)]),
      gender:new FormControl(null,Validators.required),
      height:new FormControl(null,Validators.required),

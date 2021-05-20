@@ -15,8 +15,6 @@ export class RegisterPage implements OnInit {
 
   ngOnInit() {
     this.registrationForm = new FormGroup({
-      name: new FormControl(null, [Validators.required]),
-      surname: new FormControl(null, [Validators.required]),
       email: new FormControl(null, [Validators.required, Validators.email]),
       password: new FormControl(null, [Validators.required, Validators.pattern("(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{8,}")]),
       confirmPassword: new FormControl(null, [Validators.required,this.matchValues('password')])
@@ -25,9 +23,11 @@ export class RegisterPage implements OnInit {
 
   onRegister() {
     this.authService.userIsNotAdmin();
-    this.authService.register();
+    this.authService.register(this.registrationForm.value).subscribe(resData =>{  //dobija se observable i zato moramo da se subscibujemo na taj observable
+      console.log("Registracija uspela");
+      console.log(resData);
+    });
     this.router.navigateByUrl("/user-data");
-    //console.log(this.registrationForm);
   }
 
   matchValues(
