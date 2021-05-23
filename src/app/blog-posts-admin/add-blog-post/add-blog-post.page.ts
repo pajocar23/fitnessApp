@@ -10,7 +10,15 @@ export class AddBlogPostPage implements OnInit {
 
   @Input()editingForm;
 
-  constructor(public modalController: ModalController,public alertController: AlertController) { }
+  @Input()selectedBlogPostID;
+  @Input()selectedBlogPostHeading;
+  @Input()selectedBlogPostDescription;
+  @Input()selectedBlogPostImageURL;
+  viewImageWithLink;
+
+  constructor(public modalController: ModalController,public alertController: AlertController) { 
+    this.viewImageWithLink=this.selectedBlogPostImageURL;
+  }
 
   ngOnInit() {
   }
@@ -45,6 +53,10 @@ export class AddBlogPostPage implements OnInit {
     });
 
     await alert.present();
+  }
+
+  presentPicture(value:string){
+    this.viewImageWithLink=this.selectedBlogPostImageURL;
   }
 
   async presentAlertAdd() {

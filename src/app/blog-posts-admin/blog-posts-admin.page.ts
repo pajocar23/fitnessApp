@@ -16,6 +16,11 @@ export class BlogPostsAdminPage implements OnInit {
 
   editingForm=false;
 
+  selectedBlogPostID;
+  selectedBlogPostHeading;
+  selectedBlogPostDescription;
+  selectedBlogPostImageURL;
+
   constructor(public modalController: ModalController,public alertController: AlertController) { }
 
   ngOnInit() {
@@ -26,6 +31,10 @@ export class BlogPostsAdminPage implements OnInit {
       component: AddBlogPostPage,
       componentProps: {
         'editingForm':this.editingForm,
+        'selectedBlogPostID':this.selectedBlogPostID,
+        'selectedBlogPostHeading':this.selectedBlogPostHeading,
+        'selectedBlogPostDescription':this.selectedBlogPostDescription,
+        'selectedBlogPostImageURL':this.selectedBlogPostImageURL
       }
     });
     modal.present();
@@ -38,8 +47,12 @@ export class BlogPostsAdminPage implements OnInit {
       })
   }
 
-  EditForm(){
+  EditForm(blogPost:BlogPost){
     this.editingForm=true;
+    this.selectedBlogPostID=blogPost.id;
+    this.selectedBlogPostHeading=blogPost.heading;
+    this.selectedBlogPostDescription=blogPost.description;
+    this.selectedBlogPostImageURL=blogPost.imageUrl;
   }
 
   AddForm(){
