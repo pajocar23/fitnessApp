@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { User } from './user.model';
-import { tap } from 'rxjs/operators';
+import { take, tap } from 'rxjs/operators';
 import { map } from 'rxjs/operators';
 
 
@@ -12,10 +12,15 @@ interface AuthResponseData{
   idToken:string;
   email:string;
   refreshToken:string;
-  localID:string;
+  localId:string;
   expiresIN:string;
   registered?:boolean;
 }
+
+/*interface UserData{
+  localId:string;
+  email:string;
+}*/
 
 interface UserData{
   email:string;
@@ -29,12 +34,26 @@ export class AuthService {
 
   private _isUserAuthenticated=false
   private _isRegistered=false
-  private _isUserAdmin=false
+  private _isUserAdmin=true
+
+  //ova dva parametra ce se setovati u formi za registraciju, a prosledice se u bazi nakon sto se unesu metrike
+  //ove se radi kako bi se izbeglo da se prvo u bazu unesu email i sifra, a ako se izadje iz aplikacije, taj email i ta sifra su vec uneti
+  //i ne moze se sa tim mailom pristupiti stranici za popunjavanje metrika
+  _email:string;
+  _password:string;
 
   private _user=new BehaviorSubject<User>(null); 
 
   constructor(private http:HttpClient) { } 
 
+
+  get email(){
+    return this._email;
+  }
+
+  get password(){
+    return this._password;
+  }
 
   get isUserAuthenticated(){
     //return this._isUserAuthenticated;
@@ -65,18 +84,23 @@ export class AuthService {
     this._isUserAdmin=false;
   }
 
-  register(user:UserData){
+  setIsRegisteredToTrue(){ //ako klikne register na formi za registrovanje
     this._isRegistered=true;
+  }
+
+  register(user:UserData){
     return this.http.post<AuthResponseData>(`https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${environment.firebaseAPIKey}`,
     {email:user.email,password:user.password,returnSecureToken:true})
     .pipe(
       tap((userData:AuthResponseData)=>{
         const expirationTime=new Date(new Date().getTime()+ +userData.expiresIN *1000);
-        const user=new User(userData.localID,userData.email,userData.idToken,expirationTime);
-        this._user.next(user);
+        const user=new User(userData.localId,userData.email,userData.idToken,expirationTime);
+        this._user.next(user);      
       })
       );
   }
+  //https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=[API_KEY]
+
 
   login(user:UserData){
     this._isUserAuthenticated=true;
@@ -85,7 +109,7 @@ export class AuthService {
     .pipe(
       tap((userData:AuthResponseData)=>{
         const expirationTime=new Date(new Date().getTime()+ +userData.expiresIN *1000);
-        const user=new User(userData.localID,userData.email,userData.idToken,expirationTime);
+        const user=new User(userData.localId,userData.email,userData.idToken,expirationTime);
         this._user.next(user);
       })
       );

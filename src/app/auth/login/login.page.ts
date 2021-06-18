@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -13,12 +14,12 @@ export class LoginPage implements OnInit {
 
   loginForm: FormGroup;
 
-  constructor(private authService: AuthService, private router: Router, private loadingController: LoadingController) { }
+  constructor(private http:HttpClient,private authService: AuthService, private router: Router, private loadingController: LoadingController) { }
 
   ngOnInit() {
     this.loginForm = new FormGroup({
       email: new FormControl("jacovicp@yahoo.com", [Validators.required, Validators.email]),
-      password: new FormControl(null, [Validators.required])
+      password: new FormControl(null, [Validators.required]),
     });
   }
 
@@ -40,7 +41,11 @@ export class LoginPage implements OnInit {
         this.router.navigateByUrl("/landing/tabs/explore");
       });
 
+
+
     })
+
+
 
     // this.authService.login(this.loginForm.value).subscribe(resData=>{
     //   console.log(resData);

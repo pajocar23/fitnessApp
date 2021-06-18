@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth.service';
+import { UserMetricsService } from '../user-metrics.service';
 
 @Component({
   selector: 'app-register',
@@ -11,22 +12,28 @@ import { AuthService } from '../auth.service';
 export class RegisterPage implements OnInit {
 
   registrationForm: FormGroup;
-  constructor(private authService: AuthService, private router: Router) { }
+  constructor(private authService: AuthService, private router: Router,private userMetricsService: UserMetricsService) { }
 
   ngOnInit() {
     this.registrationForm = new FormGroup({
-      email: new FormControl(null, [Validators.required, Validators.email]),
-      password: new FormControl(null, [Validators.required, Validators.pattern("(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{8,}")]),
-      confirmPassword: new FormControl(null, [Validators.required, this.matchValues('password')])
+      email: new FormControl("jacovicp@gmail.com", [Validators.required, Validators.email]),
+      password: new FormControl("Sifrica9!", [Validators.required, Validators.pattern("(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{8,}")]),
+      confirmPassword: new FormControl("Sifrica9!", [Validators.required, this.matchValues('password')])
     }); //at least one lowercase char,at least one uppercase char,at least one number,(no matter the order)
   }
 
   onRegister() {
+    this.authService.setIsRegisteredToTrue(); //ovo nam dozvoljava da prodjemo gard da bi pristupili stranici gde unosimo metrike
     this.authService.userIsNotAdmin();
-    this.authService.register(this.registrationForm.value).subscribe(resData => {  //dobija se observable i zato moramo da se subscibujemo na taj observable
-      console.log("Registracija uspela");
-      console.log(resData);
-    });
+
+    //setujemo vrednosti parametra koje cemo posle proslediti (obavezno ih prikriti)
+
+    this.authService._email=this.registrationForm.value.email;
+    this.authService._password=this.registrationForm.value.password;
+    //OBAVEZNO: obezbediti da sifra nije dostupna ovako lako, hashhing ili neki seter preko private
+
+    console.log("idemo na stranicu za metrike");
+    
     this.router.navigateByUrl("/user-data");
   }
 

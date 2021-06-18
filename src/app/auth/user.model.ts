@@ -10,4 +10,8 @@ export class User {
         }
         return this._token;
     }
+
+    getUserId(){
+        console.log("probica "+this.id);
+    }
 }
