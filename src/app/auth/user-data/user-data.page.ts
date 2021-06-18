@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { PopoverController } from '@ionic/angular';
 import { AuthService } from '../auth.service';
+import { RecommandedIntakeService } from '../recommanded-intake.service';
 import { UserMetricsService } from '../user-metrics.service';
 import { User } from '../user.model';
 import { BulkComponent } from './bulk/bulk.component';
@@ -22,7 +23,8 @@ export class UserDataPage implements OnInit {
     console.log('Segment changed', ev);
   }
 
-  constructor(public popoverController: PopoverController, private authService: AuthService, private router: Router, private userMetricsService: UserMetricsService) { }
+  constructor(public popoverController: PopoverController, private authService: AuthService, private router: Router, 
+    private userMetricsService: UserMetricsService,private recommendedIntakeService:RecommandedIntakeService) { }
 
   ngOnInit() {
     this.userDataForm = new FormGroup({
@@ -96,28 +98,38 @@ export class UserDataPage implements OnInit {
     //na osnovu ovih podataka trebam pozvati servis koji cu napraviti, koji ce da mi preko formula izracunava preporucene kolicine, i da setuje pocetne na 0, i da sve to
     //ubaci u bazu u novu tabelu. Nakon toga iz te tabele treba se citati kolike su te vrednosti, i sve njih setovati na formama
 
-    
+    this.recommendedIntakeService.calculateRecommendedAmountOfWater(_gender,_activityLevel);
+    this.recommendedIntakeService.calulateRecommendedAmountOfCalories(_age,_height,_weight,_gender,_activityLevel);
+    this.recommendedIntakeService.calculateRecommendedAmountOfProtein(_goal);
+    this.recommendedIntakeService.calculateRecommendedAmountOfCarbs(_goal);
+    this.recommendedIntakeService.calculateRecommendedAmountOfFats(_goal);
+    this.recommendedIntakeService.calculateRecommendedAmountOfSleep(_age);
 
     var email = this.authService._email;
     var password = this.authService._password;
     //obezbediti hashing ovog passworda, tako da mu se ne moze pristupiti 
 
-    this.authService.register({email,password}).subscribe(resData => {  //dobija se observable i zato moramo da se subscibujemo na taj observable
-      console.log("Registracija uspela");
+    this.authService.register({email,password}).subscribe(resData => { 
       console.log(resData);
-      console.log("Spoljni kljuc: "+resData.localId);
       this.userMetricsService._localUserId=resData.localId;
       _userId=this.userMetricsService._localUserId;
 
-      //prvo se registrujemo i setujemo userId pa se onda subsribujemo da bi ubacili metrike korisnika u bazu
+      
       this.userMetricsService.addUserMetrics(_name, _surname, _age, _gender, _height, _weight, _bodyType, _activityLevel, _goal, _userId).subscribe(resData => {
-        console.log("Subscribujemo se");
         console.log(resData);
+
+
+        this.recommendedIntakeService.addUserRecommendedAmounts(this.recommendedIntakeService._recommendedAmountOfWater, this.recommendedIntakeService._recommendedAmountOfCalories, 
+          this.recommendedIntakeService._recommendedAmountOfCarbs,this.recommendedIntakeService._recommendedAmountOfProtein, this.recommendedIntakeService._recommendedAmountOfFats, 
+          this.recommendedIntakeService._recommendedAmountOfSleep,_userId).subscribe(resData=>{
+            console.log(resData);
+          });
+
       });
 
     });
 
-    this.router.navigateByUrl("/landing");
+    this.router.navigateByUrl("/login");
 
 
 

@@ -22,7 +22,6 @@ interface userMetricsData {
 export class UserMetricsService {
 
   _localUserId: string; //setuje se prilikom registracije
-  //userMetrics: userMetrics[]=[];
 
   constructor(private http: HttpClient) { }
 

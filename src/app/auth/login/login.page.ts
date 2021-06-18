@@ -37,6 +37,7 @@ export class LoginPage implements OnInit {
       this.authService.login(this.loginForm.value).subscribe(resData => {
         console.log("Logging in successful");
         console.log(resData);
+        this.authService._logedUserID=resData.localId;
         loadingEl.dismiss();
         this.router.navigateByUrl("/landing/tabs/explore");
       });
@@ -44,9 +45,6 @@ export class LoginPage implements OnInit {
 
 
     })
-
-
-
     // this.authService.login(this.loginForm.value).subscribe(resData=>{
     //   console.log(resData);
     //   this.router.navigateByUrl("/landing/tabs/explore");

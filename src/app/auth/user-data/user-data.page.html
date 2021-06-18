@@ -132,13 +132,13 @@
           <ion-list-header>Goal</ion-list-header>
           <ion-item>
             <ion-segment (ionChange)="segmentChanged($event)" formControlName="goal">
-              <ion-segment-button value="leanBulk" class="goalLbl" button (click)="presentPopoverLeanBulk(null)">
+              <ion-segment-button value="Lean bulk" class="goalLbl" button (click)="presentPopoverLeanBulk(null)">
                 <ion-label>Lean bulk</ion-label>
               </ion-segment-button>
-              <ion-segment-button value="dirtyBulk" class="goalLbl" button (click)="presentPopoverBulk(null)">
+              <ion-segment-button value="Bulk" class="goalLbl" button (click)="presentPopoverBulk(null)">
                 <ion-label>Bulk</ion-label>
               </ion-segment-button>
-              <ion-segment-button value="loseWeight" class="goalLbl" button (click)="presentPopoverWeightLoss(null)">
+              <ion-segment-button value="Weight loss" class="goalLbl" button (click)="presentPopoverWeightLoss(null)">
                 <ion-label>Weight loss</ion-label>
               </ion-segment-button>
             </ion-segment>

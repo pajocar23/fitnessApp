@@ -35,6 +35,7 @@ export class AuthService {
   private _isUserAuthenticated=false
   private _isRegistered=false
   private _isUserAdmin=true
+  _logedUserID=""; //setuje se kad se korisnik loginuje
 
   //ova dva parametra ce se setovati u formi za registraciju, a prosledice se u bazi nakon sto se unesu metrike
   //ove se radi kako bi se izbeglo da se prvo u bazu unesu email i sifra, a ako se izadje iz aplikacije, taj email i ta sifra su vec uneti
@@ -49,6 +50,10 @@ export class AuthService {
 
   get email(){
     return this._email;
+  }
+
+  get logedUserID(){
+    return this._logedUserID;
   }
 
   get password(){
@@ -99,7 +104,6 @@ export class AuthService {
       })
       );
   }
-  //https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=[API_KEY]
 
 
   login(user:UserData){
@@ -117,6 +121,7 @@ export class AuthService {
 
   logut(){
     this._user.next(null);
+    this._logedUserID="";
     //this._isUserAuthenticated=false;
   }
 

@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
+import { RecommandedIntakeService } from 'src/app/auth/recommanded-intake.service';
 import { ActivityTrackerPage } from 'src/app/trackers/activity-tracker/activity-tracker.page';
 import { FoodTrackerPage } from 'src/app/trackers/food-tracker/food-tracker.page';
 import { MoodTrackerPage } from 'src/app/trackers/mood-tracker/mood-tracker.page';
@@ -15,7 +16,7 @@ import { BlogPost } from './blog-post.model';
 })
 export class ExplorePage implements OnInit {
   //water tracker data
-  recommandedAmountOfWater: number = 10;
+  recommandedAmountOfWater: number = 10; //umesto ovih hardkodovanih vrednosti, treba se izvuci iz baze one koje imaju vrednost id kao ulogovani user
   drankAmountTotal: number = 0;
   waterUdeo: number = 0;
   waterPercentage: number = 0;
@@ -154,10 +155,10 @@ export class ExplorePage implements OnInit {
     }
   };
 
-  constructor(public modalController: ModalController) { }
+  constructor(public modalController: ModalController,private recommandedIntakes:RecommandedIntakeService) { }
 
   ngOnInit() {
-
+    
   }
 
   async presentWaterModal() {
