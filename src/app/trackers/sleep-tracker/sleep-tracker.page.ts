@@ -52,6 +52,7 @@ export class SleepTrackerPage implements OnInit {
   resetSleep() {
     this.condition = true;
     this.total_hours_slept = 0;
+    this.total_minutes_slept = 0;
     this.sleepUdeo = 0;
     this.sleepPercentage = 0;
   }
