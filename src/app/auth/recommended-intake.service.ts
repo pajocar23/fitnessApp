@@ -1,22 +1,26 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { map } from 'rxjs/operators';
 import { AuthService } from './auth.service';
+import { RecommendedAmount } from './recommended-amount.model';
 import { UserMetricsService } from './user-metrics.service';
 
-interface recommandedAmounts {
-  recommendedWater: string;
-  recommendedCalories: string;
-  recommendedProteins: string;
-  recommendedCarbs: string;
-  recommendedFats: string;
-  recommendedSleep: string;
+interface recommendedAmounts {
+  id:string;
+  recommendedAmountOfWater: number;
+  recommendedAmountOfCalories: number;
+  recommendedAmountOfCarbs: number;
+  recommendedAmountOfProtein: number;
+  recommendedAmountOfFats: number;
+  recommendedAmountOfSleep: number;
+  recommendedMindState:number;
   userId: string; //spoljni kljuc ka tabeli korisnika
 }
 
 @Injectable({
   providedIn: 'root'
 })
-export class RecommandedIntakeService {
+export class RecommendedIntakeService {
 
   _recommendedAmountOfWater: number = 0;
 
@@ -26,24 +30,49 @@ export class RecommandedIntakeService {
   _recommendedAmountOfFats: number = 0;
 
   _recommendedAmountOfSleep: number = 0;
+  _recommendedMindState:number=0;
 
   constructor(private http: HttpClient, private userMetricsService:UserMetricsService,private authService:AuthService) { }
 
-  addUserRecommendedAmounts(recommendedAmountOfWater:number,recommendedAmountOfCalories:number,recommendedAmountOfCarbs:number,recommendedAmountOfProtein:number,recommendedAmountOfFats:number,recommendedAmountOfSleep:number,userId: string) {
-    console.log("id je:" + this.userMetricsService._localUserId);
+  addUserRecommendedAmounts(recommendedAmountOfWater:number,recommendedAmountOfCalories:number,recommendedAmountOfCarbs:number,recommendedAmountOfProtein:number,recommendedAmountOfFats:number,recommendedAmountOfSleep:number,recommendedMindState:number,userId: string) {
+    //console.log("id je:" + this.userMetricsService._localUserId);
     return this.http.post<{ name: string }>(`https://healthy-life-app-2ecc5-default-rtdb.europe-west1.firebasedatabase.app/userRecommendedAmounts.json`,
-      { recommendedAmountOfWater,recommendedAmountOfCalories,recommendedAmountOfCarbs,recommendedAmountOfProtein,recommendedAmountOfFats,recommendedAmountOfSleep,userId});
+      { recommendedAmountOfWater,recommendedAmountOfCalories,recommendedAmountOfCarbs,recommendedAmountOfProtein,recommendedAmountOfFats,recommendedAmountOfSleep,recommendedMindState,userId});
   }
 
-  getUserRecommendedAmounts() {
-    return this.http.get<{ [key: string]: recommandedAmounts }>(`https://healthy-life-app-2ecc5-default-rtdb.europe-west1.firebasedatabase.app/userRecommendedAmounts.json`);
-  }
+  getUserRecommendedAmountsForLogedUser() {
+    return this.http.get<{ [key: string]: recommendedAmounts }>(`https://healthy-life-app-2ecc5-default-rtdb.europe-west1.firebasedatabase.app/userRecommendedAmounts.json`)
+    .pipe(map((recommendedAmountsData)=>{
 
-  getUserRecommendedAmountsForLoggedUser() {
-    console.log("Ulogovan userov id: "+this.authService._logedUserID);
-    //ovde trebamo dobaviti samo one reccomanded amonute od ida ulgovanog usera
-  }
+      const recommendedAmounts:RecommendedAmount[]=[];
+      var recommendedAmoutsForLogedUser:RecommendedAmount=null;
 
+      for(const key in recommendedAmountsData){
+        if(recommendedAmountsData.hasOwnProperty(key)){
+          recommendedAmounts.push({
+            id:key,
+            recommendedAmountOfWater:recommendedAmountsData[key].recommendedAmountOfWater,
+            recommendedAmountOfCalories:recommendedAmountsData[key].recommendedAmountOfCalories,
+            recommendedAmountOfCarbs:recommendedAmountsData[key].recommendedAmountOfCarbs,
+            recommendedAmountOfProtein:recommendedAmountsData[key].recommendedAmountOfProtein,
+            recommendedAmountOfFats:recommendedAmountsData[key].recommendedAmountOfFats,
+            recommendedAmountOfSleep:recommendedAmountsData[key].recommendedAmountOfSleep,
+            recommendedMindState:recommendedAmountsData[key].recommendedMindState,
+            userId:recommendedAmountsData[key].userId
+          });
+        }
+      }
+
+      for(var i=0;i<recommendedAmounts.length;i++){
+        if(recommendedAmounts[i].userId==this.authService._logedUserID){
+          recommendedAmoutsForLogedUser=recommendedAmounts[i];
+        }
+      }
+
+      return recommendedAmoutsForLogedUser;
+
+    }));
+  }
 
   calculateBMR(weight: number, height: number, age: number, gender: string) {
     if (gender == "Male") {
@@ -51,6 +80,10 @@ export class RecommandedIntakeService {
     } else if (gender == "Female") {
       return Math.round( 10 * weight + 6.25 * height - 5 * age - 161);
     }
+  }
+
+  calculateRecommendedAmountOfMood(){
+    this._recommendedMindState= 100;
   }
 
   calculateHBE(activityLevel: string, BMR: number) {

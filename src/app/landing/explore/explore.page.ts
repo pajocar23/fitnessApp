@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
-import { RecommandedIntakeService } from 'src/app/auth/recommanded-intake.service';
+import { RecommendedIntakeService } from 'src/app/auth/recommended-intake.service';
 import { ActivityTrackerPage } from 'src/app/trackers/activity-tracker/activity-tracker.page';
 import { FoodTrackerPage } from 'src/app/trackers/food-tracker/food-tracker.page';
 import { MoodTrackerPage } from 'src/app/trackers/mood-tracker/mood-tracker.page';
@@ -16,7 +16,7 @@ import { BlogPost } from './blog-post.model';
 })
 export class ExplorePage implements OnInit {
   //water tracker data
-  recommandedAmountOfWater: number = 10; //umesto ovih hardkodovanih vrednosti, treba se izvuci iz baze one koje imaju vrednost id kao ulogovani user
+  recommandedAmountOfWater: number; //umesto ovih hardkodovanih vrednosti, treba se izvuci iz baze one koje imaju vrednost id kao ulogovani user
   drankAmountTotal: number = 0;
   waterUdeo: number = 0;
   waterPercentage: number = 0;
@@ -24,43 +24,44 @@ export class ExplorePage implements OnInit {
   //food tracker data
   totalCaloriesConsumed: number = 0;
 
-  recommandedAmountOfCarbs: number = 200;
+  recommandedAmountOfCarbs: number;
   totalCarbsConsumed: number = 0;
   carbsPercentage: number = 0;
   carbsUdeo: number = 0;
 
-  recommandedAmountOfFats: number = 150;
+  recommandedAmountOfFats: number;
   totalFatsConsumed: number = 0;
   fatsPercentage: number = 0;
   fatsUdeo: number = 0;
 
-  recommandedAmountOfProtein: number = 200;
+  recommandedAmountOfProtein: number;
   totalProteinConsumed: number = 0;
   proteinPercentage: number = 0;
   proteinUdeo: number = 0;
 
   //sleep tracker data
-  recommandedHoursOfSleep: number = 8; //minutes
-  totalTimeSlept:number=0;
-  totalHoursSlept:number=0;
-  totalMinutesSlept:number=0;
-  sleepPercentage:number=0;
-  sleepUdeo:number=0;
-  condition:boolean=true;
+  recommandedHoursOfSleep: number; //minutes
+  totalTimeSlept: number = 0;
+  totalHoursSlept: number = 0;
+  totalMinutesSlept: number = 0;
+  sleepPercentage: number = 0;
+  sleepUdeo: number = 0;
+  condition: boolean = true;
 
+  //mind state treba da bude hardkodovan, jer je bez obzira o kome se radi, isti za sve
   //mood tracker data
-  recommandedhappy: number = 100;
-  recommandedrested: number = 100;
+  recommandedhappy: number = 0;
+  recommandedrested: number = 0;
   recommandedhurt: number = 0;
 
-  recommandedMindState:number=100
-  mindState:number=0;
-  mindStatePercentage:number=0;
-  mindStateUdeo:number=0;
+  recommandedMindState: number;
+  mindState: number = 0;
+  mindStatePercentage: number = 0;
+  mindStateUdeo: number = 0;
 
-  happy:number=0;
-  rested:number=0;
-  hurt:number=0;
+  happy: number = 0;
+  rested: number = 0;
+  hurt: number = 0;
 
   blogPosts: BlogPost[] = [{ id: '1', heading: 'water fact', description: 'water makes 70% of human body', imageUrl: 'https://media3.s-nbcnews.com/i/newscms/2017_15/1206634/woman-drinking-water-tease-today-170410_bb7df024651d415ac135bfaf31c4f819.jpg' },
   { id: '2', heading: 'food fact', description: 'without food you dead BOi', imageUrl: 'https://i.pinimg.com/originals/a8/cd/aa/a8cdaa791eef42e15067426d08a566b0.jpg' },
@@ -155,10 +156,19 @@ export class ExplorePage implements OnInit {
     }
   };
 
-  constructor(public modalController: ModalController,private recommandedIntakes:RecommandedIntakeService) { }
+  constructor(public modalController: ModalController, private recommendedIntakesService: RecommendedIntakeService) { }
 
   ngOnInit() {
-    
+    this.recommendedIntakesService.getUserRecommendedAmountsForLogedUser().subscribe(resData => {
+      
+      this.recommandedAmountOfWater = resData.recommendedAmountOfWater;
+      this.recommandedHoursOfSleep = resData.recommendedAmountOfSleep;
+      this.recommandedMindState=resData.recommendedMindState;
+
+      this.recommandedAmountOfProtein = Math.round(resData.recommendedAmountOfProtein/4);
+      this.recommandedAmountOfFats = Math.round(resData.recommendedAmountOfFats/9);
+      this.recommandedAmountOfCarbs = Math.round(resData.recommendedAmountOfCarbs/4); 
+    });
   }
 
   async presentWaterModal() {
@@ -173,7 +183,7 @@ export class ExplorePage implements OnInit {
 
     return modal.onDidDismiss().then(
       (data: any) => {
-        if (data.data.water_percentage!= undefined) {
+        if (data.data.water_percentage != undefined) {
           this.drankAmountTotal = data.data.total_drank_amount;
           this.waterUdeo = data.data.water_udeo;
           this.waterPercentage = data.data.water_percentage;
@@ -182,6 +192,13 @@ export class ExplorePage implements OnInit {
   }
 
   async presentFoodModal() {
+    console.log("totalCaloriesConsumed"+this.totalCaloriesConsumed);
+    console.log("recommandedAmountOfCarbs"+this.recommandedAmountOfCarbs);
+    console.log("totalCarbsConsumed"+this.totalCarbsConsumed);
+    console.log("recommandedAmountOfFats"+this.recommandedAmountOfFats);
+    console.log("totalFatsConsumed"+this.totalFatsConsumed);
+    console.log("recommandedAmountOfProtein"+this.recommandedAmountOfProtein);
+    console.log("totalProteinConsumed"+this.totalProteinConsumed);
     const modal = await this.modalController.create({
       component: FoodTrackerPage,
       componentProps: {
@@ -224,23 +241,23 @@ export class ExplorePage implements OnInit {
       component: SleepTrackerPage,
       componentProps: {
         'recommanded_hours_of_sleep': this.recommandedHoursOfSleep,
-        'total_time_slept':this.totalTimeSlept,
-        'total_hours_slept':this.totalHoursSlept,
-        'total_minutes_slept':this.totalMinutesSlept,
-        'condition':this.condition
+        'total_time_slept': this.totalTimeSlept,
+        'total_hours_slept': this.totalHoursSlept,
+        'total_minutes_slept': this.totalMinutesSlept,
+        'condition': this.condition
       }
     });
     modal.present();
 
     return modal.onDidDismiss().then(
       (data: any) => {
-        if (data.data.sleep_percentage!=undefined) {
-          this.totalTimeSlept=data.data.total_time_slept;
-          this.totalHoursSlept=data.data.total_hours_slept;
-          this.totalMinutesSlept=data.data.total_minutes_slept;
-          this.sleepUdeo=data.data.sleep_udeo;
-          this.sleepPercentage=data.data.sleep_percentage;
-          this.condition=data.data.condition;
+        if (data.data.sleep_percentage != undefined) {
+          this.totalTimeSlept = data.data.total_time_slept;
+          this.totalHoursSlept = data.data.total_hours_slept;
+          this.totalMinutesSlept = data.data.total_minutes_slept;
+          this.sleepUdeo = data.data.sleep_udeo;
+          this.sleepPercentage = data.data.sleep_percentage;
+          this.condition = data.data.condition;
         }
       })
   }
@@ -249,26 +266,26 @@ export class ExplorePage implements OnInit {
     const modal = await this.modalController.create({
       component: MoodTrackerPage,
       componentProps: {
-        'recommandedhappy':this.recommandedhappy,
-        'recommandedrested':this.recommandedrested,
-        'recommandedhurt':this.recommandedhurt,
-        'recommandedMindState':this.recommandedMindState,
-        'happy':this.happy,
-        'rested':this.rested,
-        'hurt':this.hurt
+        'recommandedhappy': this.recommandedhappy,
+        'recommandedrested': this.recommandedrested,
+        'recommandedhurt': this.recommandedhurt,
+        'recommandedMindState': this.recommandedMindState,
+        'happy': this.happy,
+        'rested': this.rested,
+        'hurt': this.hurt
       }
     });
     modal.present();
 
     return modal.onDidDismiss().then(
       (data: any) => {
-        if (data.data.mindStatePercentage!=undefined) {
-          this.mindState=data.data.mindState;
-          this.mindStatePercentage=data.data.mindStatePercentage;
-          this.mindStateUdeo=data.data.mindStateUdeo;
-          this.happy=data.data.happy;
-          this.rested=data.data.rested;
-          this.hurt=data.data.hurt;
+        if (data.data.mindStatePercentage != undefined) {
+          this.mindState = data.data.mindState;
+          this.mindStatePercentage = data.data.mindStatePercentage;
+          this.mindStateUdeo = data.data.mindStateUdeo;
+          this.happy = data.data.happy;
+          this.rested = data.data.rested;
+          this.hurt = data.data.hurt;
         }
       })
   }

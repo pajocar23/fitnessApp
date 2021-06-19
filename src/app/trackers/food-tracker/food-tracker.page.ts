@@ -29,7 +29,6 @@ export class FoodTrackerPage implements OnInit {
   proteinPercentage: number;
   proteinUdeo: number;
 
-
   constructor(public modalController: ModalController) { }
 
   resetCalories() {
@@ -72,7 +71,7 @@ export class FoodTrackerPage implements OnInit {
   addFatsAmount(amount: number) {
     if (amount > 0) {
       this.totalFatsConsumed = this.totalFatsConsumed + amount;
-      this.totalCaloriesConsumed = this.totalCaloriesConsumed + this.fatsAddedValue * 8;
+      this.totalCaloriesConsumed = this.totalCaloriesConsumed + this.fatsAddedValue * 9;
 
       this.fatsPercentage=Math.ceil(((this.totalFatsConsumed*100)/this.recommandedAmountOfFats));
       this.fatsUdeo=this.fatsPercentage/100;
@@ -81,7 +80,7 @@ export class FoodTrackerPage implements OnInit {
 
   resetFats() {
     if (this.totalFatsConsumed > 0 && this.totalCaloriesConsumed > 0) {
-      this.totalCaloriesConsumed = this.totalCaloriesConsumed - this.totalFatsConsumed * 8;
+      this.totalCaloriesConsumed = this.totalCaloriesConsumed - this.totalFatsConsumed * 9;
       this.totalFatsConsumed = 0;
 
       this.fatsPercentage=0;

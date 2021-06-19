@@ -3,7 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { PopoverController } from '@ionic/angular';
 import { AuthService } from '../auth.service';
-import { RecommandedIntakeService } from '../recommanded-intake.service';
+import { RecommendedIntakeService } from '../recommended-intake.service';
 import { UserMetricsService } from '../user-metrics.service';
 import { User } from '../user.model';
 import { BulkComponent } from './bulk/bulk.component';
@@ -24,19 +24,19 @@ export class UserDataPage implements OnInit {
   }
 
   constructor(public popoverController: PopoverController, private authService: AuthService, private router: Router, 
-    private userMetricsService: UserMetricsService,private recommendedIntakeService:RecommandedIntakeService) { }
+    private userMetricsService: UserMetricsService,private recommendedIntakeService:RecommendedIntakeService) { }
 
   ngOnInit() {
     this.userDataForm = new FormGroup({
-      name: new FormControl("a", [Validators.required]),
-      surname: new FormControl("a", [Validators.required]),
-      age: new FormControl(18, [Validators.required, Validators.min(18)]),
+      name: new FormControl("Pavle", [Validators.required]),
+      surname: new FormControl("Jacovic", [Validators.required]),
+      age: new FormControl(22, [Validators.required, Validators.min(18)]),
       gender: new FormControl("Male", Validators.required),
       height: new FormControl("190", Validators.required),
       weight: new FormControl("100", Validators.required),
-      bodyType: new FormControl("AboveAverage", Validators.required),
-      activityLevel: new FormControl("No activity", Validators.required),
-      goal: new FormControl("loseWeight", Validators.required),
+      bodyType: new FormControl("Athletic/Muscular", Validators.required),
+      activityLevel: new FormControl("Moderate activity", Validators.required),
+      goal: new FormControl("Lean bulk", Validators.required),
       avatar: new FormControl(null, Validators.required),
     });
   }
@@ -103,6 +103,7 @@ export class UserDataPage implements OnInit {
     this.recommendedIntakeService.calculateRecommendedAmountOfProtein(_goal);
     this.recommendedIntakeService.calculateRecommendedAmountOfCarbs(_goal);
     this.recommendedIntakeService.calculateRecommendedAmountOfFats(_goal);
+    this.recommendedIntakeService.calculateRecommendedAmountOfMood();
     this.recommendedIntakeService.calculateRecommendedAmountOfSleep(_age);
 
     var email = this.authService._email;
@@ -114,14 +115,14 @@ export class UserDataPage implements OnInit {
       this.userMetricsService._localUserId=resData.localId;
       _userId=this.userMetricsService._localUserId;
 
-      
+
       this.userMetricsService.addUserMetrics(_name, _surname, _age, _gender, _height, _weight, _bodyType, _activityLevel, _goal, _userId).subscribe(resData => {
         console.log(resData);
 
 
         this.recommendedIntakeService.addUserRecommendedAmounts(this.recommendedIntakeService._recommendedAmountOfWater, this.recommendedIntakeService._recommendedAmountOfCalories, 
           this.recommendedIntakeService._recommendedAmountOfCarbs,this.recommendedIntakeService._recommendedAmountOfProtein, this.recommendedIntakeService._recommendedAmountOfFats, 
-          this.recommendedIntakeService._recommendedAmountOfSleep,_userId).subscribe(resData=>{
+          this.recommendedIntakeService._recommendedAmountOfSleep,this.recommendedIntakeService._recommendedMindState,_userId).subscribe(resData=>{
             console.log(resData);
           });
 

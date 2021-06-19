@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
+import { RecommendedIntakeService } from './recommended-intake.service';
 
-import { RecommandedIntakeService } from './recommanded-intake.service';
 
 describe('RecommandedIntakeService', () => {
-  let service: RecommandedIntakeService;
+  let service: RecommendedIntakeService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(RecommandedIntakeService);
+    service = TestBed.inject(RecommendedIntakeService);
   });
 
   it('should be created', () => {
