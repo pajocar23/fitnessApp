@@ -1,5 +1,7 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { ModalController } from '@ionic/angular';
+import { AuthService } from 'src/app/auth/auth.service';
+import { ConsumedAmountService } from 'src/app/auth/consumed-amount.service';
 
 @Component({
   selector: 'app-water-tracker',
@@ -30,13 +32,15 @@ export class WaterTrackerPage implements OnInit {
     this.waterPercentage = 0;
   }
 
-  constructor(public modalController: ModalController) {
+  constructor(public modalController: ModalController,public consumedAmountService:ConsumedAmountService,private authService:AuthService) {
 
   }
 
+  
+
 
   ngOnInit() {
-
+    
   }
 
   dismiss() {
@@ -47,6 +51,7 @@ export class WaterTrackerPage implements OnInit {
       'total_drank_amount': this.drank_amount_total,
       'water_udeo': this.waterPercentage,
       'water_percentage': this.waterUdeo
+      
     });
 
   }

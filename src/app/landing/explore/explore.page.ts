@@ -1,5 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
+import { AuthService } from 'src/app/auth/auth.service';
+import { ConsumedAmountService } from 'src/app/auth/consumed-amount.service';
 import { RecommendedIntakeService } from 'src/app/auth/recommended-intake.service';
 import { ActivityTrackerPage } from 'src/app/trackers/activity-tracker/activity-tracker.page';
 import { FoodTrackerPage } from 'src/app/trackers/food-tracker/food-tracker.page';
@@ -17,35 +19,35 @@ import { BlogPost } from './blog-post.model';
 export class ExplorePage implements OnInit {
   //water tracker data
   recommandedAmountOfWater: number; //umesto ovih hardkodovanih vrednosti, treba se izvuci iz baze one koje imaju vrednost id kao ulogovani user
-  drankAmountTotal: number = 0;
-  waterUdeo: number = 0;
-  waterPercentage: number = 0;
+  drankAmountTotal: number;
+  waterUdeo: number;
+  waterPercentage: number;
 
   //food tracker data
-  totalCaloriesConsumed: number = 0;
+  totalCaloriesConsumed: number;
 
   recommandedAmountOfCarbs: number;
-  totalCarbsConsumed: number = 0;
-  carbsPercentage: number = 0;
-  carbsUdeo: number = 0;
+  totalCarbsConsumed: number;
+  carbsPercentage: number;
+  carbsUdeo: number;
 
   recommandedAmountOfFats: number;
-  totalFatsConsumed: number = 0;
-  fatsPercentage: number = 0;
-  fatsUdeo: number = 0;
+  totalFatsConsumed: number;
+  fatsPercentage: number;
+  fatsUdeo: number;
 
   recommandedAmountOfProtein: number;
-  totalProteinConsumed: number = 0;
-  proteinPercentage: number = 0;
-  proteinUdeo: number = 0;
+  totalProteinConsumed: number;
+  proteinPercentage: number;
+  proteinUdeo: number;
 
   //sleep tracker data
   recommandedHoursOfSleep: number; //minutes
-  totalTimeSlept: number = 0;
-  totalHoursSlept: number = 0;
-  totalMinutesSlept: number = 0;
-  sleepPercentage: number = 0;
-  sleepUdeo: number = 0;
+  totalTimeSlept: number;
+  totalHoursSlept: number;
+  totalMinutesSlept: number;
+  sleepPercentage: number;
+  sleepUdeo: number;
   condition: boolean = true;
 
   //mind state treba da bude hardkodovan, jer je bez obzira o kome se radi, isti za sve
@@ -55,7 +57,7 @@ export class ExplorePage implements OnInit {
   recommandedhurt: number = 0;
 
   recommandedMindState: number;
-  mindState: number = 0;
+  mindState: number;
   mindStatePercentage: number = 0;
   mindStateUdeo: number = 0;
 
@@ -156,22 +158,146 @@ export class ExplorePage implements OnInit {
     }
   };
 
-  constructor(public modalController: ModalController, private recommendedIntakesService: RecommendedIntakeService) { }
+  constructor(public modalController: ModalController, private authService: AuthService, private recommendedIntakesService: RecommendedIntakeService, private consumedAmountService: ConsumedAmountService) { }
+
+  ionViewWillEnter() {
+    this.getConsumedAmounts();
+    this.consumedAmountService.doesConsumedAmountForTodayExist().subscribe(resData => {
+      if (resData == false) {
+        console.log("Consumed amounts for loged user for today does not exist and therefore it will be added to database");
+        this.consumedAmountService.addDefaultConsumedIntake(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, this.authService.logedUserID, new Date().toLocaleString()).subscribe(resData => {
+        });
+      }
+    });
+  }
 
   ngOnInit() {
     this.recommendedIntakesService.getUserRecommendedAmountsForLogedUser().subscribe(resData => {
-      
+
       this.recommandedAmountOfWater = resData.recommendedAmountOfWater;
       this.recommandedHoursOfSleep = resData.recommendedAmountOfSleep;
-      this.recommandedMindState=resData.recommendedMindState;
+      this.recommandedMindState = resData.recommendedMindState;
 
-      this.recommandedAmountOfProtein = Math.round(resData.recommendedAmountOfProtein/4);
-      this.recommandedAmountOfFats = Math.round(resData.recommendedAmountOfFats/9);
-      this.recommandedAmountOfCarbs = Math.round(resData.recommendedAmountOfCarbs/4); 
+      this.recommandedAmountOfProtein = Math.round(resData.recommendedAmountOfProtein / 4);
+      this.recommandedAmountOfFats = Math.round(resData.recommendedAmountOfFats / 9);
+      this.recommandedAmountOfCarbs = Math.round(resData.recommendedAmountOfCarbs / 4);
+    });
+  }
+
+  updateConsumedAmounts(consumedAmountOfWater: number, waterPercentage: number, waterUdeo: number,
+    consumedAmountOfCalories: number,
+    consumedAmountOfCarbs: number, carbsPercentage: number, carbsUdeo: number,
+    consumedAmountOfProtein: number, proteinPercentage: number, proteinUdeo: number,
+    consumedAmountOfFats: number, fatsPercentage: number, fatsUdeo: number,
+    consumedAmountOfSleep: number, sleepPercentage: number, sleepUdeo: number,
+    consumedAmountOfMindState: number, mindStatePercentage: number, mindStateUdeo: number,
+    userId: string) {
+    var consumedAmountOfLogedUserID;
+    var dateFromDB;
+    this.consumedAmountService.getTodaysConsumedAmountForLogedUser().subscribe(resData => {
+      consumedAmountOfLogedUserID = resData.id;
+      dateFromDB = resData.date;
+      this.consumedAmountService.editConsumedIntake(consumedAmountOfLogedUserID,
+        consumedAmountOfWater,waterPercentage,waterUdeo,
+        consumedAmountOfCalories,
+        consumedAmountOfCarbs,carbsPercentage,carbsUdeo,
+        consumedAmountOfProtein,proteinPercentage,proteinUdeo,
+        consumedAmountOfFats,fatsPercentage,fatsUdeo,
+        consumedAmountOfSleep,sleepPercentage,sleepUdeo,
+        consumedAmountOfMindState,mindStatePercentage,mindStateUdeo,
+        userId,dateFromDB).subscribe(resData => {
+        console.log("updatovane vrednosti:");
+        console.log(resData);
+      });
+
+    });
+
+  }
+
+  getConsumedAmounts() {
+    this.consumedAmountService.getTodaysConsumedAmountForLogedUser().subscribe(resData => {
+      if (resData != null) {
+        this.drankAmountTotal = resData.consumedAmountOfWater;
+        this.waterPercentage=resData.waterPercentage;
+        this.waterUdeo=resData.waterUdeo;
+
+        this.totalCaloriesConsumed = resData.consumedAmountOfCalories;
+        
+        this.totalProteinConsumed = resData.consumedAmountOfProtein;
+        this.proteinPercentage=resData.proteinPercentage;
+        this.proteinUdeo=resData.proteinUdeo;
+
+        this.totalFatsConsumed = resData.consumedAmountOfFats;
+        this.fatsPercentage=resData.fatsPercentage;
+        this.fatsUdeo=resData.fatsUdeo;
+
+        this.totalCarbsConsumed = resData.consumedAmountOfCarbs;
+        this.carbsPercentage=resData.carbsPercentage;
+        this.carbsUdeo=resData.carbsUdeo;
+
+        this.totalTimeSlept = resData.consumedAmountOfSleep;
+        this.sleepPercentage=resData.sleepPercentage;
+        this.sleepUdeo=resData.sleepUdeo;
+        /////
+        // this.totalHoursSlept=resData.consumedAmountOfSleep;
+        // this.totalHoursSlept=resData.consumedAmountOfSleep
+        ///////
+
+        this.totalHoursSlept=Math.floor(resData.consumedAmountOfSleep/60);
+        this.totalMinutesSlept=60*(resData.consumedAmountOfSleep/60-Math.floor(resData.consumedAmountOfSleep/60))
+        
+        this.mindState = resData.consumedAmountOfMindState;
+        this.mindStatePercentage=resData.mindStatePercentage;
+        this.mindStateUdeo=resData.mindStateUdeo;
+
+        console.log("Getovalo je ne null vrednosti:");
+        console.log(resData);
+        this.updateConsumedAmounts(this.drankAmountTotal,  this.waterPercentage, this.waterUdeo,
+          this.totalCaloriesConsumed,
+          this.totalCarbsConsumed, this.carbsPercentage, this.carbsUdeo,
+          this.totalProteinConsumed, this.proteinPercentage, this.proteinUdeo,
+          this.totalFatsConsumed, this.fatsPercentage,  this.fatsUdeo,
+          this.totalTimeSlept, this.sleepPercentage, this.sleepUdeo,
+          this.mindState, this.mindStatePercentage, this.mindStateUdeo,
+          this.authService.logedUserID);
+      } else {
+        this.drankAmountTotal = 0;
+        this.waterPercentage= 0;
+        this.waterUdeo= 0;
+
+        this.totalCaloriesConsumed =  0;
+        
+        this.totalProteinConsumed =  0;
+        this.proteinPercentage= 0;
+        this.proteinUdeo= 0;
+
+        this.totalFatsConsumed =  0;
+        this.fatsPercentage= 0;
+        this.fatsUdeo= 0;
+
+        this.totalCarbsConsumed =  0;
+        this.carbsPercentage= 0;
+        this.carbsUdeo= 0;
+
+        this.totalTimeSlept =  0;
+        this.sleepPercentage= 0;
+        this.sleepUdeo= 0;
+        /////
+        this.totalHoursSlept=0;
+        this.totalMinutesSlept=0;
+        ///////
+        
+        this.mindState = 0;
+        this.mindStatePercentage= 0;
+        this.mindStateUdeo= 0;
+        console.log("Getovalo je null vrednosti");
+        console.log(resData);
+      }
     });
   }
 
   async presentWaterModal() {
+    this.getConsumedAmounts();
     const modal = await this.modalController.create({
       component: WaterTrackerPage,
       componentProps: {
@@ -187,18 +313,27 @@ export class ExplorePage implements OnInit {
           this.drankAmountTotal = data.data.total_drank_amount;
           this.waterUdeo = data.data.water_udeo;
           this.waterPercentage = data.data.water_percentage;
+          this.updateConsumedAmounts(this.drankAmountTotal,  this.waterPercentage, this.waterUdeo,
+            this.totalCaloriesConsumed,
+            this.totalCarbsConsumed, this.carbsPercentage, this.carbsUdeo,
+            this.totalProteinConsumed, this.proteinPercentage, this.proteinUdeo,
+            this.totalFatsConsumed, this.fatsPercentage,  this.fatsUdeo,
+            this.totalTimeSlept, this.sleepPercentage, this.sleepUdeo,
+            this.mindState, this.mindStatePercentage, this.mindStateUdeo,
+            this.authService.logedUserID);
         }
       })
   }
 
   async presentFoodModal() {
-    console.log("totalCaloriesConsumed"+this.totalCaloriesConsumed);
-    console.log("recommandedAmountOfCarbs"+this.recommandedAmountOfCarbs);
-    console.log("totalCarbsConsumed"+this.totalCarbsConsumed);
-    console.log("recommandedAmountOfFats"+this.recommandedAmountOfFats);
-    console.log("totalFatsConsumed"+this.totalFatsConsumed);
-    console.log("recommandedAmountOfProtein"+this.recommandedAmountOfProtein);
-    console.log("totalProteinConsumed"+this.totalProteinConsumed);
+    this.getConsumedAmounts();
+    /*console.log("totalCaloriesConsumed" + this.totalCaloriesConsumed);
+    console.log("recommandedAmountOfCarbs" + this.recommandedAmountOfCarbs);
+    console.log("totalCarbsConsumed" + this.totalCarbsConsumed);
+    console.log("recommandedAmountOfFats" + this.recommandedAmountOfFats);
+    console.log("totalFatsConsumed" + this.totalFatsConsumed);
+    console.log("recommandedAmountOfProtein" + this.recommandedAmountOfProtein);
+    console.log("totalProteinConsumed" + this.totalProteinConsumed);*/
     const modal = await this.modalController.create({
       component: FoodTrackerPage,
       componentProps: {
@@ -233,10 +368,19 @@ export class ExplorePage implements OnInit {
           this.proteinUdeo = data.data.protein_udeo;
           this.proteinPercentage = data.data.protein_percentage;
         }
+        this.updateConsumedAmounts(this.drankAmountTotal,  this.waterPercentage, this.waterUdeo,
+          this.totalCaloriesConsumed,
+          this.totalCarbsConsumed, this.carbsPercentage, this.carbsUdeo,
+          this.totalProteinConsumed, this.proteinPercentage, this.proteinUdeo,
+          this.totalFatsConsumed, this.fatsPercentage,  this.fatsUdeo,
+          this.totalTimeSlept, this.sleepPercentage, this.sleepUdeo,
+          this.mindState, this.mindStatePercentage, this.mindStateUdeo,
+          this.authService.logedUserID);
       })
   }
 
   async presentSleepModal() {
+    this.getConsumedAmounts();
     const modal = await this.modalController.create({
       component: SleepTrackerPage,
       componentProps: {
@@ -258,11 +402,20 @@ export class ExplorePage implements OnInit {
           this.sleepUdeo = data.data.sleep_udeo;
           this.sleepPercentage = data.data.sleep_percentage;
           this.condition = data.data.condition;
+          this.updateConsumedAmounts(this.drankAmountTotal,  this.waterPercentage, this.waterUdeo,
+            this.totalCaloriesConsumed,
+            this.totalCarbsConsumed, this.carbsPercentage, this.carbsUdeo,
+            this.totalProteinConsumed, this.proteinPercentage, this.proteinUdeo,
+            this.totalFatsConsumed, this.fatsPercentage,  this.fatsUdeo,
+            this.totalTimeSlept, this.sleepPercentage, this.sleepUdeo,
+            this.mindState, this.mindStatePercentage, this.mindStateUdeo,
+            this.authService.logedUserID);
         }
       })
   }
 
   async presentMoodModal() {
+    this.getConsumedAmounts();
     const modal = await this.modalController.create({
       component: MoodTrackerPage,
       componentProps: {
@@ -286,11 +439,20 @@ export class ExplorePage implements OnInit {
           this.happy = data.data.happy;
           this.rested = data.data.rested;
           this.hurt = data.data.hurt;
+          this.updateConsumedAmounts(this.drankAmountTotal,  this.waterPercentage, this.waterUdeo,
+            this.totalCaloriesConsumed,
+            this.totalCarbsConsumed, this.carbsPercentage, this.carbsUdeo,
+            this.totalProteinConsumed, this.proteinPercentage, this.proteinUdeo,
+            this.totalFatsConsumed, this.fatsPercentage,  this.fatsUdeo,
+            this.totalTimeSlept, this.sleepPercentage, this.sleepUdeo,
+            this.mindState, this.mindStatePercentage, this.mindStateUdeo,
+            this.authService.logedUserID);
         }
       })
   }
 
   async presentActivityModal() {
+    this.getConsumedAmounts();
     const modal = await this.modalController.create({
       component: ActivityTrackerPage
     });

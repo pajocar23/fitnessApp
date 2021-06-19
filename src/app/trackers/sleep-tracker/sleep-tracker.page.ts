@@ -41,7 +41,7 @@ export class SleepTrackerPage implements OnInit {
       this.total_minutes_slept = +stringMinutes;
 
       this.total_time_slept = this.total_hours_slept * 60 + this.total_minutes_slept;
-
+      //60*0.broj posle zareza
 
       this.sleepPercentage = Math.ceil(((this.total_time_slept * 100) / (this.recommanded_hours_of_sleep * 60)));
       this.sleepUdeo = this.sleepPercentage / 100;
@@ -60,9 +60,9 @@ export class SleepTrackerPage implements OnInit {
   }
 
   dismiss() {
-    //console.log(this.total_time_slept);
-    //console.log(this.sleepPercentage);
-    //console.log(this.sleepUdeo);
+    /*console.log("sati i minuti");
+    console.log(this.total_hours_slept);
+    console.log(this.total_minutes_slept);*/
 
     this.modalController.dismiss({
       'dismissed': true,
