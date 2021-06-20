@@ -14,27 +14,29 @@
 
   <!-- SLIDER -->
   <ion-slides pager="true" [options]="slideOpts">
+    
     <ion-slide>
       <!-- <h1>Slide 1</h1> -->
       <ion-card>
         <ion-card-header>
-          <ion-img class="sliderImg" src="{{blogPosts[0].imageUrl}}"></ion-img>
-          <ion-card-title>{{blogPosts[0].heading}}</ion-card-title>
+          <ion-img *ngIf="blogPosts.length!=0" class="sliderImg" src="{{blogPosts[blogPosts.length-1].imageUrl}}"></ion-img>
+          <ion-card-title *ngIf="blogPosts.length!=0">{{blogPosts[0].heading}}</ion-card-title>
         </ion-card-header>
-        <ion-card-content>
-          {{blogPosts[0].description}}
+        <ion-card-content *ngIf="blogPosts.length!=0">
+          {{blogPosts[blogPosts.length-1].description}}
         </ion-card-content>
       </ion-card>
     </ion-slide>
+
     <ion-slide>
       <!-- <h1>Slide 2</h1> -->
       <ion-card>
         <ion-card-header>
-          <ion-img class="sliderImg" src="{{blogPosts[1].imageUrl}}"></ion-img>
-          <ion-card-title>{{blogPosts[1].heading}}</ion-card-title>
+          <ion-img *ngIf="blogPosts.length!=0" class="sliderImg" src="{{blogPosts[blogPosts.length-2].imageUrl}}"></ion-img>
+          <ion-card-title *ngIf="blogPosts.length!=0">{{blogPosts[blogPosts.length-2].heading}}</ion-card-title>
         </ion-card-header>
-        <ion-card-content>
-          {{blogPosts[1].description}}
+        <ion-card-content *ngIf="blogPosts.length!=0">
+          {{blogPosts[blogPosts.length-2].description}}
         </ion-card-content>
       </ion-card>
     </ion-slide>
@@ -42,20 +44,16 @@
       <!-- <h1>Slide 3</h1> -->
       <ion-card>
         <ion-card-header>
-          <ion-img class="sliderImg" src="{{blogPosts[2].imageUrl}}"></ion-img>
-          <ion-card-title>{{blogPosts[2].heading}}</ion-card-title>
+          <ion-img *ngIf="blogPosts.length!=0" class="sliderImg" src="{{blogPosts[blogPosts.length-3].imageUrl}}"></ion-img>
+          <ion-card-title *ngIf="blogPosts.length!=0">{{blogPosts[blogPosts.length-3].heading}}</ion-card-title>
         </ion-card-header>
-        <ion-card-content>
-          {{blogPosts[2].description}}
+        <ion-card-content *ngIf="blogPosts.length!=0">
+          {{blogPosts[blogPosts.length-3].description}}
         </ion-card-content>
       </ion-card>
     </ion-slide>
   </ion-slides>
   <!-- SLIDER -->
-
-  <!-- <ion-list>
-    <app-blog-post *ngFor="let blogPost of blogPosts" [blogPost]="blogPost"></app-blog-post>
-  </ion-list> -->
 
   <br>
 

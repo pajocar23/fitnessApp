@@ -3,13 +3,13 @@ import { ModalController } from '@ionic/angular';
 import { AuthService } from 'src/app/auth/auth.service';
 import { ConsumedAmountService } from 'src/app/auth/consumed-amount.service';
 import { RecommendedIntakeService } from 'src/app/auth/recommended-intake.service';
+import { BlogPost } from 'src/app/blog-posts-admin/blog-post.model';
+import { BlogPostService } from 'src/app/blog-posts-admin/services/blog-post.service';
 import { ActivityTrackerPage } from 'src/app/trackers/activity-tracker/activity-tracker.page';
 import { FoodTrackerPage } from 'src/app/trackers/food-tracker/food-tracker.page';
 import { MoodTrackerPage } from 'src/app/trackers/mood-tracker/mood-tracker.page';
 import { SleepTrackerPage } from 'src/app/trackers/sleep-tracker/sleep-tracker.page';
 import { WaterTrackerPage } from 'src/app/trackers/water-tracker/water-tracker.page';
-
-import { BlogPost } from './blog-post.model';
 
 @Component({
   selector: 'app-explore',
@@ -65,10 +65,12 @@ export class ExplorePage implements OnInit {
   rested: number = 0;
   hurt: number = 0;
 
-  blogPosts: BlogPost[] = [{ id: '1', heading: 'water fact', description: 'water makes 70% of human body', imageUrl: 'https://media3.s-nbcnews.com/i/newscms/2017_15/1206634/woman-drinking-water-tease-today-170410_bb7df024651d415ac135bfaf31c4f819.jpg' },
-  { id: '2', heading: 'food fact', description: 'without food you dead BOi', imageUrl: 'https://i.pinimg.com/originals/a8/cd/aa/a8cdaa791eef42e15067426d08a566b0.jpg' },
-  { id: '3', heading: 'sleep fact', description: 'If you watch monitor that emmits blue light before going to sleep, your endorphine poroduction is decreased and therefore you cant sleep well', imageUrl: 'https://media.gq.com/photos/5e617d866ad6c200080c3f7d/16:9/w_1839,h_1034,c_limit/gq%20march%202020%20Is%20my%20screen-based%20lifestyle%20ruining%20my%20vision?%20.jpg' }]
+  //blog poostove trebamo da dovlacimo preko servisa iz baze
+  /*blogPosts: BlogPost[] = [{ id: '1', heading: 'water fact', description: 'water makes 70% of human body', imageUrl: 'https://media3.s-nbcnews.com/i/newscms/2017_15/1206634/woman-drinking-water-tease-today-170410_bb7df024651d415ac135bfaf31c4f819.jpg',adminId:"aaa"},
+  { id: '2', heading: 'food fact', description: 'without food you dead BOi', imageUrl: 'https://i.pinimg.com/originals/a8/cd/aa/a8cdaa791eef42e15067426d08a566b0.jpg',adminId:"aaa" },
+  { id: '3', heading: 'sleep fact', description: 'If you watch monitor that emmits blue light before going to sleep, your endorphine poroduction is decreased and therefore you cant sleep well', imageUrl: 'https://media.gq.com/photos/5e617d866ad6c200080c3f7d/16:9/w_1839,h_1034,c_limit/gq%20march%202020%20Is%20my%20screen-based%20lifestyle%20ruining%20my%20vision?%20.jpg',adminId:"aaa" }]*/
 
+  blogPosts: BlogPost[] = [];
 
   slideOpts = {
     on: {
@@ -158,9 +160,14 @@ export class ExplorePage implements OnInit {
     }
   };
 
-  constructor(public modalController: ModalController, private authService: AuthService, private recommendedIntakesService: RecommendedIntakeService, private consumedAmountService: ConsumedAmountService) { }
+  constructor(public modalController: ModalController, private authService: AuthService, private recommendedIntakesService: RecommendedIntakeService, private consumedAmountService: ConsumedAmountService, private blogPostService: BlogPostService) { }
 
   ionViewWillEnter() {
+
+    this.blogPostService.getAllBlogPosts().subscribe(resData => {
+      //this.blogPosts=resData;
+    });
+
     this.getConsumedAmounts();
     this.consumedAmountService.doesConsumedAmountForTodayExist().subscribe(resData => {
       if (resData == false) {
@@ -172,6 +179,11 @@ export class ExplorePage implements OnInit {
   }
 
   ngOnInit() {
+
+    this.blogPostService.blogPosts.subscribe(resData => {
+      this.blogPosts = resData;
+    });
+
     this.recommendedIntakesService.getUserRecommendedAmountsForLogedUser().subscribe(resData => {
 
       this.recommandedAmountOfWater = resData.recommendedAmountOfWater;
@@ -198,17 +210,17 @@ export class ExplorePage implements OnInit {
       consumedAmountOfLogedUserID = resData.id;
       dateFromDB = resData.date;
       this.consumedAmountService.editConsumedIntake(consumedAmountOfLogedUserID,
-        consumedAmountOfWater,waterPercentage,waterUdeo,
+        consumedAmountOfWater, waterPercentage, waterUdeo,
         consumedAmountOfCalories,
-        consumedAmountOfCarbs,carbsPercentage,carbsUdeo,
-        consumedAmountOfProtein,proteinPercentage,proteinUdeo,
-        consumedAmountOfFats,fatsPercentage,fatsUdeo,
-        consumedAmountOfSleep,sleepPercentage,sleepUdeo,
-        consumedAmountOfMindState,mindStatePercentage,mindStateUdeo,
-        userId,dateFromDB).subscribe(resData => {
-        console.log("updatovane vrednosti:");
-        console.log(resData);
-      });
+        consumedAmountOfCarbs, carbsPercentage, carbsUdeo,
+        consumedAmountOfProtein, proteinPercentage, proteinUdeo,
+        consumedAmountOfFats, fatsPercentage, fatsUdeo,
+        consumedAmountOfSleep, sleepPercentage, sleepUdeo,
+        consumedAmountOfMindState, mindStatePercentage, mindStateUdeo,
+        userId, dateFromDB).subscribe(resData => {
+          console.log("updatovane vrednosti:");
+          console.log(resData);
+        });
 
     });
 
@@ -218,78 +230,78 @@ export class ExplorePage implements OnInit {
     this.consumedAmountService.getTodaysConsumedAmountForLogedUser().subscribe(resData => {
       if (resData != null) {
         this.drankAmountTotal = resData.consumedAmountOfWater;
-        this.waterPercentage=resData.waterPercentage;
-        this.waterUdeo=resData.waterUdeo;
+        this.waterPercentage = resData.waterPercentage;
+        this.waterUdeo = resData.waterUdeo;
 
         this.totalCaloriesConsumed = resData.consumedAmountOfCalories;
-        
+
         this.totalProteinConsumed = resData.consumedAmountOfProtein;
-        this.proteinPercentage=resData.proteinPercentage;
-        this.proteinUdeo=resData.proteinUdeo;
+        this.proteinPercentage = resData.proteinPercentage;
+        this.proteinUdeo = resData.proteinUdeo;
 
         this.totalFatsConsumed = resData.consumedAmountOfFats;
-        this.fatsPercentage=resData.fatsPercentage;
-        this.fatsUdeo=resData.fatsUdeo;
+        this.fatsPercentage = resData.fatsPercentage;
+        this.fatsUdeo = resData.fatsUdeo;
 
         this.totalCarbsConsumed = resData.consumedAmountOfCarbs;
-        this.carbsPercentage=resData.carbsPercentage;
-        this.carbsUdeo=resData.carbsUdeo;
+        this.carbsPercentage = resData.carbsPercentage;
+        this.carbsUdeo = resData.carbsUdeo;
 
         this.totalTimeSlept = resData.consumedAmountOfSleep;
-        this.sleepPercentage=resData.sleepPercentage;
-        this.sleepUdeo=resData.sleepUdeo;
+        this.sleepPercentage = resData.sleepPercentage;
+        this.sleepUdeo = resData.sleepUdeo;
         /////
         // this.totalHoursSlept=resData.consumedAmountOfSleep;
         // this.totalHoursSlept=resData.consumedAmountOfSleep
         ///////
 
-        this.totalHoursSlept=Math.floor(resData.consumedAmountOfSleep/60);
-        this.totalMinutesSlept=60*(resData.consumedAmountOfSleep/60-Math.floor(resData.consumedAmountOfSleep/60))
-        
+        this.totalHoursSlept = Math.floor(resData.consumedAmountOfSleep / 60);
+        this.totalMinutesSlept = 60 * (resData.consumedAmountOfSleep / 60 - Math.floor(resData.consumedAmountOfSleep / 60))
+
         this.mindState = resData.consumedAmountOfMindState;
-        this.mindStatePercentage=resData.mindStatePercentage;
-        this.mindStateUdeo=resData.mindStateUdeo;
+        this.mindStatePercentage = resData.mindStatePercentage;
+        this.mindStateUdeo = resData.mindStateUdeo;
 
         console.log("Getovalo je ne null vrednosti:");
         console.log(resData);
-        this.updateConsumedAmounts(this.drankAmountTotal,  this.waterPercentage, this.waterUdeo,
+        this.updateConsumedAmounts(this.drankAmountTotal, this.waterPercentage, this.waterUdeo,
           this.totalCaloriesConsumed,
           this.totalCarbsConsumed, this.carbsPercentage, this.carbsUdeo,
           this.totalProteinConsumed, this.proteinPercentage, this.proteinUdeo,
-          this.totalFatsConsumed, this.fatsPercentage,  this.fatsUdeo,
+          this.totalFatsConsumed, this.fatsPercentage, this.fatsUdeo,
           this.totalTimeSlept, this.sleepPercentage, this.sleepUdeo,
           this.mindState, this.mindStatePercentage, this.mindStateUdeo,
           this.authService.logedUserID);
       } else {
         this.drankAmountTotal = 0;
-        this.waterPercentage= 0;
-        this.waterUdeo= 0;
+        this.waterPercentage = 0;
+        this.waterUdeo = 0;
 
-        this.totalCaloriesConsumed =  0;
-        
-        this.totalProteinConsumed =  0;
-        this.proteinPercentage= 0;
-        this.proteinUdeo= 0;
+        this.totalCaloriesConsumed = 0;
 
-        this.totalFatsConsumed =  0;
-        this.fatsPercentage= 0;
-        this.fatsUdeo= 0;
+        this.totalProteinConsumed = 0;
+        this.proteinPercentage = 0;
+        this.proteinUdeo = 0;
 
-        this.totalCarbsConsumed =  0;
-        this.carbsPercentage= 0;
-        this.carbsUdeo= 0;
+        this.totalFatsConsumed = 0;
+        this.fatsPercentage = 0;
+        this.fatsUdeo = 0;
 
-        this.totalTimeSlept =  0;
-        this.sleepPercentage= 0;
-        this.sleepUdeo= 0;
+        this.totalCarbsConsumed = 0;
+        this.carbsPercentage = 0;
+        this.carbsUdeo = 0;
+
+        this.totalTimeSlept = 0;
+        this.sleepPercentage = 0;
+        this.sleepUdeo = 0;
         /////
-        this.totalHoursSlept=0;
-        this.totalMinutesSlept=0;
+        this.totalHoursSlept = 0;
+        this.totalMinutesSlept = 0;
         ///////
-        
+
         this.mindState = 0;
-        this.mindStatePercentage= 0;
-        this.mindStateUdeo= 0;
+        this.mindStatePercentage = 0;
+        this.mindStateUdeo = 0;
         console.log("Getovalo je null vrednosti");
         console.log(resData);
       }
@@ -313,11 +325,11 @@ export class ExplorePage implements OnInit {
           this.drankAmountTotal = data.data.total_drank_amount;
           this.waterUdeo = data.data.water_udeo;
           this.waterPercentage = data.data.water_percentage;
-          this.updateConsumedAmounts(this.drankAmountTotal,  this.waterPercentage, this.waterUdeo,
+          this.updateConsumedAmounts(this.drankAmountTotal, this.waterPercentage, this.waterUdeo,
             this.totalCaloriesConsumed,
             this.totalCarbsConsumed, this.carbsPercentage, this.carbsUdeo,
             this.totalProteinConsumed, this.proteinPercentage, this.proteinUdeo,
-            this.totalFatsConsumed, this.fatsPercentage,  this.fatsUdeo,
+            this.totalFatsConsumed, this.fatsPercentage, this.fatsUdeo,
             this.totalTimeSlept, this.sleepPercentage, this.sleepUdeo,
             this.mindState, this.mindStatePercentage, this.mindStateUdeo,
             this.authService.logedUserID);
@@ -368,11 +380,11 @@ export class ExplorePage implements OnInit {
           this.proteinUdeo = data.data.protein_udeo;
           this.proteinPercentage = data.data.protein_percentage;
         }
-        this.updateConsumedAmounts(this.drankAmountTotal,  this.waterPercentage, this.waterUdeo,
+        this.updateConsumedAmounts(this.drankAmountTotal, this.waterPercentage, this.waterUdeo,
           this.totalCaloriesConsumed,
           this.totalCarbsConsumed, this.carbsPercentage, this.carbsUdeo,
           this.totalProteinConsumed, this.proteinPercentage, this.proteinUdeo,
-          this.totalFatsConsumed, this.fatsPercentage,  this.fatsUdeo,
+          this.totalFatsConsumed, this.fatsPercentage, this.fatsUdeo,
           this.totalTimeSlept, this.sleepPercentage, this.sleepUdeo,
           this.mindState, this.mindStatePercentage, this.mindStateUdeo,
           this.authService.logedUserID);
@@ -402,11 +414,11 @@ export class ExplorePage implements OnInit {
           this.sleepUdeo = data.data.sleep_udeo;
           this.sleepPercentage = data.data.sleep_percentage;
           this.condition = data.data.condition;
-          this.updateConsumedAmounts(this.drankAmountTotal,  this.waterPercentage, this.waterUdeo,
+          this.updateConsumedAmounts(this.drankAmountTotal, this.waterPercentage, this.waterUdeo,
             this.totalCaloriesConsumed,
             this.totalCarbsConsumed, this.carbsPercentage, this.carbsUdeo,
             this.totalProteinConsumed, this.proteinPercentage, this.proteinUdeo,
-            this.totalFatsConsumed, this.fatsPercentage,  this.fatsUdeo,
+            this.totalFatsConsumed, this.fatsPercentage, this.fatsUdeo,
             this.totalTimeSlept, this.sleepPercentage, this.sleepUdeo,
             this.mindState, this.mindStatePercentage, this.mindStateUdeo,
             this.authService.logedUserID);
@@ -439,11 +451,11 @@ export class ExplorePage implements OnInit {
           this.happy = data.data.happy;
           this.rested = data.data.rested;
           this.hurt = data.data.hurt;
-          this.updateConsumedAmounts(this.drankAmountTotal,  this.waterPercentage, this.waterUdeo,
+          this.updateConsumedAmounts(this.drankAmountTotal, this.waterPercentage, this.waterUdeo,
             this.totalCaloriesConsumed,
             this.totalCarbsConsumed, this.carbsPercentage, this.carbsUdeo,
             this.totalProteinConsumed, this.proteinPercentage, this.proteinUdeo,
-            this.totalFatsConsumed, this.fatsPercentage,  this.fatsUdeo,
+            this.totalFatsConsumed, this.fatsPercentage, this.fatsUdeo,
             this.totalTimeSlept, this.sleepPercentage, this.sleepUdeo,
             this.mindState, this.mindStatePercentage, this.mindStateUdeo,
             this.authService.logedUserID);

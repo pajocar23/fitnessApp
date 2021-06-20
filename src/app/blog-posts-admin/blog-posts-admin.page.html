@@ -21,9 +21,9 @@
         <ion-card-content>
           {{blogPost.description}}
         </ion-card-content>
-        <ion-button (click)="EditForm(blogPost)" (click)="presentAddingModal()" color="secondary">Edit<ion-icon name="create"></ion-icon></ion-button>
+        <ion-button (click)="EditForm(blogPost)" (click)="presentEditingModal()" color="secondary">Edit<ion-icon name="create"></ion-icon></ion-button>
         
-        <ion-button (click)="presentAlertDelete()" color="tertiary">Delete<ion-icon name="trash"></ion-icon></ion-button>
+        <ion-button  (click)="DeleteBlogPost(blogPost)" (click)="presentAlertDelete()" color="tertiary">Delete<ion-icon name="trash"></ion-icon></ion-button>
       </ion-card>
     </ion-item>
 
