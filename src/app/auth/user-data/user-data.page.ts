@@ -115,10 +115,13 @@ export class UserDataPage implements OnInit {
       this.userMetricsService._localUserId=resData.localId;
       _userId=this.userMetricsService._localUserId;
 
+      this.authService.setAdminStatus(false,resData.localId).subscribe(resData=>{
+        console.log("ADMIN STATUS:");
+        console.log(resData);
+      });
 
       this.userMetricsService.addUserMetrics(_name, _surname, _age, _gender, _height, _weight, _bodyType, _activityLevel, _goal, _userId).subscribe(resData => {
         console.log(resData);
-
 
         this.recommendedIntakeService.addUserRecommendedAmounts(this.recommendedIntakeService._recommendedAmountOfWater, this.recommendedIntakeService._recommendedAmountOfCalories, 
           this.recommendedIntakeService._recommendedAmountOfCarbs,this.recommendedIntakeService._recommendedAmountOfProtein, this.recommendedIntakeService._recommendedAmountOfFats, 
@@ -127,8 +130,8 @@ export class UserDataPage implements OnInit {
           });
 
       });
-
     });
+
 
     this.router.navigateByUrl("/login");
 

@@ -24,7 +24,7 @@ export class RegisterPage implements OnInit {
 
   onRegister() {
     this.authService.setIsRegisteredToTrue(); //ovo nam dozvoljava da prodjemo gard da bi pristupili stranici gde unosimo metrike
-    this.authService.userIsNotAdmin();
+    //this.authService.userIsNotAdmin();
 
     //setujemo vrednosti parametra koje cemo posle proslediti (obavezno ih prikriti)
 
@@ -34,7 +34,8 @@ export class RegisterPage implements OnInit {
 
     console.log("idemo na stranicu za metrike");
     
-    this.router.navigateByUrl("/user-data");
+    this.router.navigateByUrl("/user-data");  
+
   }
 
   matchValues(

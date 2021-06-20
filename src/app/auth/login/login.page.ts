@@ -25,14 +25,10 @@ export class LoginPage implements OnInit {
 
 
   onLogIn() {
-    /*if (!this.authService.isUserAdmin) {
-      this.authService.userIsNotAdmin();
-    } else {
-      this.authService.userIsAdmin();
-    }*/
-
-    this.authService.userIsNotAdmin();
-
+    
+    //umesto ovoga, procitati iz baze//get all
+    //this.authService.userIsNotAdmin();
+    
     this.loadingController.create({ message: "Logging in..." }).then((loadingEl: HTMLIonLoadingElement) => {
       loadingEl.present();
 
@@ -42,16 +38,23 @@ export class LoginPage implements OnInit {
         this.authService._logedUserID=resData.localId;
         loadingEl.dismiss();
         this.router.navigateByUrl("/landing/tabs/explore");
+
+
+        this.authService.isLogedUserAdmin().subscribe(resData=>{
+          if(resData==true){
+            console.log("res data je true");
+            this.authService.userIsAdmin();
+          }else{
+            console.log("res data je false");
+            this.authService.userIsNotAdmin();
+          }
+        });
+
+        
       });
-
-
-
     })
-    // this.authService.login(this.loginForm.value).subscribe(resData=>{
-    //   console.log(resData);
-    //   this.router.navigateByUrl("/landing/tabs/explore");
-    // });
-    //console.log(this.loginForm);
+
+
   }
 
   passwordType: string = 'password';
