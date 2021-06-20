@@ -122,6 +122,7 @@ export class AuthService {
   logut(){
     this._user.next(null);
     this._logedUserID="";
+    
     //this._isUserAuthenticated=false;
   }
 

@@ -25,11 +25,13 @@ export class LoginPage implements OnInit {
 
 
   onLogIn() {
-    if (!this.authService.isUserAdmin) {
-      this.authService.userIsAdmin;
+    /*if (!this.authService.isUserAdmin) {
+      this.authService.userIsNotAdmin();
     } else {
-      this.authService.userIsNotAdmin;
-    }
+      this.authService.userIsAdmin();
+    }*/
+
+    this.authService.userIsNotAdmin();
 
     this.loadingController.create({ message: "Logging in..." }).then((loadingEl: HTMLIonLoadingElement) => {
       loadingEl.present();

@@ -37,12 +37,12 @@ const routes: Routes = [
   {
     path: 'blog-posts-admin',
     loadChildren: () => import('./blog-posts-admin/blog-posts-admin.module').then( m => m.BlogPostsAdminPageModule),
-    //canLoad:[AdminGuard]
+    canLoad:[AdminGuard]
   },
   {
     path: 'users-management-admin',
     loadChildren: () => import('./users-management-admin/users-management-admin.module').then( m => m.UsersManagementAdminPageModule),
-    //canLoad:[AdminGuard]
+    canLoad:[AdminGuard]
   },
   {
     path: 'user-data',
