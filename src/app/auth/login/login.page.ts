@@ -34,7 +34,7 @@ export class LoginPage implements OnInit {
 
       this.authService.login(this.loginForm.value).subscribe(resData => {
         console.log("Logging in successful");
-        console.log(resData);
+        //console.log(resData);
         this.authService._logedUserID=resData.localId;
         loadingEl.dismiss();
         this.router.navigateByUrl("/landing/tabs/explore");
@@ -42,10 +42,10 @@ export class LoginPage implements OnInit {
 
         this.authService.isLogedUserAdmin().subscribe(resData=>{
           if(resData==true){
-            console.log("res data je true");
+            //console.log("res data je true");
             this.authService.userIsAdmin();
           }else{
-            console.log("res data je false");
+            //console.log("res data je false");
             this.authService.userIsNotAdmin();
           }
         });

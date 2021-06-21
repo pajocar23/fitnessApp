@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
-import { AdminGuard } from './auth/guards/admin.guard';
+import { AdminOptionsGuardGuard } from './auth/guards/admin-options-guard.guard';
 import { AuthGuard } from './auth/guards/auth.guard';
 import { TrackerGuard } from './auth/guards/tracker.guard';
 import { UserDataGuard } from './auth/guards/user-data.guard';
@@ -37,12 +37,12 @@ const routes: Routes = [
   {
     path: 'blog-posts-admin',
     loadChildren: () => import('./blog-posts-admin/blog-posts-admin.module').then( m => m.BlogPostsAdminPageModule),
-    canLoad:[AdminGuard]
+    canActivate:[AdminOptionsGuardGuard]
   },
   {
     path: 'users-management-admin',
     loadChildren: () => import('./users-management-admin/users-management-admin.module').then( m => m.UsersManagementAdminPageModule),
-    canLoad:[AdminGuard]
+    canActivate:[AdminOptionsGuardGuard]
   },
   {
     path: 'user-data',

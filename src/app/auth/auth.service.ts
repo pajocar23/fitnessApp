@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { User } from './user.model';
-import { take, tap } from 'rxjs/operators';
+import { switchMap, take, tap } from 'rxjs/operators';
 import { map } from 'rxjs/operators';
 
 
@@ -52,6 +52,30 @@ export class AuthService {
   private _user = new BehaviorSubject<User>(null);
 
   constructor(private http: HttpClient) { }
+
+  get loggedUserId() {
+    return this._user.asObservable().pipe(
+      map((user) => {
+        if (user) {
+          return user.id;
+        } else {
+          return null;
+        }
+      })
+    );
+  }
+
+  get loggedUserToken() {
+    return this._user.asObservable().pipe(
+      map((user) => {
+        if (user) {
+          return user.token;
+        } else {
+          return null;
+        }
+      })
+    );
+  }
 
 
   get email() {
@@ -112,14 +136,21 @@ export class AuthService {
   }
 
   setAdminStatus(userIsAdmin: boolean, userId: string) {
-    return this.http.post<{ name: string }>(`https://healthy-life-app-2ecc5-default-rtdb.europe-west1.firebasedatabase.app/userAdminStatus.json`,
-      { userIsAdmin, userId });
+    return this.loggedUserToken.pipe(
+      take(1),
+      switchMap((token) => {
+        return this.http.post<{ name: string }>(`https://healthy-life-app-2ecc5-default-rtdb.europe-west1.firebasedatabase.app/userAdminStatus.json?auth=${token}`,
+        {userIsAdmin, userId });
+      }));
   }
 
   isLogedUserAdmin() {
-    return this.http.get<{ [key: string]: adminStatusData }>(`https://healthy-life-app-2ecc5-default-rtdb.europe-west1.firebasedatabase.app/userAdminStatus.json`)
-      .pipe(map((adminStatusData) => {
-
+    return this.loggedUserToken.pipe(
+      take(1),
+      switchMap((token) => {
+        return this.http.get<{ [key: string]: adminStatusData }>(`https://healthy-life-app-2ecc5-default-rtdb.europe-west1.firebasedatabase.app/userAdminStatus.json?auth=${token}`);
+      }),
+      map((adminStatusData) => {
         const _admiStatusData: adminStatusData[] = [];
         var isUserAdmin: boolean = false;
 
@@ -134,23 +165,16 @@ export class AuthService {
         }
 
         for (var i = 0; i < _admiStatusData.length; i++) {
-          console.log("1:");
-          console.log(_admiStatusData[i].userId);
-          console.log("2:");
-          console.log(this._logedUserID);
-
           if (_admiStatusData[i].userId == this._logedUserID) {
             isUserAdmin = _admiStatusData[i].userIsAdmin;
-            console.log("provera1:");
-            console.log(isUserAdmin);
           }
         }
 
         return isUserAdmin;
 
       }));
-  }
 
+  }
 
   login(user: UserData) {
     this._isUserAuthenticated = true;

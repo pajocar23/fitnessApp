@@ -165,13 +165,14 @@ export class ExplorePage implements OnInit {
   ionViewWillEnter() {
 
     this.blogPostService.getAllBlogPosts().subscribe(resData => {
-      //this.blogPosts=resData;
     });
 
     this.getConsumedAmounts();
+
+    //ovaj deo ispod treba prebaciti u ngOninit
     this.consumedAmountService.doesConsumedAmountForTodayExist().subscribe(resData => {
       if (resData == false) {
-        console.log("Consumed amounts for loged user for today does not exist and therefore it will be added to database");
+        console.log("Consumed amounts for loged user for today do not exist and therefore they will be added to database");
         this.consumedAmountService.addDefaultConsumedIntake(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, this.authService.logedUserID, new Date().toLocaleString()).subscribe(resData => {
         });
       }
@@ -184,7 +185,7 @@ export class ExplorePage implements OnInit {
       this.blogPosts = resData;
     });
 
-    this.recommendedIntakesService.getUserRecommendedAmountsForLogedUser().subscribe(resData => {
+    this.recommendedIntakesService.getRecommendedAmountsForLogedUser().subscribe(resData => {
 
       this.recommandedAmountOfWater = resData.recommendedAmountOfWater;
       this.recommandedHoursOfSleep = resData.recommendedAmountOfSleep;
@@ -262,8 +263,8 @@ export class ExplorePage implements OnInit {
         this.mindStatePercentage = resData.mindStatePercentage;
         this.mindStateUdeo = resData.mindStateUdeo;
 
-        console.log("Getovalo je ne null vrednosti:");
-        console.log(resData);
+        //console.log("Getovalo je ne null vrednosti:");
+        //console.log(resData);
         this.updateConsumedAmounts(this.drankAmountTotal, this.waterPercentage, this.waterUdeo,
           this.totalCaloriesConsumed,
           this.totalCarbsConsumed, this.carbsPercentage, this.carbsUdeo,

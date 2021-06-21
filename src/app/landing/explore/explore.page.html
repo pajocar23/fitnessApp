@@ -20,7 +20,7 @@
       <ion-card>
         <ion-card-header>
           <ion-img *ngIf="blogPosts.length!=0" class="sliderImg" src="{{blogPosts[blogPosts.length-1].imageUrl}}"></ion-img>
-          <ion-card-title *ngIf="blogPosts.length!=0">{{blogPosts[0].heading}}</ion-card-title>
+          <ion-card-title *ngIf="blogPosts.length!=0">{{blogPosts[blogPosts.length-1].heading}}</ion-card-title>
         </ion-card-header>
         <ion-card-content *ngIf="blogPosts.length!=0">
           {{blogPosts[blogPosts.length-1].description}}

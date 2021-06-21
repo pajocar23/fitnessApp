@@ -39,31 +39,22 @@ export class BlogPostsAdminPage implements OnInit {
   }
 
   ionViewWillEnter() {
-    this.getAllBlogPostsFromDB();
+    
   }
-
-
 
   async presentAddingModal() { 
     const modal = await this.modalController.create({
       component: AddBlogPostPage,
       componentProps: {
-        'editingForm': this.editingForm,
-        'selectedBlogPostID': this.selectedBlogPostID,
-        'selectedBlogPostHeading': this.selectedBlogPostHeading,
-        'selectedBlogPostDescription': this.selectedBlogPostDescription,
-        'selectedBlogPostImageURL': this.selectedBlogPostImageURL,
-
         'addedBlogPostHeading': this.addedBlogPostHeading,
         'addedBlogPostDescription': this.addedBlogPostDescription,
         'addedBlogPostImageUrl': this.addedBlogPostImageUrl,
         'addingConfirmed':this.addingConfirmed
-
         //'blogPosts':this.blogPosts
       }
     });
-    modal.present();
 
+    modal.present();
     return modal.onDidDismiss().then(
       (data: any) => {
         if (data) {
@@ -88,7 +79,7 @@ export class BlogPostsAdminPage implements OnInit {
   async presentEditingModal() { 
     const modal = await this.modalController.create({
       component: AddBlogPostPage,
-      componentProps: {
+      componentProps: {      
         'editingForm': this.editingForm,
         'selectedBlogPostID': this.selectedBlogPostID,
         'selectedBlogPostHeading': this.selectedBlogPostHeading,

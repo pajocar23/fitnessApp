@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { map, switchMap, take, tap } from 'rxjs/operators';
+import { AuthService } from 'src/app/auth/auth.service';
 import { BlogPost } from 'src/app/blog-posts-admin/blog-post.model';
 
 interface BlogPostI {
@@ -24,100 +25,100 @@ export class BlogPostService {
     return this._blogPosts.asObservable();
   }
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private authService: AuthService) { }
 
   //CRUD operations for blog posts
+
+
   addBlogPost(heading: string, description: string, imageUrl: string, adminId: string) {
+
     let generatedId;
-    return this.http.post<{ name: string }>(`https://healthy-life-app-2ecc5-default-rtdb.europe-west1.firebasedatabase.app/blogPosts.json`,
-      { heading, description, imageUrl, adminId })
-      .pipe(switchMap((blogPostsResData) => {
-        generatedId = blogPostsResData.name;
+    let newBlogPost: BlogPost;
+    let fetchedUserId: string;
+
+    return this.authService.loggedUserId.pipe(
+      take(1),
+      switchMap(userId => {
+        fetchedUserId = userId;
+        return this.authService.loggedUserToken;
+      }),
+      take(1),
+      switchMap((token) => {
+        newBlogPost = new BlogPost(
+          null,
+          heading,
+          description,
+          imageUrl,
+          adminId
+        );
+        return this.http.post<{ name: string }>(`https://healthy-life-app-2ecc5-default-rtdb.europe-west1.firebasedatabase.app/blogPosts.json?auth=${token}`, newBlogPost);
+      }),
+      take(1),
+      switchMap((resData) => {
+        generatedId = resData.name;
         return this.blogPosts;
       }),
-        take(1),
-        tap((blogPosts) => {
-          this._blogPosts.next(blogPosts.concat({
-            id: generatedId,
-            heading,
-            description,
-            imageUrl,
-            adminId
-          }));
+      take(1),
+      tap((blogPosts) => {
+        newBlogPost.id = generatedId;
+        this._blogPosts.next(blogPosts.concat(newBlogPost));
+      })
+    );
 
-        }));
   }
 
   editBlogPost(id: string, heading: string, description: string, imageUrl: string, adminId: string) {
-    return this.http.put(`https://healthy-life-app-2ecc5-default-rtdb.europe-west1.firebasedatabase.app/blogPosts/${id}.json`,
-      { heading, description, imageUrl, adminId })
-      .pipe(switchMap(() => {
-        return this.blogPosts;
-      }),
-        take(1),
-        tap((blogPosts) => {
-          const updatedBlogPostIndex = blogPosts.findIndex((q) => q.id === id);
-          const updatedBlogPosts = [...blogPosts];
-          updatedBlogPosts[updatedBlogPostIndex] = new BlogPost(
+    return this.authService.loggedUserToken.pipe(
+      take(1),
+      switchMap((token) => {
+        return this.http.put(
+          `https://healthy-life-app-2ecc5-default-rtdb.europe-west1.firebasedatabase.app/blogPosts/${id}.json?auth=${token}`,
+          {
             id,
             heading,
             description,
             imageUrl,
             adminId
-          );
-          this._blogPosts.next(updatedBlogPosts);
-        })
-      );
-  }
-
-  /*  editQuote(
-    id: string,
-    author: string,
-    text: string,
-    imageUrl: string,
-    userId: string
-  ) {
-    return this.authService.token.pipe(
-      take(1),
-      switchMap((token) => {
-        return this.http.put(
-          `https://quotes-app-termin-10-default-rtdb.europe-west1.firebasedatabase.app/quotes/${id}.json?auth=${token}`,
-          {
-            author,
-            text,
-            imageUrl,
-            userId,
           }
         );
       }),
       switchMap(() => {
-        return this.quotes;
+        return this.blogPosts;
       }),
       take(1),
-      tap((quotes) => {
-        const updatedQuoteIndex = quotes.findIndex((q) => q.id === id);
-        const updatedQuotes = [...quotes];
-        updatedQuotes[updatedQuoteIndex] = new Quote(
+      tap((blogPosts) => {
+        const updatedBlogPostIndex = blogPosts.findIndex((q) => q.id === id);
+        const updatedBlogPosts = [...blogPosts];
+        updatedBlogPosts[updatedBlogPostIndex] = new BlogPost(
           id,
-          author,
-          text,
+          heading,
+          description,
           imageUrl,
-          userId
+          adminId
         );
-        this._quotes.next(updatedQuotes);
+        this._blogPosts.next(updatedBlogPosts);
       })
     );
-  }*/
+  }
 
   getBlogPost(id: string) {
-    return this.http.get<{ [key: string]: BlogPostI }>(`https://healthy-life-app-2ecc5-default-rtdb.europe-west1.firebasedatabase.app/blogPosts/${id}.json`);
+    return this.authService.loggedUserToken.pipe(
+      take(1),
+      switchMap((token) => {
+        return this.http.get<{ [key: string]: BlogPostI }>(`https://healthy-life-app-2ecc5-default-rtdb.europe-west1.firebasedatabase.app/blogPosts/${id}.json?auth=${token}`);
+      }));
+    //return this.http.get<{ [key: string]: BlogPostI }>(`https://healthy-life-app-2ecc5-default-rtdb.europe-west1.firebasedatabase.app/blogPosts/${id}.json`);
   }
 
   getAllBlogPosts() {
-    return this.http.get<{ [key: string]: BlogPostI }>(`https://healthy-life-app-2ecc5-default-rtdb.europe-west1.firebasedatabase.app/blogPosts.json`)
-      .pipe(map((blogPostsData) => {
-
+    return this.authService.loggedUserToken.pipe(
+      take(1),
+      switchMap((token) => {
+        return this.http.get<{ [key: string]: BlogPostI }>(`https://healthy-life-app-2ecc5-default-rtdb.europe-west1.firebasedatabase.app/blogPosts.json?auth=${token}`);
+      }),
+      map((blogPostsData) => {
         const blogPosts: BlogPost[] = [];
+
 
         for (const key in blogPostsData) {
           if (blogPostsData.hasOwnProperty(key)) {
@@ -130,14 +131,31 @@ export class BlogPostService {
             });
           }
         }
+        return blogPosts;
+      }),
+      tap(blogPosts => {
         this._blogPosts.next(blogPosts);
-        return this.blogPosts;
-        ///////////
-      }));
+      })
+    );
   }
 
   deleteBlogPost(id: string) {
-    return this.http.delete(`https://healthy-life-app-2ecc5-default-rtdb.europe-west1.firebasedatabase.app/blogPosts/${id}.json`)
+
+    return this.authService.loggedUserToken.pipe(
+      take(1),
+      switchMap((token) => {
+        return this.http.delete(`https://healthy-life-app-2ecc5-default-rtdb.europe-west1.firebasedatabase.app/blogPosts/${id}.json?auth=${token}`);
+      }),
+      switchMap(() => {
+        return this.blogPosts;
+      }),
+      take(1),
+      tap((quotes) => {
+        this._blogPosts.next(quotes.filter((q) => q.id !== id));
+      })
+    );
+
+    /*return this.http.delete(`https://healthy-life-app-2ecc5-default-rtdb.europe-west1.firebasedatabase.app/blogPosts/${id}.json`)
       .pipe(switchMap(() => {
         return this.blogPosts;
       }),
@@ -145,7 +163,7 @@ export class BlogPostService {
         tap((blogPosts) => {
           this._blogPosts.next(blogPosts.filter((q) => q.id !== id));
         })
-      );
+      );*/
   }
 
 }

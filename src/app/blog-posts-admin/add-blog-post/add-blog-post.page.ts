@@ -30,11 +30,11 @@ export class AddBlogPostPage implements OnInit {
 
   constructor(public modalController: ModalController, public alertController: AlertController, private authServivce: AuthService, private blogPostService: BlogPostService) {
     this.viewImageWithLinkEdit = this.selectedBlogPostImageURL;
+
     this.viewImageWithLinkAdd = this.addedBlogPostImageUrl;
   }
 
   ngOnInit() {
-  
   }
 
 
