@@ -1,12 +1,13 @@
-import { Component,ElementRef,ViewChild } from '@angular/core';
+import { Component, ViewChild,ElementRef } from '@angular/core';
+
 declare var google:any;
 
 @Component({
-  selector: 'app-closest-gyms',
-  templateUrl: './closest-gyms.page.html',
-  styleUrls: ['./closest-gyms.page.scss'],
+  selector: 'app-google-map',
+  templateUrl: './google-map.component.html',
+  styleUrls: ['./google-map.component.scss'],
 })
-export class ClosestGymsPage{
+export class GoogleMapComponent{
 
   @ViewChild('map',{read:ElementRef,static:false}) mapRef:ElementRef;
 
@@ -16,15 +17,14 @@ export class ClosestGymsPage{
   ionViewDidEnter(){
     this.showMap();
   }
-//44.76654855185074, 20.480055640317442
+
   showMap(){
-    const location=new google.maps.LatLng(44.76654855185074,20.480055640317442);
+    const location=new google.maps.LatLng(-17,31);
     const options={
       center:location,
-      zoom:30,
+      zoom:15,
       disableDefaultUI:true
     }
     this.map=new google.maps.Map(this.mapRef.nativeElement,options);
   }
-
 }

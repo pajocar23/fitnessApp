@@ -8,6 +8,8 @@ import { ClosestGymsPageRoutingModule } from './closest-gyms-routing.module';
 
 import { ClosestGymsPage } from './closest-gyms.page';
 
+import { GoogleMapComponent } from 'src/app/google-map/google-map.component';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -15,6 +17,6 @@ import { ClosestGymsPage } from './closest-gyms.page';
     IonicModule,
     ClosestGymsPageRoutingModule
   ],
-  declarations: [ClosestGymsPage]
+  declarations: [ClosestGymsPage,GoogleMapComponent]
 })
 export class ClosestGymsPageModule {}
