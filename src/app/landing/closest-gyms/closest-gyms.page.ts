@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -7,9 +8,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ClosestGymsPage implements OnInit {
 
-  constructor() { }
 
+  constructor(private http:HttpClient) { }
+  //AIzaSyAqrL_6ePRhX9H45IoE63COZ4B1nvveKMY
   ngOnInit() {
+  }
+
+
+  getMap(){
+    // return this.http.get<{ [key: string]: userMetricsData }>(``);
   }
 
 }

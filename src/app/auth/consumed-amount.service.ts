@@ -83,8 +83,12 @@ export class ConsumedAmountService {
       }),
       map((consumedAmountsData) => {
 
+        console.log("1");
+        console.log(consumedAmountsData);
+
         const consumedAmounts: ConsumedAmount[] = [];
-        var consumedAmountsForLogedUser: ConsumedAmount;
+        var consumedAmountsForLogedUser: ConsumedAmount[]=[];
+        var consumedAmountsForLogedUserToday: ConsumedAmount;
 
         for (const key in consumedAmountsData) {
           if (consumedAmountsData.hasOwnProperty(key)) {
@@ -117,11 +121,29 @@ export class ConsumedAmountService {
 
         for (var i = 0; i < consumedAmounts.length; i++) {
           if (consumedAmounts[i].userId == this.authService._logedUserID) {
-            consumedAmountsForLogedUser = consumedAmounts[i];
+            consumedAmountsForLogedUser.push(consumedAmounts[i]);
+          }
+        }
+        console.log("2");
+        console.log(consumedAmountsForLogedUser);
+        ///
+        for (var i = 0; i < consumedAmountsForLogedUser.length; i++) {
+          //mesec pa dan pa (godina i vreme kojoj smo stripovali vreme)
+          var dateElements1 = consumedAmountsForLogedUser[i].date.split("/", 3);
+          dateElements1[2] = dateElements1[2].substr(0, dateElements1[2].indexOf(","));
+
+          var dateElements2 = new Date().toLocaleString().split("/", 3);
+          dateElements2[2] = dateElements2[2].substr(0, dateElements2[2].indexOf(","));
+
+          if(JSON.stringify(dateElements1) === JSON.stringify(dateElements2)){
+            console.log("NADJEN JE DANASNJI CONSUMED AMOUNT");
+            consumedAmountsForLogedUserToday=consumedAmountsForLogedUser[i];
+            break;
           }
         }
 
-        return consumedAmountsForLogedUser;
+        ///
+        return consumedAmountsForLogedUserToday;
       }));
   }
 
