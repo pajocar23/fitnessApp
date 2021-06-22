@@ -257,7 +257,7 @@ export class ExplorePage implements OnInit {
         ///////
 
         this.totalHoursSlept = Math.floor(resData.consumedAmountOfSleep / 60);
-        this.totalMinutesSlept = Math.floor(60 * (resData.consumedAmountOfSleep / 60 - Math.floor(resData.consumedAmountOfSleep / 60)));
+        this.totalMinutesSlept = 60 * (resData.consumedAmountOfSleep / 60 - Math.floor(resData.consumedAmountOfSleep / 60))
 
         this.mindState = resData.consumedAmountOfMindState;
         this.mindStatePercentage = resData.mindStatePercentage;
