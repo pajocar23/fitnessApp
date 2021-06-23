@@ -1,6 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, ElementRef, ViewChild } from '@angular/core';
+
+import { Gym } from './Gym.model';
 declare var google: any;
+
 
 @Component({
   selector: 'app-closest-gyms',
@@ -8,6 +11,10 @@ declare var google: any;
   styleUrls: ['./closest-gyms.page.scss'],
 })
 export class ClosestGymsPage {
+
+  markers2 = [];
+  myLat;
+  myLng;
 
   @ViewChild('map', { read: ElementRef, static: false }) mapRef: ElementRef;
 
@@ -23,33 +30,56 @@ export class ClosestGymsPage {
     longitude: "20.485671"
   }];
 
-
-  markers2: any = [];
-
   map: any;
-  constructor(private http:HttpClient) { }
+
+  constructor(private http: HttpClient) { }
 
   ionViewDidEnter() {
-    this.markers2 = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=44.76654855185074,20.480055640317442&radius=1500&type=gym&keyword=gym&key=AIzaSyBb4QxfgGK_m_dvxdeO3Czo--ZjinKew6I';
-    this.showMap();
+    this.getMyLocation().subscribe(resData => {
+      this.myLat = resData["location"]["lat"];
+      this.myLng = resData["location"]["lng"];
+
+      this.getAllGymsNearby(this.myLat,this.myLng).subscribe(resData => {
+        var _tmp = [];
+        for (let res of resData["results"]) {
+          var latitude = res["geometry"]["location"]["lat"];
+          var longitude = res["geometry"]["location"]["lng"];
+          var title = res["name"];
+          var vicinity = res["vicinity"];
+          //console.log(vicinity);
+          let res_temp={latitude:latitude,longitude:longitude,title:title,vicinity:vicinity};
+
+          _tmp.push(res_temp);
+
+        }
+        this.markers2 = _tmp;
+
+        this.showMap();
+
+      });
+    });
+
   }
 
-  getAllGymsNearby(){
-    var response;
-    response=this.http.get<{}>(`https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=44.76654855185074,20.480055640317442&radius=1500&type=gym&keyword=gym&key=AIzaSyBb4QxfgGK_m_dvxdeO3Czo--ZjinKew6I`);
-    return response;
+  getAllGymsNearby(Latitude: string, Longitude: string) {
+    return this.http.get('https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=' + Latitude + ',' + Longitude + '&radius=1000&type=gym&keyword=teretana&key=AIzaSyBb4QxfgGK_m_dvxdeO3Czo--ZjinKew6I');
+  }
+
+  getMyLocation() {
+    return this.http.post('https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyBb4QxfgGK_m_dvxdeO3Czo--ZjinKew6I', {});
   }
 
   addMarkersToMap(markers) {
+    console.log(markers.length);
     for (let marker of markers) {
       let position = new google.maps.LatLng(marker.latitude, marker.longitude);
       let mapMarker = new google.maps.Marker({
         position: position,
         title: marker.title,
         latitude: marker.latitude,
-        longitude: marker.longitude
+        longitude: marker.longitude,
+        vicinity:marker.vicinity
       });
-
       mapMarker.setMap(this.map);
       this.addInfoWindowToMarker(mapMarker);
     }
@@ -60,6 +90,7 @@ export class ClosestGymsPage {
       '<h2 id="firstHeading" class="firstHeading">' + marker.title + '</h2>' +
       '<p>Latitude: ' + marker.latitude + '</p>' +
       '<p>Longitude: ' + marker.longitude + '</p>' +
+      '<p>Address: ' + marker.vicinity + '</p>' +
       '<ion-button id="navigate" color="primary">Navigate</ion-button>' +
       '</div>';
 
@@ -73,7 +104,7 @@ export class ClosestGymsPage {
 
       google.maps.event.addListenerOnce(infoWindow, 'domready', () => {
         document.getElementById('navigate').addEventListener('click', () => {
-          console.log('navigate button clicked!');
+          //console.log('navigate button clicked!');
           //code to navigate using google maps app
           window.open('https://www.google.com/maps/dir/?api=1&destination=' + marker.latitude + ',' + marker.longitude);
         });
@@ -93,15 +124,15 @@ export class ClosestGymsPage {
 
   //44.76654855185074, 20.480055640317442
   showMap() {
-    
-    const location = new google.maps.LatLng(44.76654855185074, 20.480055640317442);
+
+    const location = new google.maps.LatLng(this.myLat,this.myLng);
     const options = {
       center: location,
       zoom: 15,
       disableDefaultUI: false
     }
     this.map = new google.maps.Map(this.mapRef.nativeElement, options);
-    this.addMarkersToMap(this.markers);
+    this.addMarkersToMap(this.markers2);
   }
 
 
