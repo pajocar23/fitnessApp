@@ -4,10 +4,61 @@
       <ion-icon button name="close" (click)="dismiss()" size="large"></ion-icon>
     </ion-buttons> -->
 
-    <ion-button (click)="dismiss()" slot="end" shape="round" size="small" position="floating" fill="clear" color="light">X</ion-button>
+    <ion-button (click)="dismiss()" slot="end" shape="round" size="small" position="floating" fill="clear"
+      color="light">X</ion-button>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <p style="margin-left:10px">Activity</p>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-label>
+          <h1>Preferred distance (km):{{desiredDistance}}</h1>
+        </ion-label>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+          <ion-button (click)="addDesiredDistance(sliderValue)">Add distance</ion-button>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-range min="0" max="20" step="1" snaps="true" color="primary" name="kmKnobs" pin="true"
+          [(ngModel)]="sliderValue"></ion-range>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-button (click)="startTracking()">Start tracking</ion-button>
+          <ion-button (click)="stopTracking()">Stop tracking</ion-button>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-item color="primary">
+          <label style="color:white;">{{statusMessage}}</label>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-button (click)="viewProgress()">View progress</ion-button>
+          <label *ngIf="currendDistanceTraveled!=0" style="padding-left: 10%;">{{currendDistanceTraveled}}</label>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <label *ngIf="finalDistanceTraveled!=0">Final distance traveled: {{finalDistanceTraveled}}</label>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <!-- <img src="assets/img/activity.png"> -->
 </ion-content>
