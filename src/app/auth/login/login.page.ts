@@ -24,36 +24,32 @@ export class LoginPage implements OnInit {
   }
 
 
-  onLogIn() {
-    
-    //umesto ovoga, procitati iz baze//get all
-    //this.authService.userIsNotAdmin();
-    
+  onLogIn() {   
     this.loadingController.create({ message: "Logging in..." }).then((loadingEl: HTMLIonLoadingElement) => {
       loadingEl.present();
 
       this.authService.login(this.loginForm.value).subscribe(resData => {
+
+        if(resData){
         console.log("Logging in successful");
         //console.log(resData);
         this.authService._logedUserID=resData.localId;
         loadingEl.dismiss();
         this.router.navigateByUrl("/landing/tabs/explore");
-
-
+        }else{
+          this.router.navigateByUrl("/login");
+          console.log("Logging error");
+          return;
+        }
         this.authService.isLogedUserAdmin().subscribe(resData=>{
           if(resData==true){
-            //console.log("res data je true");
             this.authService.userIsAdmin();
           }else{
-            //console.log("res data je false");
             this.authService.userIsNotAdmin();
           }
-        });
-
-        
+        });      
       });
     })
-
 
   }
 

@@ -140,7 +140,7 @@ export class ConsumedAmountService {
           console.log(JSON.stringify(dateElements2));*/
 
           if(JSON.stringify(dateElements1) === JSON.stringify(dateElements2)){
-            console.log("NADJEN JE DANASNJI DATUM ZA TRENUTNO ULOGOVANOG KORISNIKA");
+            //console.log("NADJEN JE DANASNJI DATUM ZA TRENUTNO ULOGOVANOG KORISNIKA");
             consumedAmountsForLogedUserForToday=consumedAmountsForLogedUser[i];
             break;
           }
@@ -194,8 +194,8 @@ export class ConsumedAmountService {
           }
         }
 
-        console.log("consumedAmounts for all users");
-        console.log(consumedAmounts);
+        //console.log("consumedAmounts for all users");
+        //console.log(consumedAmounts);
 
         for (var i = 0; i < consumedAmounts.length; i++) {
           if (consumedAmounts[i].userId == this.authService._logedUserID) {
@@ -203,8 +203,8 @@ export class ConsumedAmountService {
           }
         }
 
-        console.log("consumedAmounts for loged user");
-        console.log(consumedAmountsForLogedUser);
+        //console.log("consumedAmounts for loged user");
+        //console.log(consumedAmountsForLogedUser);
 
         for (var i = 0; i < consumedAmountsForLogedUser.length; i++) {
           //mesec pa dan pa (godina i vreme kojoj smo stripovali vreme)
@@ -224,7 +224,7 @@ export class ConsumedAmountService {
           console.log(JSON.stringify(dateElements2));*/
 
           if(JSON.stringify(dateElements1) === JSON.stringify(dateElements2)){
-            console.log("NADJEN JE DANASNJI DATUM ZA TRENUTNO ULOGOVANOG KORISNIKA");
+            //console.log("NADJEN JE DANASNJI DATUM ZA TRENUTNO ULOGOVANOG KORISNIKA");
             alreadyExists=true;
             break;
           }else{

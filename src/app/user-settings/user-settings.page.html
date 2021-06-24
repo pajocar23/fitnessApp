@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar class="headerClass">
-    <ion-title>UserSettings</ion-title>
+    <ion-title>My metrics</ion-title>
     <ion-buttons slot="start">
       <ion-back-button defaultHref="landing"></ion-back-button>
     </ion-buttons>
@@ -8,4 +8,84 @@
 </ion-header>
 
 <ion-content>
+  <ion-grid *ngIf="userMetrics!=null">
+    <ion-row>
+      <ion-avatar>
+        <img src={{userMetrics.imageUrl}}>
+      </ion-avatar>
+    </ion-row>
+    <ion-row>
+      <ion-col size-sm=3 offset-sm=3>
+        <ion-item lines="none" color="primary">
+          <ion-label>Name</ion-label>
+          <ion-label>{{userMetrics.name}}</ion-label>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size-sm=3>
+        <ion-item lines="none" lines="none">
+          <ion-label>Surname</ion-label>
+          <ion-label>{{userMetrics.surname}}</ion-label>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size-sm=3 offset-sm=3>
+        <ion-item lines="none" color="primary">
+          <ion-label>Age</ion-label>
+          <ion-label>{{userMetrics.age}}</ion-label>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size-sm=3>
+        <ion-item lines="none">
+          <ion-label>Gender</ion-label>
+          <ion-label>{{userMetrics.gender}}</ion-label>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size-sm=3 offset-sm=3>
+        <ion-item lines="none" color="primary">
+          <ion-label>Height (cm)</ion-label>
+          <ion-label>{{userMetrics.height}}</ion-label>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size-sm=3>
+        <ion-item lines="none">
+          <ion-label>Weight (kg)</ion-label>
+          <ion-label>{{userMetrics.weight}}</ion-label>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size-sm=4 offset-sm=3>
+        <ion-item lines="none" color="primary">
+          <ion-label>Body type</ion-label>
+          <ion-label>{{userMetrics.bodyType}}</ion-label>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size-sm=3 offset-sm=3>
+        <ion-item lines="none">
+          <ion-label>Activity level</ion-label>
+          <ion-label>{{userMetrics.activityLevel}}</ion-label>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size-sm=3 offset-sm=3>
+        <ion-item lines="none" color="primary">
+          <ion-label>Goal</ion-label>
+          <ion-label>{{userMetrics.goal}}</ion-label>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
 </ion-content>

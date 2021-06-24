@@ -84,6 +84,7 @@ export class UserDataPage implements OnInit {
 
   onDataEntered() {
 
+    var _avatarUrl=this.userDataForm.value.avatar;
     var _name = this.userDataForm.value.name;
     var _surname = this.userDataForm.value.surname;
     var _age = this.userDataForm.value.age;
@@ -111,25 +112,31 @@ export class UserDataPage implements OnInit {
     //obezbediti hashing ovog passworda, tako da mu se ne moze pristupiti 
 
     this.authService.register({email,password}).subscribe(resData => { 
-      console.log(resData);
+
+      //console.log(resData);
       this.userMetricsService._localUserId=resData.localId;
       _userId=this.userMetricsService._localUserId;
 
       this.authService.setAdminStatus(false,resData.localId).subscribe(resData=>{
-        console.log("ADMIN STATUS:");
-        console.log(resData);
+        //console.log("ADMIN STATUS:");
+        //console.log(resData);
       });
 
-      this.userMetricsService.addUserMetrics(_name, _surname, _age, _gender, _height, _weight, _bodyType, _activityLevel, _goal, _userId).subscribe(resData => {
-        console.log(resData);
-
+      this.userMetricsService.addUserMetrics(_name, _surname, _age, _gender, _height, _weight, _bodyType, _activityLevel, _goal, _userId,_avatarUrl).subscribe(resData => {
+        
         this.recommendedIntakeService.addUserRecommendedAmounts(this.recommendedIntakeService._recommendedAmountOfWater, this.recommendedIntakeService._recommendedAmountOfCalories, 
           this.recommendedIntakeService._recommendedAmountOfCarbs,this.recommendedIntakeService._recommendedAmountOfProtein, this.recommendedIntakeService._recommendedAmountOfFats, 
           this.recommendedIntakeService._recommendedAmountOfSleep,this.recommendedIntakeService._recommendedMindState,_userId).subscribe(resData=>{
+            //console.log(resData);
+          });
+  
+          this.authService.addRegisteredUserToRTDB(_userId,email).subscribe(resData=>{
+            console.log("ubacivanje regovanog usera u RTDB");
             console.log(resData);
           });
 
       });
+
     });
 
 

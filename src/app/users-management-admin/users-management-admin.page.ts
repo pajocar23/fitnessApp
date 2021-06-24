@@ -1,5 +1,8 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
+import { AuthService } from '../auth/auth.service';
+import { regedUserDataRTDB } from '../auth/regedUserDataRTDB.model';
 
 @Component({
   selector: 'app-users-management-admin',
@@ -8,9 +11,17 @@ import { ModalController } from '@ionic/angular';
 })
 export class UsersManagementAdminPage implements OnInit {
 
-  constructor(public modalController: ModalController) { }
+  regedUsers:regedUserDataRTDB[];
+
+  constructor(public modalController: ModalController,private http:HttpClient,private auth:AuthService) { }
 
   ngOnInit() {
+  }
+
+  ionViewWillEnter(){
+    this.auth.getAllRegisteredUsersFromRTDB().subscribe(resData=>{
+      this.regedUsers=resData;
+    });
   }
 
   dismiss() {

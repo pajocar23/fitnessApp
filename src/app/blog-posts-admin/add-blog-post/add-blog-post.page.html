@@ -54,6 +54,23 @@
         </ion-item>
       </ion-col>
     </ion-row>
+
+    <ion-row *ngIf="charactersExceededErrorHeading==true">
+      <ion-col size-sm=12>
+        <ion-item lines="none" *ngIf="addedBlogPostHeading.length-20>0">
+          <ion-label class="errorLbl" class="errorLbl">Heading is {{addedBlogPostHeading.length-20}} charters over the limit</ion-label>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <ion-row *ngIf="charactersExceededErrorDescription==true">
+      <ion-col size-sm=12>
+        <ion-item lines="none" *ngIf="addedBlogPostDescription.length-160>0">
+          <ion-label class="errorLbl" class="errorLbl">Description is {{addedBlogPostDescription.length-160}} charters over the limit</ion-label>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
     <ion-row>
       <ion-img class="sliderImg" src="{{this.viewImageWithLinkAdd}}"></ion-img>
     </ion-row>
@@ -95,6 +112,22 @@
         <ion-item lines="none">
           <ion-button (click)="presentPictureEdit(selectedBlogPostImageURL)" color="secondary" size="large">View image
           </ion-button>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <ion-row *ngIf="charactersExceededErrorHeadingEdit==true">
+      <ion-col size-sm=12>
+        <ion-item lines="none" *ngIf="selectedBlogPostHeading.length-20>0">
+          <ion-label class="errorLbl" class="errorLbl">Heading is {{selectedBlogPostHeading.length-20}} charters over the limit</ion-label>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <ion-row *ngIf="charactersExceededErrorDescriptionEdit==true">
+      <ion-col size-sm=12>
+        <ion-item lines="none" *ngIf="selectedBlogPostDescription.length-160>0">
+          <ion-label class="errorLbl" class="errorLbl">Description is {{selectedBlogPostDescription.length-160}} charters over the limit</ion-label>
         </ion-item>
       </ion-col>
     </ion-row>

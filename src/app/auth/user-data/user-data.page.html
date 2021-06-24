@@ -159,7 +159,7 @@
       <ion-row>
         <ion-col size-sm=3 offset-sm=3>
 
-          <ion-radio-group value="grape" formControlName="avatar">
+          <ion-radio-group value="image choise" formControlName="avatar">
             <ion-item>
               <ion-avatar slot="start">
                 <img src="assets/img/Avatar1.png">
@@ -167,7 +167,7 @@
               <ion-label>
                 <p>Avatar1</p>
               </ion-label>
-              <ion-radio slot="end" color="primary" value="apple"></ion-radio>
+              <ion-radio slot="end" color="primary" value="assets/img/Avatar1.png"></ion-radio>
             </ion-item>
 
             <ion-item>
@@ -177,17 +177,17 @@
               <ion-label>
                 <p>Avatar2</p>
               </ion-label>
-              <ion-radio slot="end" color="primary" value="grape"></ion-radio>
+              <ion-radio slot="end" color="primary" value="assets/img/Avatar2.png"></ion-radio>
             </ion-item>
 
             <ion-item>
               <ion-avatar slot="start">
-                <img src="assets/img/running.png">
+                <img src="assets/img/Avatar3.png">
               </ion-avatar>
               <ion-label>
                 <p>Avatar3</p>
               </ion-label>
-              <ion-radio slot="end" color="primary" value="cherry"></ion-radio>
+              <ion-radio slot="end" color="primary" value="assets/img/Avatar3.png"></ion-radio>
             </ion-item>
           </ion-radio-group>
           <ion-item lines="none" *ngIf="userDataForm.get('avatar').invalid && userDataForm.get('avatar').touched">

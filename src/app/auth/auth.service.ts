@@ -5,7 +5,8 @@ import { environment } from 'src/environments/environment';
 import { User } from './user.model';
 import { switchMap, take, tap } from 'rxjs/operators';
 import { map } from 'rxjs/operators';
-
+import { Md5 } from "md5-typescript";
+import { logedInUserDataRTDB } from './logedInUserDataRTDB.model';
 
 interface AuthResponseData {
   kind: string;
@@ -18,20 +19,21 @@ interface AuthResponseData {
 }
 
 interface adminStatusData {
-  id: string,
+  id: string;
   userIsAdmin: boolean;
   userId: string; //spoljni kljuc ka tabeli korisnika
 }
-
-/*interface UserData{
-  localId:string;
-  email:string;
-}*/
 
 interface UserData {
   email: string;
   password: string;
 }
+
+interface regedUserDataRTDB {
+  id: string,
+  email: string;
+}
+
 
 @Injectable({
   providedIn: 'root'
@@ -135,12 +137,43 @@ export class AuthService {
       );
   }
 
+  addRegisteredUserToRTDB(id: string, email: string) {
+    return this.loggedUserToken.pipe(
+      take(1),
+      switchMap((token) => {
+        return this.http.post<{ name: string }>(`https://healthy-life-app-2ecc5-default-rtdb.europe-west1.firebasedatabase.app/registeredUsers.json?auth=${token}`,
+          { id: id, email: email });
+      }));
+  }
+
+  getAllRegisteredUsersFromRTDB() {
+    return this.loggedUserToken.pipe(
+      take(1),
+      switchMap((token) => {
+        return this.http.get<{ [key: string]: regedUserDataRTDB }>(`https://healthy-life-app-2ecc5-default-rtdb.europe-west1.firebasedatabase.app/registeredUsers.json?auth=${token}`);
+      }),
+      map((data) => {
+        //console.log("data");
+        //console.log(data);
+        var regedUsers: regedUserDataRTDB[] = [];
+        for (const key in data) {
+          if (data.hasOwnProperty(key)) {
+            regedUsers.push({
+              id: key,
+              email: data[key].email
+            });
+          }
+        }
+        return regedUsers;
+      }));
+  }
+
   setAdminStatus(userIsAdmin: boolean, userId: string) {
     return this.loggedUserToken.pipe(
       take(1),
       switchMap((token) => {
         return this.http.post<{ name: string }>(`https://healthy-life-app-2ecc5-default-rtdb.europe-west1.firebasedatabase.app/userAdminStatus.json?auth=${token}`,
-        {userIsAdmin, userId });
+          { userIsAdmin, userId });
       }));
   }
 
@@ -189,11 +222,69 @@ export class AuthService {
       );
   }
 
+  /*addLogedInUserToRTDB(userId: string, email: string) {
+    return this.loggedUserToken.pipe(
+      take(1),
+      switchMap((token) => {
+        return this.http.post<{ name: string }>(`https://healthy-life-app-2ecc5-default-rtdb.europe-west1.firebasedatabase.app/logedInUsers.json?auth=${token}`,
+          { userId: userId, email: email });
+      }));
+  }*/
+
+  /*getIDForLogOut(users_id: string) {
+    return this.loggedUserToken.pipe(
+      take(1),
+      switchMap((token) => {
+        return this.http.get<{ [key: string]: logedInUserDataRTDB }>(`https://healthy-life-app-2ecc5-default-rtdb.europe-west1.firebasedatabase.app/logedInUsers.json?auth=${token}`);
+      }),
+      map((data) => {
+        var logedUsers: logedInUserDataRTDB[] = [];
+        var idForDeletion;
+        for (const key in data) {
+          if (data.hasOwnProperty(key)) {
+            logedUsers.push({
+              id: key,
+              userId: data[key].userId,
+              email: data[key].email
+            });
+          }
+        }
+
+        for (var i = 0; i < logedUsers.length; i++) {
+          if (logedUsers[i].userId == users_id) {
+            idForDeletion = logedUsers[i].id;
+          }
+        }
+        console.log("idForDeletion");
+        console.log(idForDeletion);
+        return idForDeletion;
+      }));
+  }*/
+
+  /*removeLogedInUserFromRTDB(users_id: string) {
+    var id;
+    this.getIDForLogOut(users_id).subscribe(resData => {
+      id = resData;
+    });
+
+    return this.loggedUserToken.pipe(
+      take(1),
+      switchMap((token) => {
+        var id;
+        this.getIDForLogOut(users_id).subscribe(resData => {
+          console.log("resData");
+          console.log(resData);
+          id = resData;
+        });
+        console.log("id");
+        console.log(id);
+        return this.http.delete(`https://healthy-life-app-2ecc5-default-rtdb.europe-west1.firebasedatabase.app/logedInUsers/${id}.json?auth=${token}`);
+      }));
+  }*/
+
   logut() {
     this._user.next(null);
     this._logedUserID = "";
-
-    //this._isUserAuthenticated=false;
   }
 
 }

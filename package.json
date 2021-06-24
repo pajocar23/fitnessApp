@@ -22,6 +22,7 @@
     "@angular/router": "~11.2.0",
     "@ionic/angular": "^5.5.2",
     "@types/google-maps": "^3.2.3",
+    "md5-typescript": "^1.0.5",
     "ng-circle-progress": "^1.6.0",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",

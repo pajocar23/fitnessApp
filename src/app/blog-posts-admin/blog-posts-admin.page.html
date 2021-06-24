@@ -1,7 +1,8 @@
 <ion-header>
   <ion-toolbar class="headerClass">
+    <ion-title>Blog posts management</ion-title>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="landing" color="light"></ion-back-button>
+      <ion-back-button defaultHref="landing"></ion-back-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -9,9 +10,8 @@
 <ion-content>
   <ion-list lines="none">
     <ion-list-header>
-      <h1>Blog posts</h1>
+      <h1>Currrent blog posts:</h1>
     </ion-list-header>
-
     <ion-item *ngFor="let blogPost of blogPosts">
       <ion-card>
         <ion-card-header>

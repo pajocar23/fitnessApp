@@ -154,16 +154,6 @@ export class BlogPostService {
         this._blogPosts.next(quotes.filter((q) => q.id !== id));
       })
     );
-
-    /*return this.http.delete(`https://healthy-life-app-2ecc5-default-rtdb.europe-west1.firebasedatabase.app/blogPosts/${id}.json`)
-      .pipe(switchMap(() => {
-        return this.blogPosts;
-      }),
-        take(1),
-        tap((blogPosts) => {
-          this._blogPosts.next(blogPosts.filter((q) => q.id !== id));
-        })
-      );*/
   }
 
 }
