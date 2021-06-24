@@ -19,6 +19,7 @@ export class ClosestGymsPage {
   @ViewChild('map', { read: ElementRef, static: false }) mapRef: ElementRef;
 
   infoWindows: any = [];
+  
   //ovaj niz markera trebaju biti teretane
   markers: any = [{
     title: "Athletics gym Vozdovac",
