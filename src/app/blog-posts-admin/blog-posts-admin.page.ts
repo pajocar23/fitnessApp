@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AlertController, ModalController } from '@ionic/angular';
+import { AlertController, LoadingController, ModalController } from '@ionic/angular';
 import { BlogPost } from './blog-post.model';
 import { AddBlogPostPage } from './add-blog-post/add-blog-post.page';
 import { AuthService } from '../auth/auth.service';
@@ -30,7 +30,7 @@ export class BlogPostsAdminPage implements OnInit {
   addingConfirmed:boolean=false;
   editingConfirmed:boolean=false;
 
-  constructor(public modalController: ModalController, public alertController: AlertController, private authServivce: AuthService, private blogPostService: BlogPostService) { }
+  constructor(public modalController: ModalController, public alertController: AlertController, private authServivce: AuthService, private blogPostService: BlogPostService,private loadingController: LoadingController) { }
 
   ngOnInit() {
     this.blogPostService.blogPosts.subscribe(resData=>{
@@ -134,10 +134,19 @@ export class BlogPostsAdminPage implements OnInit {
       buttons: [{
         text: "Yes",
         handler: () => {
-          this.blogPostService.deleteBlogPost(this.idDeleteImage).subscribe(resData=>{
+          this.loadingController.create({ message: "Deleting blog post..." }).then((loadingEl: HTMLIonLoadingElement) => {
+            loadingEl.present();
+            this.blogPostService.deleteBlogPost(this.idDeleteImage).subscribe(resData=>{
+              //console.log("podaci nakon brisanja odredjenog: ");
+              //console.log(resData);
+            });
+            loadingEl.dismiss();
+            console.log("deleted");
+          })
+          //this.blogPostService.deleteBlogPost(this.idDeleteImage).subscribe(resData=>{
             //console.log("podaci nakon brisanja odredjenog: ");
             //console.log(resData);
-          });
+          //});
         }
       },
       {

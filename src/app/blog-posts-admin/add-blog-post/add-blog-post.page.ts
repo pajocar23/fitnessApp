@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { AlertController, ModalController } from '@ionic/angular';
+import { AlertController, LoadingController, ModalController } from '@ionic/angular';
 import { AuthService } from 'src/app/auth/auth.service';
 import { BlogPostService } from '../services/blog-post.service';
 
@@ -39,7 +39,7 @@ export class AddBlogPostPage implements OnInit {
   numberOfCharactersOverDescriptionEdit: number = 0;
 
 
-  constructor(public modalController: ModalController, public alertController: AlertController, private authServivce: AuthService, private blogPostService: BlogPostService) {
+  constructor(public modalController: ModalController, public alertController: AlertController, private authServivce: AuthService, private blogPostService: BlogPostService, private loadingController: LoadingController) {
     this.viewImageWithLinkEdit = this.selectedBlogPostImageURL;
     this.viewImageWithLinkAdd = this.addedBlogPostImageUrl;
   }
@@ -94,7 +94,13 @@ export class AddBlogPostPage implements OnInit {
             console.log("changed");
             this.editingConfirmed = true;
             //ovdeee
-            this.dismiss();
+
+            this.loadingController.create({ message: "Updating blog post..." }).then((loadingEl: HTMLIonLoadingElement) => {
+              loadingEl.present();
+        
+              this.dismiss();
+              loadingEl.dismiss();
+            })
           } else {
             this.editingConfirmed = false;
             console.log("not changed");
@@ -149,7 +155,12 @@ export class AddBlogPostPage implements OnInit {
           if (!this.charactersExceededErrorHeading && !this.charactersExceededErrorDescription) {
             this.addingConfirmed = true;
             console.log("added");
-            this.dismiss();
+            this.loadingController.create({ message: "Adding blog post..." }).then((loadingEl: HTMLIonLoadingElement) => {
+              loadingEl.present();
+        
+              this.dismiss();
+              loadingEl.dismiss();
+            })
           } else {
             this.addingConfirmed = false;
             console.log("not added");
