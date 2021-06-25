@@ -8,4 +8,57 @@
 </ion-header>
 
 <ion-content>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Water tracker history</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      Water intake for the last 7 days
+    </ion-card-content>
+    <canvas #barCanvasWater style="position: relative; height:20vh; width:40vw"></canvas>
+  </ion-card>
+ 
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Food tracker history</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      Food intake for the last 7 days
+    </ion-card-content>
+    <canvas #barCanvasFood style="position: relative; height:20vh; width:40vw"></canvas>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Sleep tracker history</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      Sleep amount for the last 7 days
+    </ion-card-content>
+    <canvas #barCanvasSleep style="position: relative; height:20vh; width:40vw"></canvas>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Mind state tracker history</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      Mind state for the last 7 days
+    </ion-card-content>
+    <canvas #barCanvasMind style="position: relative; height:20vh; width:40vw"></canvas>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Activity tracker history</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      Activity for the last 7 days
+    </ion-card-content>
+    <canvas #barCanvasActivity style="position: relative; height:20vh; width:40vw"></canvas>
+  </ion-card>
+
+
+
+
 </ion-content>

@@ -111,8 +111,38 @@ export class ActivityService {
 
         return allActivitiesForLogedUserForToday;
       }));
+  }
 
+  getAllActivitiesForLoggedUser() {
+    return this.authService.loggedUserToken.pipe(
+      take(1),
+      switchMap((token) => {
+        return this.http.get<{ [key: string]: Activity }>(`https://healthy-life-app-2ecc5-default-rtdb.europe-west1.firebasedatabase.app/activity.json?auth=${token}`);
+      }),
+      map((allActivitiesData) => {
+        const allActivities: Activity[] = [];
+        var allActivitiesForLogedUser: Activity[] = [];
 
+        for (const key in allActivitiesData) {
+          if (allActivitiesData.hasOwnProperty(key)) {
+            allActivities.push({
+              id: key,
+              desiredDistance: allActivitiesData[key].desiredDistance,
+              distanceTraveled: allActivitiesData[key].distanceTraveled,
+              date: allActivitiesData[key].date,
+              userId: allActivitiesData[key].userId,
+            });
+          }
+        }
+
+        for (var i = 0; i < allActivities.length; i++) {
+          if (allActivities[i].userId == this.authService._logedUserID) {
+            allActivitiesForLogedUser.push(allActivities[i]);
+          }
+        }
+
+        return allActivitiesForLogedUser;
+      }));
   }
 
   getActivityPercentageAndUdeoForLoggedUserForToday() {

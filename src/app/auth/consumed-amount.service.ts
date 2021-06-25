@@ -75,6 +75,55 @@ export class ConsumedAmountService {
       }));
   }
 
+  getConsumedAmountsForLoggedUser(){
+    return this.authService.loggedUserToken.pipe(
+      take(1),
+      switchMap((token) => {
+        return this.http.get<{ [key: string]: consumedAmounts }>(`https://healthy-life-app-2ecc5-default-rtdb.europe-west1.firebasedatabase.app/userConsumedAmounts.json?auth=${token}`);
+      }),
+      map((consumedAmountsData) => {
+
+        const consumedAmounts: ConsumedAmount[] = [];
+        var consumedAmountsForLogedUser: ConsumedAmount[]=[];
+
+        for (const key in consumedAmountsData) {
+          if (consumedAmountsData.hasOwnProperty(key)) {
+            consumedAmounts.push({
+              id: key,
+              consumedAmountOfWater: consumedAmountsData[key].consumedAmountOfWater,
+              waterPercentage: consumedAmountsData[key].waterPercentage,
+              waterUdeo: consumedAmountsData[key].waterUdeo,
+              consumedAmountOfCalories: consumedAmountsData[key].consumedAmountOfCalories,
+              consumedAmountOfCarbs: consumedAmountsData[key].consumedAmountOfCarbs,
+              carbsPercentage: consumedAmountsData[key].carbsPercentage,
+              carbsUdeo: consumedAmountsData[key].carbsUdeo,
+              consumedAmountOfProtein: consumedAmountsData[key].consumedAmountOfProtein,
+              proteinPercentage: consumedAmountsData[key].proteinPercentage,
+              proteinUdeo: consumedAmountsData[key].proteinUdeo,
+              consumedAmountOfFats: consumedAmountsData[key].consumedAmountOfFats,
+              fatsPercentage: consumedAmountsData[key].fatsPercentage,
+              fatsUdeo: consumedAmountsData[key].fatsUdeo,
+              consumedAmountOfSleep: consumedAmountsData[key].consumedAmountOfSleep,
+              sleepPercentage: consumedAmountsData[key].sleepPercentage,
+              sleepUdeo: consumedAmountsData[key].sleepUdeo,
+              consumedAmountOfMindState: consumedAmountsData[key].consumedAmountOfMindState,
+              mindStatePercentage: consumedAmountsData[key].mindStatePercentage,
+              mindStateUdeo: consumedAmountsData[key].mindStateUdeo,
+              userId: consumedAmountsData[key].userId,
+              date: consumedAmountsData[key].date
+            });
+          }
+        }
+
+        for (var i = 0; i < consumedAmounts.length; i++) {
+          if (consumedAmounts[i].userId == this.authService._logedUserID) {
+            consumedAmountsForLogedUser.push(consumedAmounts[i]);
+          }
+        }
+        return consumedAmountsForLogedUser;
+      }));
+  }
+
   getTodaysConsumedAmountForLogedUser() {
     return this.authService.loggedUserToken.pipe(
       take(1),
