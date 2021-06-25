@@ -20,20 +20,26 @@
     </ion-row>
     <ion-row>
       <ion-col>
-          <ion-button (click)="addDesiredDistance(sliderValue)">Add distance</ion-button>
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col>
-        <ion-range min="0" max="20" step="1" snaps="true" color="primary" name="kmKnobs" pin="true"
-          [(ngModel)]="sliderValue"></ion-range>
+        <ion-item lines="none">
+          <ion-range min="0" max="20" step="1" snaps="true" color="primary" name="kmKnobs" pin="true"
+            [(ngModel)]="sliderValue"></ion-range>
+        </ion-item>
       </ion-col>
     </ion-row>
     <ion-row>
       <ion-col>
         <ion-item>
-          <ion-button (click)="startTracking()">Start tracking</ion-button>
-          <ion-button (click)="stopTracking()">Stop tracking</ion-button>
+          <ion-button (click)="addDesiredDistance(sliderValue)" [disabled]="addDistanceCondition==false">Add distance
+          </ion-button>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-button (click)="startTracking()" [disabled]="startTrackingCondition==false">Start tracking</ion-button>
+          <ion-button (click)="presentAlertStopTracking()" [disabled]="stopTrackingCondition==false">Stop tracking
+          </ion-button>
         </ion-item>
       </ion-col>
     </ion-row>
@@ -41,24 +47,27 @@
       <ion-col>
         <ion-item color="primary">
           <label style="color:white;">{{statusMessage}}</label>
+          <ion-spinner *ngIf="stopTrackingCondition==true" name="dots" style="padding-left: 10%;" color="light"></ion-spinner>
+          <ion-icon *ngIf="statusMessage=='Tracking has finished'" name="checkmark-circle" color="light" style="padding-left: 10%;"></ion-icon>
         </ion-item>
       </ion-col>
     </ion-row>
     <ion-row>
       <ion-col>
         <ion-item>
-          <ion-button (click)="viewProgress()">View progress</ion-button>
-          <label *ngIf="currendDistanceTraveled!=0" style="padding-left: 10%;">{{currendDistanceTraveled}}</label>
+          <ion-button (click)="viewProgress()" [disabled]="viewProgressCondition==false">View progress</ion-button>
+          <label *ngIf="distanceTraveled!=''" style="padding-left: 10%;">{{distanceTraveled}}</label>
         </ion-item>
       </ion-col>
     </ion-row>
     <ion-row>
       <ion-col>
-        <ion-item>
-          <label *ngIf="finalDistanceTraveled!=0">Final distance traveled: {{finalDistanceTraveled}}</label>
+        <ion-item color="primary">
+          <label *ngIf="distanceTraveled!=''" style="color:white;">Final distance traveled:
+            {{distanceTraveled}}</label>
         </ion-item>
       </ion-col>
     </ion-row>
   </ion-grid>
-  <!-- <img src="assets/img/activity.png"> -->
+  <img src="assets/img/heartRate.png">
 </ion-content>

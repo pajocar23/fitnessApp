@@ -137,16 +137,10 @@ export class BlogPostsAdminPage implements OnInit {
           this.loadingController.create({ message: "Deleting blog post..." }).then((loadingEl: HTMLIonLoadingElement) => {
             loadingEl.present();
             this.blogPostService.deleteBlogPost(this.idDeleteImage).subscribe(resData=>{
-              //console.log("podaci nakon brisanja odredjenog: ");
-              //console.log(resData);
             });
             loadingEl.dismiss();
             console.log("deleted");
           })
-          //this.blogPostService.deleteBlogPost(this.idDeleteImage).subscribe(resData=>{
-            //console.log("podaci nakon brisanja odredjenog: ");
-            //console.log(resData);
-          //});
         }
       },
       {

@@ -6,6 +6,8 @@ import { RecommendedIntakeService } from 'src/app/auth/recommended-intake.servic
 import { BlogPost } from 'src/app/blog-posts-admin/blog-post.model';
 import { BlogPostService } from 'src/app/blog-posts-admin/services/blog-post.service';
 import { ActivityTrackerPage } from 'src/app/trackers/activity-tracker/activity-tracker.page';
+import { ActivityModel } from 'src/app/trackers/activity-tracker/activity.model';
+import { ActivityService } from 'src/app/trackers/activity-tracker/services/activity.service';
 import { FoodTrackerPage } from 'src/app/trackers/food-tracker/food-tracker.page';
 import { MoodTrackerPage } from 'src/app/trackers/mood-tracker/mood-tracker.page';
 import { SleepTrackerPage } from 'src/app/trackers/sleep-tracker/sleep-tracker.page';
@@ -65,10 +67,19 @@ export class ExplorePage implements OnInit {
   rested: number = 0;
   hurt: number = 0;
 
-  //blog poostove trebamo da dovlacimo preko servisa iz baze
-  /*blogPosts: BlogPost[] = [{ id: '1', heading: 'water fact', description: 'water makes 70% of human body', imageUrl: 'https://media3.s-nbcnews.com/i/newscms/2017_15/1206634/woman-drinking-water-tease-today-170410_bb7df024651d415ac135bfaf31c4f819.jpg',adminId:"aaa"},
-  { id: '2', heading: 'food fact', description: 'without food you dead BOi', imageUrl: 'https://i.pinimg.com/originals/a8/cd/aa/a8cdaa791eef42e15067426d08a566b0.jpg',adminId:"aaa" },
-  { id: '3', heading: 'sleep fact', description: 'If you watch monitor that emmits blue light before going to sleep, your endorphine poroduction is decreased and therefore you cant sleep well', imageUrl: 'https://media.gq.com/photos/5e617d866ad6c200080c3f7d/16:9/w_1839,h_1034,c_limit/gq%20march%202020%20Is%20my%20screen-based%20lifestyle%20ruining%20my%20vision?%20.jpg',adminId:"aaa" }]*/
+  //activity tracker data
+  desiredDistance: number;
+  distanceTraveled: string;
+  distancePercentage: number;
+  distanceTraveledNumber: number;
+  distanceUdeo: number;
+
+  /*distanceTraveled: string;
+  distancePercentage: number;
+  distanceTraveledNumber:number;
+  distanceUdeo: number;*/
+
+  addActivityCondition: boolean = false;
 
   blogPosts: BlogPost[] = [];
 
@@ -160,7 +171,8 @@ export class ExplorePage implements OnInit {
     }
   };
 
-  constructor(public modalController: ModalController, private authService: AuthService, private recommendedIntakesService: RecommendedIntakeService, private consumedAmountService: ConsumedAmountService, private blogPostService: BlogPostService) { }
+  constructor(public modalController: ModalController, private authService: AuthService, private recommendedIntakesService: RecommendedIntakeService,
+    private consumedAmountService: ConsumedAmountService, private blogPostService: BlogPostService, private activityService: ActivityService) { }
 
   ionViewWillEnter() {
 
@@ -168,6 +180,8 @@ export class ExplorePage implements OnInit {
     });
 
     this.getConsumedAmounts();
+    //this.getActivities();
+    this.getActivitiesPercentagesAndUdeos();
 
     //ovaj deo ispod treba prebaciti u ngOninit
     this.consumedAmountService.doesConsumedAmountForTodayExist().subscribe(resData => {
@@ -177,9 +191,19 @@ export class ExplorePage implements OnInit {
         });
       }
     });
+
+    this.activityService.doesActivityPercentageAndUdeoForLoggedUserForTodayExist().subscribe(resData => {
+      if (resData == false) {
+        console.log("Activities percentages and udeos do not exist for loged user for today and therefore they will be added to database");
+        this.activityService.addActivityPercentageAndUdeo(0, 0, new Date().toLocaleString(), this.authService.logedUserID).subscribe(resData => {
+        });
+      }
+    });
   }
 
   ngOnInit() {
+
+    this.getActivities();
 
     this.blogPostService.blogPosts.subscribe(resData => {
       this.blogPosts = resData;
@@ -205,6 +229,7 @@ export class ExplorePage implements OnInit {
     consumedAmountOfSleep: number, sleepPercentage: number, sleepUdeo: number,
     consumedAmountOfMindState: number, mindStatePercentage: number, mindStateUdeo: number,
     userId: string) {
+
     var consumedAmountOfLogedUserID;
     var dateFromDB;
     this.consumedAmountService.getTodaysConsumedAmountForLogedUser().subscribe(resData => {
@@ -219,12 +244,21 @@ export class ExplorePage implements OnInit {
         consumedAmountOfSleep, sleepPercentage, sleepUdeo,
         consumedAmountOfMindState, mindStatePercentage, mindStateUdeo,
         userId, dateFromDB).subscribe(resData => {
-          console.log("updatovane vrednosti:");
-          console.log(resData);
+          //console.log("updatovane vrednosti:");
+          //console.log(resData);
         });
 
     });
 
+  }
+
+  updateActivitiesPercentagesAndUdeos(distancePercentage: number, distnaceUdeo: number, date: string, userId: string) {
+    this.activityService.getActivityPercentageAndUdeoForLoggedUserForToday().subscribe(resData => {
+      var id = resData.id;
+      this.activityService.editActivityPercentageAndUdeo(id, distancePercentage, distnaceUdeo, date, userId).subscribe(resData => {
+        
+      });
+    });
   }
 
   getConsumedAmounts() {
@@ -251,10 +285,6 @@ export class ExplorePage implements OnInit {
         this.totalTimeSlept = resData.consumedAmountOfSleep;
         this.sleepPercentage = resData.sleepPercentage;
         this.sleepUdeo = resData.sleepUdeo;
-        /////
-        // this.totalHoursSlept=resData.consumedAmountOfSleep;
-        // this.totalHoursSlept=resData.consumedAmountOfSleep
-        ///////
 
         this.totalHoursSlept = Math.floor(resData.consumedAmountOfSleep / 60);
         this.totalMinutesSlept = 60 * (resData.consumedAmountOfSleep / 60 - Math.floor(resData.consumedAmountOfSleep / 60))
@@ -263,8 +293,6 @@ export class ExplorePage implements OnInit {
         this.mindStatePercentage = resData.mindStatePercentage;
         this.mindStateUdeo = resData.mindStateUdeo;
 
-        //console.log("Getovalo je ne null vrednosti:");
-        //console.log(resData);
         this.updateConsumedAmounts(this.drankAmountTotal, this.waterPercentage, this.waterUdeo,
           this.totalCaloriesConsumed,
           this.totalCarbsConsumed, this.carbsPercentage, this.carbsUdeo,
@@ -309,6 +337,53 @@ export class ExplorePage implements OnInit {
     });
   }
 
+  getActivities() {
+    this.activityService.getAllActivitiesForLoggedUserForToday().subscribe(resData => {
+      /*console.log("All distances/ACTIVITIES of loged user for today:");
+      console.log(resData);*/
+      if (resData.length != 0) {
+        var desiredDistanceCumlative = 0;
+        var distanceTraveledCumulative = 0;
+        for (var i = 0; i < resData.length; i++) {
+
+          var desiredDistanceCumlative = desiredDistanceCumlative + resData[i].desiredDistance;
+          var x = +resData[i].distanceTraveled.substr(0, resData[i].distanceTraveled.indexOf(' '));
+          distanceTraveledCumulative = distanceTraveledCumulative + x;
+        }
+
+        /*console.log("desiredDistanceCumlative");
+        console.log(desiredDistanceCumlative);
+
+        console.log("distanceTraveledCumulative");
+        console.log(distanceTraveledCumulative);*/
+
+        this.distancePercentage = Math.ceil(((distanceTraveledCumulative * 100) / desiredDistanceCumlative));
+        this.distanceUdeo = this.distancePercentage / 100;
+
+        this.updateActivitiesPercentagesAndUdeos(this.distancePercentage, this.distanceUdeo, new Date().toLocaleString(), this.authService.logedUserID);
+
+      } else {
+        this.distanceTraveled = "";
+        this.distanceTraveledNumber = 0;
+        this.desiredDistance = 0;
+      }
+    })
+  }
+
+  getActivitiesPercentagesAndUdeos() {
+    this.activityService.getActivityPercentageAndUdeoForLoggedUserForToday().subscribe(resData => {
+      if (resData != undefined) {
+        this.distancePercentage = resData.distancePercentage;
+        this.distanceUdeo = resData.distnaceUdeo;
+      } else {
+        //pozvace se samo jednom, kada baza za ulogovanog korsnika ne sadrzi ActivitiesPercentagesAndUdeos za danas
+        this.distancePercentage = 0;
+        this.distanceUdeo = 0;
+        //this.updateActivitiesPercentagesAndUdeos(this.distancePercentage,this.distanceUdeo,new Date().toLocaleString(),this.authService.logedUserID);
+      }
+    })
+  }
+
   async presentWaterModal() {
     this.getConsumedAmounts();
     const modal = await this.modalController.create({
@@ -340,13 +415,6 @@ export class ExplorePage implements OnInit {
 
   async presentFoodModal() {
     this.getConsumedAmounts();
-    /*console.log("totalCaloriesConsumed" + this.totalCaloriesConsumed);
-    console.log("recommandedAmountOfCarbs" + this.recommandedAmountOfCarbs);
-    console.log("totalCarbsConsumed" + this.totalCarbsConsumed);
-    console.log("recommandedAmountOfFats" + this.recommandedAmountOfFats);
-    console.log("totalFatsConsumed" + this.totalFatsConsumed);
-    console.log("recommandedAmountOfProtein" + this.recommandedAmountOfProtein);
-    console.log("totalProteinConsumed" + this.totalProteinConsumed);*/
     const modal = await this.modalController.create({
       component: FoodTrackerPage,
       componentProps: {
@@ -466,10 +534,44 @@ export class ExplorePage implements OnInit {
 
   async presentActivityModal() {
     this.getConsumedAmounts();
+    this.addActivityCondition = false;
+    this.desiredDistance=0;
+    this.distanceTraveled="";
     const modal = await this.modalController.create({
-      component: ActivityTrackerPage
+      component: ActivityTrackerPage,
+      componentProps: {
+        'desiredDistance': this.desiredDistance,
+        'distanceTraveled': this.distanceTraveled,
+        'addActivityCondition': this.addActivityCondition
+      }
     });
-    return await modal.present();
+    modal.present();
+    return modal.onDidDismiss().then(
+      (data: any) => {
+        console.log("data na zatvaranju modala:");
+        console.log(data);
+        if (data.data.distanceTraveled != 0) {
+          this.desiredDistance = data.data.desiredDistance;
+          this.distanceTraveled = data.data.distanceTraveled;
+          this.addActivityCondition = data.data.addActivityCondition;
+          //
+          if (this.addActivityCondition) {
+            this.activityService.addActivity(this.desiredDistance, this.distanceTraveled, new Date().toLocaleString(), this.authService.logedUserID).subscribe(resData => {
+              console.log("Aktivnost dodata:");
+              console.log(resData);
+
+              //console.log("pozivamo this.getActivities():");
+              //console.log("pozivamo this.distanceTraveled:");
+              //console.log(this.distanceTraveled);
+              //console.log("pozivamo this.desiredDistance():");
+              //console.log(this.desiredDistance);
+
+              this.getActivities();
+
+            });
+          }
+        }
+      })
   }
 
 
