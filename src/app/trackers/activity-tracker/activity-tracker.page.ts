@@ -146,6 +146,7 @@ export class ActivityTrackerPage implements OnInit {
     return this.http.get('https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&origins=' + startLat + ',' + startLng + '&destinations=' + currentLat + ',' + currentLng + '&key=AIzaSyBb4QxfgGK_m_dvxdeO3Czo--ZjinKew6I');
   }
 
+  
 
 
 }
