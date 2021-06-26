@@ -11,7 +11,7 @@ export class User {
         return this._token;
     }
 
-    getUserId(){
+    /*getUserId(){
         console.log("probica "+this.id);
-    }
+    }*/
 }
