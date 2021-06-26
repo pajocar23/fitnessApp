@@ -1,8 +1,9 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Renderer2 } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AlertController, LoadingController } from '@ionic/angular';
+import { AppThemeService } from '../app-theme.service';
 import { AuthService } from '../auth.service';
 
 @Component({
@@ -15,7 +16,8 @@ export class LoginPage implements OnInit {
   loginForm: FormGroup;
   isLoading = false;
 
-  constructor(private http: HttpClient, private authService: AuthService, private router: Router, private loadingController: LoadingController,private alertCtrl: AlertController) { }
+  constructor(private http: HttpClient, private authService: AuthService, private router: Router, 
+    private loadingController: LoadingController,private alertCtrl: AlertController,private appThemeService:AppThemeService,private renderer:Renderer2) { }
 
   ngOnInit() {
     this.loginForm = new FormGroup({

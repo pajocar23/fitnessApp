@@ -1,5 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Renderer2 } from '@angular/core';
 import { ModalController } from '@ionic/angular';
+import { AppThemeService } from 'src/app/auth/app-theme.service';
 import { AuthService } from 'src/app/auth/auth.service';
 import { ConsumedAmountService } from 'src/app/auth/consumed-amount.service';
 import { RecommendedIntakeService } from 'src/app/auth/recommended-intake.service';
@@ -172,9 +173,18 @@ export class ExplorePage implements OnInit {
   };
 
   constructor(public modalController: ModalController, private authService: AuthService, private recommendedIntakesService: RecommendedIntakeService,
-    private consumedAmountService: ConsumedAmountService, private blogPostService: BlogPostService, private activityService: ActivityService) { }
+    private consumedAmountService: ConsumedAmountService, private blogPostService: BlogPostService, private activityService: ActivityService,
+    private appThemeService:AppThemeService, private renderer:Renderer2 ) { }
 
   ionViewWillEnter() {
+
+    this.appThemeService.getloggedUserTheme(this.authService.logedUserID).subscribe(resData => {
+      if (resData.theme == "dark") {
+        this.renderer.setAttribute(document.body, 'color-theme', 'dark');
+      } else {
+        this.renderer.setAttribute(document.body, 'color-theme', 'light');
+      }
+    });
 
     this.blogPostService.getAllBlogPosts().subscribe(resData => {
     });
