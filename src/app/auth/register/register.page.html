@@ -25,7 +25,7 @@
             <ion-input type="password" formControlName="password"></ion-input>
           </ion-item>
           <ion-item lines="none" *ngIf="registrationForm.get('password').invalid && registrationForm.get('password').touched">
-            <ion-label><p class="error">Password must contain at least one capital letter,number <br> and a special character($@$!%*?&)</p></ion-label>
+            <ion-label><p class="error">Password must contain at least one capital letter,number and has to have at least 8 characters <br> and a special character($@$!%*?&)</p></ion-label>
           </ion-item>
         </ion-col>
         <ion-col size-sm=3>
