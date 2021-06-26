@@ -46,7 +46,8 @@ export class TrackersHistoryPage implements AfterViewInit {
   @ViewChild('barCanvasActivity') private barCanvasActivity: ElementRef;
   barChartActivity: any;
   activityLevels: number[] = [];
-  recommendedAmountOfActivity;
+  activityLevelsEveryDay:number[]=[];
+ 
 
   constructor(private consumedAmountsService: ConsumedAmountService, private authService: AuthService, private activityService: ActivityService, private recommendedAmountService: RecommendedIntakeService) { }
 
@@ -98,41 +99,58 @@ export class TrackersHistoryPage implements AfterViewInit {
         //mind
         this.mindLevels = this.mindLevels.reverse();
         this.barChartMethodMind();
-      });
 
-      this.activityService.getAllActivitiesForLoggedUser().subscribe(resData => {
-        //ja moram da pokupim poslednjih 7 datuma
-        //resData su aktivnosti koje mogu biti istog datuma
-        //zato moram sabrati sve
-        var activitiesInLast7Days: any = [];
-        var cumulativeDistanceTraveled;
-        var cumulativeDesiredDistance;
-
-        for (var i = 0; i < resData.length; i++) {
-          console.log("delta " + i);
-          console.log((((((new Date()).valueOf() - new Date(resData[i].date).valueOf()) / 1000) / 60) / 60) / 24);
-          if ((((((new Date()).valueOf() - new Date(resData[i].date).valueOf()) / 1000) / 60) / 60) / 24 <= 7) {
-            activitiesInLast7Days.push(resData[i]);
+        //activity
+        this.activityService.getAllActivitiesForLoggedUser().subscribe(resData => {
+          //ja moram da pokupim poslednjih 7 datuma
+          //resData su aktivnosti koje mogu biti istog datuma
+          //zato moram sabrati sve
+          var activitiesInLast7Days = [];
+          var tempDates:string[] = [];
+  
+          for (var i = 0; i < resData.length; i++) {
+            //console.log((((((new Date()).valueOf() - new Date(resData[i].date).valueOf()) / 1000) / 60) / 60) / 24);
+            if ((((((new Date()).valueOf() - new Date(resData[i].date).valueOf()) / 1000) / 60) / 60) / 24 <= 7) {
+              activitiesInLast7Days.push(resData[i]);
+            }
           }
-        }
-
-        
-
-
-
-
-        for (var i = resData.length - 1; i >= 0; i--) {
-          if (this.labelsActivity.length > 7) {
-            break;
+  
+          //console.log(activitiesInLast7Days);
+  
+          for (var j = 0; j < activitiesInLast7Days.length; j++) {
+            var date = activitiesInLast7Days[j].date.split("/", 3);
+            date[2] = date[2].substr(0, date[2].indexOf(","));
+            var dateString=date[0]+"/"+date[1]+"/"+date[2]
+  
+            if (!tempDates.includes(dateString)) {
+              tempDates.push(dateString);
+            }
           }
-          //all trackers
-          this.labelsActivity.push(resData[i].date.substr(0, resData[i].date.indexOf(',')));
-          //water
-          this.activityLevels.push(+resData[i].distanceTraveled.substr(0, resData[i].distanceTraveled.indexOf(' ')));
-          //str.substr(0,str.indexOf(' '))
-        }
-        this.activityLevels = this.activityLevels.reverse();
-        this.barChartMethodActivity();
+
+          for (var j = 0; j < tempDates.length; j++) {
+            var cumulativeDistanceTraveled:number = 0;
+            var cumulativeDesiredDistance:number = 0;
+            for(var k = 0; k < activitiesInLast7Days.length; k++){
+              var date = activitiesInLast7Days[k].date.split("/", 3);
+              date[2] = date[2].substr(0, date[2].indexOf(","));
+              var dateString=date[0]+"/"+date[1]+"/"+date[2]
+
+              if(tempDates[j]==dateString){
+                cumulativeDesiredDistance=cumulativeDesiredDistance+activitiesInLast7Days[k].desiredDistance;
+                cumulativeDistanceTraveled=cumulativeDistanceTraveled+ +activitiesInLast7Days[k].distanceTraveled.substr(0, activitiesInLast7Days[k].distanceTraveled.indexOf(" "));
+              }
+            }
+            this.activityLevelsEveryDay.push(cumulativeDesiredDistance);
+            this.activityLevels.push(cumulativeDistanceTraveled);
+          }
+  
+          for (var k = 0; k < tempDates.length; k++) {
+            this.labelsActivity.push(tempDates[k]);
+          }
+  
+          this.barChartMethodActivity();
+        });
+
       });
       /////////////////////
     });
@@ -147,7 +165,7 @@ export class TrackersHistoryPage implements AfterViewInit {
         labels: this.labelsAll,
         datasets: [
           {
-            label: 'Recommended',
+            label: 'Recommended liters of water',
             fill: false,
             type: 'line',
             //lineTension: 0.1,
@@ -206,7 +224,7 @@ export class TrackersHistoryPage implements AfterViewInit {
         labels: this.labelsAll,
         datasets: [
           {
-            label: 'Recommended calories',
+            label: 'Recommended kCal',
             fill: false,
             type: 'line',
             //lineTension: 0.1,
@@ -231,7 +249,7 @@ export class TrackersHistoryPage implements AfterViewInit {
             spanGaps: false,
           },
           {
-            label: 'Recommended protein',
+            label: 'Recommended protein (kCal)',
             fill: false,
             type: 'line',
             //lineTension: 0.1,
@@ -256,7 +274,7 @@ export class TrackersHistoryPage implements AfterViewInit {
             spanGaps: false,
           },
           {
-            label: 'Recommended carbohydrates',
+            label: 'Recommended carbohydrates (kCal)',
             fill: false,
             type: 'line',
             //lineTension: 0.1,
@@ -281,7 +299,7 @@ export class TrackersHistoryPage implements AfterViewInit {
             spanGaps: false,
           },
           {
-            label: 'Recommended fats',
+            label: 'Recommended fats (kCal)',
             fill: false,
             type: 'line',
             //lineTension: 0.1,
@@ -408,7 +426,7 @@ export class TrackersHistoryPage implements AfterViewInit {
         labels: this.labelsAll,
         datasets: [
           {
-            label: 'Recommended',
+            label: 'Recommended hours of sleep',
             fill: false,
             type: 'line',
             //lineTension: 0.1,
@@ -466,7 +484,7 @@ export class TrackersHistoryPage implements AfterViewInit {
         labels: this.labelsAll,
         datasets: [
           {
-            label: 'Recommended',
+            label: 'Recommended level of mind',
             fill: false,
             type: 'line',
             //lineTension: 0.1,
@@ -520,13 +538,37 @@ export class TrackersHistoryPage implements AfterViewInit {
 
   barChartMethodActivity() {
     this.barChartActivity = new Chart(this.barCanvasActivity.nativeElement, {
-      type: 'bar',
       data: {
         labels: this.labelsActivity,
         datasets: [
           {
-            label: 'Activity',
+            label: 'Cumulative desired distances',
             fill: false,
+            type: 'line',
+            //lineTension: 0.1,
+            //y:'liters',
+            backgroundColor: '#c528f9',
+            borderColor: '#c528f9',
+            borderCapStyle: 'butt',
+            borderDash: [],
+            borderDashOffset: 0.0,
+            borderJoinStyle: 'miter',
+            pointBorderColor: '#c528f9',
+            pointBackgroundColor: '#c528f9',
+            pointBorderWidth: 1,
+            pointHoverRadius: 5,
+            pointHoverBackgroundColor: '#c528f9',
+            pointHoverBorderColor: '#c528f9',
+            pointHoverBorderWidth: 2,
+            pointRadius: 1,
+            pointHitRadius: 10,
+            data: this.activityLevelsEveryDay,
+            spanGaps: false,
+          },
+          {
+            label: 'Distnace traveled',
+            fill: false,
+            type: 'bar',
             //lineTension: 0.1,
             backgroundColor: '#cf3c4f',
             borderColor: '#cf3c4f',

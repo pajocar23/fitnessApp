@@ -18,7 +18,9 @@ export class ActivityTrackerPage implements OnInit {
 
   currentLat: number = 0;
   currentLng: number = 0;
+  curredntDistance:string;
   @Input() distanceTraveled: string;
+
 
   finishedLat: number = 0;
   finishedLng: number = 0;
@@ -95,7 +97,7 @@ export class ActivityTrackerPage implements OnInit {
 
       this.getDistance(this.startLat, this.startLng, this.currentLat, this.currentLng).subscribe(resData => {
         console.log(resData["rows"][0]["elements"][0]["distance"]["text"]);
-        this.distanceTraveled = resData["rows"][0]["elements"][0]["distance"]["text"];
+        this.curredntDistance = resData["rows"][0]["elements"][0]["distance"]["text"];
       });
 
     });

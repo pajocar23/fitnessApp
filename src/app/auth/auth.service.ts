@@ -14,7 +14,7 @@ interface AuthResponseData {
   email: string;
   refreshToken: string;
   localId: string;
-  expiresIN: string;
+  expiresIn: string;
   registered?: boolean;
 }
 
@@ -130,7 +130,7 @@ export class AuthService {
       { email: user.email, password: user.password, returnSecureToken: true })
       .pipe(
         tap((userData: AuthResponseData) => {
-          const expirationTime = new Date(new Date().getTime() + +userData.expiresIN * 1000);
+          const expirationTime = new Date(new Date().getTime() + +userData.expiresIn * 1000);
           const user = new User(userData.localId, userData.email, userData.idToken, expirationTime);
           this._user.next(user);
         })
@@ -215,7 +215,7 @@ export class AuthService {
       { email: user.email, password: user.password, returnSecureToken: true })
       .pipe(
         tap((userData: AuthResponseData) => {
-          const expirationTime = new Date(new Date().getTime() + +userData.expiresIN * 1000);
+          const expirationTime = new Date(new Date().getTime() + +userData.expiresIn * 1000);
           const user = new User(userData.localId, userData.email, userData.idToken, expirationTime);
           this._user.next(user);
         })

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { LoadingController, PopoverController } from '@ionic/angular';
+import { AlertController, LoadingController, PopoverController } from '@ionic/angular';
 import { AuthService } from '../auth.service';
 import { RecommendedIntakeService } from '../recommended-intake.service';
 import { UserMetricsService } from '../user-metrics.service';
@@ -16,15 +16,16 @@ import { LoseWeightComponent } from './lose-weight/lose-weight.component';
   styleUrls: ['./user-data.page.scss'],
 })
 export class UserDataPage implements OnInit {
-
+  isLoading = false;
   userDataForm: FormGroup;
 
   segmentChanged(ev: any) {
     console.log('Segment changed', ev);
   }
 
-  constructor(public popoverController: PopoverController, private authService: AuthService, private router: Router, 
-    private userMetricsService: UserMetricsService,private recommendedIntakeService:RecommendedIntakeService,private loadingController: LoadingController) { }
+  constructor(public popoverController: PopoverController, private authService: AuthService, private router: Router,
+    private userMetricsService: UserMetricsService, private recommendedIntakeService: RecommendedIntakeService,
+     private loadingController: LoadingController,private alertCtrl:AlertController) { }
 
   ngOnInit() {
     this.userDataForm = new FormGroup({
@@ -86,68 +87,97 @@ export class UserDataPage implements OnInit {
 
     this.loadingController.create({ message: "Submitting registration and user data..." }).then((loadingEl: HTMLIonLoadingElement) => {
       loadingEl.present();
-      var _avatarUrl=this.userDataForm.value.avatar;
-      var _name = this.userDataForm.value.name;
-      var _surname = this.userDataForm.value.surname;
-      var _age = this.userDataForm.value.age;
-      var _gender = this.userDataForm.value.gender;
-      var _height = this.userDataForm.value.height;
-      var _weight = this.userDataForm.value.weight;
-      var _bodyType = this.userDataForm.value.bodyType;
-      var _activityLevel = this.userDataForm.value.activityLevel;
-      var _goal = this.userDataForm.value.goal;
-      var _userId;
-  
-      //na osnovu ovih podataka trebam pozvati servis koji cu napraviti, koji ce da mi preko formula izracunava preporucene kolicine, i da setuje pocetne na 0, i da sve to
-      //ubaci u bazu u novu tabelu. Nakon toga iz te tabele treba se citati kolike su te vrednosti, i sve njih setovati na formama
-  
-      this.recommendedIntakeService.calculateRecommendedAmountOfWater(_gender,_activityLevel);
-      this.recommendedIntakeService.calulateRecommendedAmountOfCalories(_age,_height,_weight,_gender,_activityLevel);
-      this.recommendedIntakeService.calculateRecommendedAmountOfProtein(_goal);
-      this.recommendedIntakeService.calculateRecommendedAmountOfCarbs(_goal);
-      this.recommendedIntakeService.calculateRecommendedAmountOfFats(_goal);
-      this.recommendedIntakeService.calculateRecommendedAmountOfMood();
-      this.recommendedIntakeService.calculateRecommendedAmountOfSleep(_age);
-  
-      var email = this.authService._email;
-      var password = this.authService._password;
-      //obezbediti hashing ovog passworda, tako da mu se ne moze pristupiti 
-  
-      this.authService.register({email,password}).subscribe(resData => { 
-  
-        //console.log(resData);
-        this.userMetricsService._localUserId=resData.localId;
-        _userId=this.userMetricsService._localUserId;
-  
-        this.authService.setAdminStatus(false,resData.localId).subscribe(resData=>{
-          //console.log("ADMIN STATUS:");
+      this.isLoading = true;
+
+      if (this.userDataForm.valid) {
+        var _avatarUrl = this.userDataForm.value.avatar;
+        var _name = this.userDataForm.value.name;
+        var _surname = this.userDataForm.value.surname;
+        var _age = this.userDataForm.value.age;
+        var _gender = this.userDataForm.value.gender;
+        var _height = this.userDataForm.value.height;
+        var _weight = this.userDataForm.value.weight;
+        var _bodyType = this.userDataForm.value.bodyType;
+        var _activityLevel = this.userDataForm.value.activityLevel;
+        var _goal = this.userDataForm.value.goal;
+        var _userId;
+
+        //na osnovu ovih podataka trebam pozvati servis koji cu napraviti, koji ce da mi preko formula izracunava preporucene kolicine, i da setuje pocetne na 0, i da sve to
+        //ubaci u bazu u novu tabelu. Nakon toga iz te tabele treba se citati kolike su te vrednosti, i sve njih setovati na formama
+
+        this.recommendedIntakeService.calculateRecommendedAmountOfWater(_gender, _activityLevel);
+        this.recommendedIntakeService.calulateRecommendedAmountOfCalories(_age, _height, _weight, _gender, _activityLevel);
+        this.recommendedIntakeService.calculateRecommendedAmountOfProtein(_goal);
+        this.recommendedIntakeService.calculateRecommendedAmountOfCarbs(_goal);
+        this.recommendedIntakeService.calculateRecommendedAmountOfFats(_goal);
+        this.recommendedIntakeService.calculateRecommendedAmountOfMood();
+        this.recommendedIntakeService.calculateRecommendedAmountOfSleep(_age);
+
+        var email = this.authService._email;
+        var password = this.authService._password;
+        //obezbediti hashing ovog passworda, tako da mu se ne moze pristupiti 
+
+        this.authService.register({ email, password }).subscribe(resData => {
+
           //console.log(resData);
-        });
-  
-        this.userMetricsService.addUserMetrics(_name, _surname, _age, _gender, _height, _weight, _bodyType, _activityLevel, _goal, _userId,_avatarUrl).subscribe(resData => {
-          
-          this.recommendedIntakeService.addUserRecommendedAmounts(this.recommendedIntakeService._recommendedAmountOfWater, this.recommendedIntakeService._recommendedAmountOfCalories, 
-            this.recommendedIntakeService._recommendedAmountOfCarbs,this.recommendedIntakeService._recommendedAmountOfProtein, this.recommendedIntakeService._recommendedAmountOfFats, 
-            this.recommendedIntakeService._recommendedAmountOfSleep,this.recommendedIntakeService._recommendedMindState,_userId).subscribe(resData=>{
-              //console.log(resData);
-            });
-    
-            this.authService.addRegisteredUserToRTDB(_userId,email).subscribe(resData=>{
+          this.userMetricsService._localUserId = resData.localId;
+          _userId = this.userMetricsService._localUserId;
+
+          this.authService.setAdminStatus(false, resData.localId).subscribe(resData => {
+            //console.log("ADMIN STATUS:");
+            //console.log(resData);
+          });
+
+          this.userMetricsService.addUserMetrics(_name, _surname, _age, _gender, _height, _weight, _bodyType, _activityLevel, _goal, _userId, _avatarUrl).subscribe(resData => {
+
+            this.recommendedIntakeService.addUserRecommendedAmounts(this.recommendedIntakeService._recommendedAmountOfWater, this.recommendedIntakeService._recommendedAmountOfCalories,
+              this.recommendedIntakeService._recommendedAmountOfCarbs, this.recommendedIntakeService._recommendedAmountOfProtein, this.recommendedIntakeService._recommendedAmountOfFats,
+              this.recommendedIntakeService._recommendedAmountOfSleep, this.recommendedIntakeService._recommendedMindState, _userId).subscribe(resData => {
+                //console.log(resData);
+              });
+
+            this.authService.addRegisteredUserToRTDB(_userId, email).subscribe(resData => {
               console.log("ubacivanje regovanog usera u RTDB");
               console.log(resData);
             });
-  
+
+          });
+
+        },
+        errRes => {
+          loadingEl.dismiss();
+          console.log(errRes);
+          this.isLoading = false;
+          let message = 'Registration error';
+
+          const code = errRes.error.error.message;
+
+          console.log("Greska prilikom registraijce i unosenja podataka");
+          console.log(code);
+
+          if (code === 'EMAIL_EXISTS') {
+            message = 'This email address has already been registered';
+          }
+          
+          this.alertCtrl.create({
+            header: 'Registration failed',
+            message,
+            buttons: ['Okay']
+          }).then((alert) => {
+            alert.present();
+          });
+          //this.loginForm.reset();
         });
-  
-      });
-  
-      loadingEl.dismiss();
-      this.router.navigateByUrl("/login");
-      
+
+        loadingEl.dismiss();
+        this.router.navigateByUrl("/register");
+      }
+
     })
+
 
   }
 
-  
+
 
 }

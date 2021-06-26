@@ -10,7 +10,6 @@ import { UserMetricsService } from '../user-metrics.service';
   styleUrls: ['./register.page.scss'],
 })
 export class RegisterPage implements OnInit {
-
   registrationForm: FormGroup;
   constructor(private authService: AuthService, private router: Router,private userMetricsService: UserMetricsService) { }
 
@@ -24,9 +23,6 @@ export class RegisterPage implements OnInit {
 
   onRegister() {
     this.authService.setIsRegisteredToTrue(); //ovo nam dozvoljava da prodjemo gard da bi pristupili stranici gde unosimo metrike
-    //this.authService.userIsNotAdmin();
-
-    //setujemo vrednosti parametra koje cemo posle proslediti (obavezno ih prikriti)
 
     this.authService._email=this.registrationForm.value.email;
     this.authService._password=this.registrationForm.value.password;
