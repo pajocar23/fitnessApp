@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-toolbar class="headerClass">
+  <ion-toolbar class="headerClass" color="primary">
     <ion-title>My profile</ion-title>
     <ion-buttons slot="start">
       <ion-back-button defaultHref="landing"></ion-back-button>
@@ -86,6 +86,17 @@
         </ion-item>
       </ion-col>
     </ion-row>
+
+    <ion-row>
+      <ion-col size-sm=3 offset-sm=3>
+        <ion-item lines="none">
+          <ion-label>Change theme</ion-label>
+          <ion-toggle (ionChange)="onToggleColorTheme($event)" color="primary" checked={{toogleChecked}}></ion-toggle>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+
   </ion-grid>
 
 </ion-content>

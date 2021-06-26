@@ -88,10 +88,10 @@ export class ClosestGymsPage {
 
   addInfoWindowToMarker(marker) {
     let infoWindowContent = '<div id="content">' +
-      '<h2 id="firstHeading" class="firstHeading">' + marker.title + '</h2>' +
-      '<p>Latitude: ' + marker.latitude + '</p>' +
-      '<p>Longitude: ' + marker.longitude + '</p>' +
-      '<p>Address: ' + marker.vicinity + '</p>' +
+      '<h2 style="color:black;" id="firstHeading" class="firstHeading">' + marker.title + '</h2>' +
+      '<p style="color:black;">Latitude: ' + marker.latitude + '</p>' +
+      '<p style="color:black;">Longitude: ' + marker.longitude + '</p>' +
+      '<p style="color:black;">Address: ' + marker.vicinity + '</p>' +
       '<ion-button id="navigate" color="primary">Navigate</ion-button>' +
       '</div>';
 

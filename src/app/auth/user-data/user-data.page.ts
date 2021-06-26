@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AlertController, LoadingController, PopoverController } from '@ionic/angular';
+import { AppThemeService } from '../app-theme.service';
 import { AuthService } from '../auth.service';
 import { RecommendedIntakeService } from '../recommended-intake.service';
 import { UserMetricsService } from '../user-metrics.service';
@@ -25,7 +26,7 @@ export class UserDataPage implements OnInit {
 
   constructor(public popoverController: PopoverController, private authService: AuthService, private router: Router,
     private userMetricsService: UserMetricsService, private recommendedIntakeService: RecommendedIntakeService,
-     private loadingController: LoadingController,private alertCtrl:AlertController) { }
+     private loadingController: LoadingController,private alertCtrl:AlertController,private appThemeService:AppThemeService) { }
 
   ngOnInit() {
     this.userDataForm = new FormGroup({
@@ -141,6 +142,11 @@ export class UserDataPage implements OnInit {
               console.log(resData);
             });
 
+            this.appThemeService.addTheme("light",_userId).subscribe(resData=>{
+              console.log("dodata tema za usera");
+              console.log(resData);
+            });
+
           });
 
         },
@@ -170,7 +176,7 @@ export class UserDataPage implements OnInit {
         });
 
         loadingEl.dismiss();
-        this.router.navigateByUrl("/register");
+        this.router.navigateByUrl("/login");
       }
 
     })
