@@ -21,7 +21,7 @@ interface AuthResponseData {
 interface adminStatusData {
   id: string;
   userIsAdmin: boolean;
-  userId: string; //spoljni kljuc ka tabeli korisnika
+  userId: string; 
 }
 
 interface UserData {

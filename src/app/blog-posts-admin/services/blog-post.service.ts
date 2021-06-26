@@ -140,7 +140,6 @@ export class BlogPostService {
   }
 
   deleteBlogPost(id: string) {
-
     return this.authService.loggedUserToken.pipe(
       take(1),
       switchMap((token) => {
