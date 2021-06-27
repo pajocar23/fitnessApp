@@ -54,8 +54,6 @@ export class TrackersHistoryPage implements AfterViewInit {
   ngAfterViewInit() {
     this.recommendedAmountService.getRecommendedAmountsForLogedUser().subscribe(resData => {
       this.recommendedAmountOfWater = resData.recommendedAmountOfWater;
-      console.log("1");
-      console.log(this.recommendedAmountOfWater);
       this.recommendedAmountOfCalories = resData.recommendedAmountOfCalories;
       this.recommendedAmountOfProtein = resData.recommendedAmountOfProtein;
       this.recommendedAmountOfCarbs = resData.recommendedAmountOfCarbs;
@@ -65,11 +63,14 @@ export class TrackersHistoryPage implements AfterViewInit {
       /////////////////////
       this.consumedAmountsService.getConsumedAmountsForLoggedUser().subscribe(resData => {
         for (var i = resData.length - 1; i >= 0; i--) {
-          if (this.labelsAll.length > 7) {
+          if (this.labelsAll.length == 7) {
             break;
           }
           //all trackers
-          this.labelsAll.push(resData[i].date.substr(0, resData[i].date.indexOf(',')));
+          var date = resData[i].date.split("/", 3);
+          date[2] = date[2].substr(0, date[2].indexOf(","));
+          var dateString=date[0]+"/"+date[1]+"/"+date[2]
+          this.labelsAll.push(dateString);
           //water
           this.waterLevels.push(resData[i].consumedAmountOfWater);
           //food
@@ -82,7 +83,7 @@ export class TrackersHistoryPage implements AfterViewInit {
           //mind
           this.mindLevels.push(resData[i].consumedAmountOfMindState);
         }
-        //all trackers
+        //all trackers except activity
         this.labelsAll = this.labelsAll.reverse();
         //water
         this.waterLevels = this.waterLevels.reverse();
