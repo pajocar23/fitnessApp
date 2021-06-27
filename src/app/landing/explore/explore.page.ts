@@ -194,7 +194,7 @@ export class ExplorePage implements OnInit {
     this.getActivitiesPercentagesAndUdeos();
 
     //ovaj deo ispod treba prebaciti u ngOninit
-    this.consumedAmountService.doesConsumedAmountForTodayExist().subscribe(resData => {
+    this.consumedAmountService.doesConsumedAmountForTodayExists().subscribe(resData => {
       if (!resData) {
         console.log("Consumed amounts for loged user for today do not exist and therefore they will be added to database");
         this.consumedAmountService.addConsumedIntake(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, this.authService.logedUserID, new Date().toLocaleString()).subscribe(resData => {

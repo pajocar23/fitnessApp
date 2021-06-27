@@ -201,7 +201,7 @@ export class ConsumedAmountService {
       }));
   }
 
-  doesConsumedAmountForTodayExist() {
+  doesConsumedAmountForTodayExists() {
     ///
     return this.authService.loggedUserToken.pipe(
       take(1),

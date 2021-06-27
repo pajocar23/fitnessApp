@@ -21,16 +21,7 @@ export class ClosestGymsPage {
   infoWindows: any = [];
   
   //ovaj niz markera trebaju biti teretane
-  markers: any = [{
-    title: "Athletics gym Vozdovac",
-    latitude: "44.760828",
-    longitude: "20.485671"
-  }, {
-    title: "Ahilej gym Vozdovac",
-    latitude: "44.773370",
-    longitude: "20.485671"
-  }];
-
+ 
   map: any;
 
   constructor(private http: HttpClient) { }
