@@ -23,7 +23,7 @@ export class ConsumedAmountService {
 
   constructor(private http: HttpClient, private authService: AuthService) { }
 
-  addDefaultConsumedIntake(consumedAmountOfWater: number, waterPercentage: number, waterUdeo: number,
+  addConsumedIntake(consumedAmountOfWater: number, waterPercentage: number, waterUdeo: number,
     consumedAmountOfCalories: number,
     consumedAmountOfCarbs: number, carbsPercentage: number, carbsUdeo: number,
     consumedAmountOfProtein: number, proteinPercentage: number, proteinUdeo: number,

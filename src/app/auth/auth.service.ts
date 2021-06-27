@@ -105,6 +105,7 @@ export class AuthService {
     );
   }
 
+
   get isRegistered(): boolean {
     return this._isRegistered;
   }
@@ -283,6 +284,7 @@ export class AuthService {
   }*/
 
   logut() {
+    this._isUserAuthenticated=false;
     this._user.next(null);
     this._logedUserID = "";
   }

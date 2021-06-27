@@ -67,7 +67,19 @@ export class ClosestGymsPage {
   }
 
   getMyLocation() {
-    return this.http.post('https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyBb4QxfgGK_m_dvxdeO3Czo--ZjinKew6I', {});
+    return this.http.post('https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyBb4QxfgGK_m_dvxdeO3Czo--ZjinKew6I',
+    {
+      "homeMobileCountryCode": 220,
+      "homeMobileNetworkCode": 3,
+      "radioType": "gsm",
+      "considerIp": true,
+      "cellTowers": [
+        // See the Cell Tower Objects section below.
+      ],
+      "wifiAccessPoints": [
+        // See the WiFi Access Point Objects section below.
+      ]
+    });
   }
 
   addMarkersToMap(markers) {

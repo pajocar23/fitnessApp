@@ -195,9 +195,9 @@ export class ExplorePage implements OnInit {
 
     //ovaj deo ispod treba prebaciti u ngOninit
     this.consumedAmountService.doesConsumedAmountForTodayExist().subscribe(resData => {
-      if (resData == false) {
+      if (!resData) {
         console.log("Consumed amounts for loged user for today do not exist and therefore they will be added to database");
-        this.consumedAmountService.addDefaultConsumedIntake(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, this.authService.logedUserID, new Date().toLocaleString()).subscribe(resData => {
+        this.consumedAmountService.addConsumedIntake(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, this.authService.logedUserID, new Date().toLocaleString()).subscribe(resData => {
         });
       }
     });
