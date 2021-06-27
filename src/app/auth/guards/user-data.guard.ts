@@ -8,16 +8,20 @@ import { AuthService } from '../auth.service';
 })
 export class UserDataGuard implements CanLoad {
 
-  constructor(private authService:AuthService,private router:Router){
+  constructor(private authService: AuthService, private router: Router) {
 
   }
 
   canLoad(
     route: Route,
     segments: UrlSegment[]): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-      if(!this.authService.isRegistered){
+    try {
+      if (!this.authService.isRegistered) {
         this.router.navigateByUrl("/register");
       }
-    return this.authService.isRegistered;
+      return this.authService.isRegistered;
+    } catch (Exception) {
+      console.log(Exception);
+    }
   }
 }

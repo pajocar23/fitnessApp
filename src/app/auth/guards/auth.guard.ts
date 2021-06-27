@@ -17,14 +17,21 @@ export class AuthGuard implements CanLoad {
   canLoad(
     route: Route,
     segments: UrlSegment[]): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-     
+
+      /*this.authService.isUserAuthenticated.subscribe(resData=>{
+        console.log("DADASDASASDSA");
+        console.log(resData);
+      })*/
+
+      try{
       return this.authService.isUserAuthenticated.pipe(take(1),tap(isAuthenticated=>{
         if(!isAuthenticated){
           this.router.navigateByUrl("/login");
-        }else{
-          return this.authService.isUserAuthenticated;
         }
       }));
+    }catch(Exception){
+      console.log(Exception);
+    }
       
       
   }

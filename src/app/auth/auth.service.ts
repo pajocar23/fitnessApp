@@ -97,9 +97,15 @@ export class AuthService {
     return this._user.asObservable().pipe(
       map((user: User) => {
         if (user) {
+          console.log("user true:");
+          console.log(user);
+          this._isUserAuthenticated=true;
           return !!user.token;
         } else {
-          return false;
+          console.log("user false:");
+          console.log(user);
+          this._isUserAuthenticated=false;
+          return false;      
         }
       })
     );

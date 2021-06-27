@@ -15,13 +15,15 @@ export class AdminOptionsGuardGuard implements CanActivate {
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+      try{
       return this.authService.isUserAuthenticated.pipe(take(1),tap(isAuthenticated=>{
         if(!isAuthenticated){
           this.router.navigateByUrl("/login");
-        }else{
-          return this.authService.isUserAuthenticated;
         }
       }));
+    }catch(Exception){
+      console.log(Exception);
+    }
   }
   
 }
